@@ -4,12 +4,12 @@
 > Lees <https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet> om te weten hoe een Markdown-bestand opgemaakt moet worden.
 > Verwijder alle instructies (lijnen die starten met >).
 
-- [ ] Front-end Web Development
+- [X] Front-end Web Development
   - <GITHUB_REPO_LINK_HIER>
   - <LINK_ONLINE_VERSIE_HIER>
-- [ ] Web Services: GITHUB URL
-  - <GITHUB_REPO_LINK_HIER>
-  - <LINK_ONLINE_VERSIE_HIER>
+- [X] Web Services: GITHUB URL
+  - <https://github.com/Web-IV/2324-webservices-JasperHmn.git>
+  - <https://github.com/Web-IV/2324-webservices-JasperHmn>
 
 **Logingegevens**
 
