@@ -26,8 +26,15 @@ const logger = winston.createLogger({
 
 
 router.get('/api/motors', async (ctx) => { 
-  //ctx.body = '[{"user": "Benjamin", "amount": 100, "place": "Irish Pub", "date": "2021-08-15" }]'; // 👈 5
   ctx.body = motors.getAll();
+});
+
+router.post('/api/motors', async (ctx) => { 
+  const newMotor = motors.create({
+    ...ctx.request.body
+    // placeID, date? of andere index.js maken voor huurlocatie mockdata?
+  });
+  ctx.body = newMotor;
 });
 
 app.use(router.routes()) 
