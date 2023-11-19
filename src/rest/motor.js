@@ -10,6 +10,7 @@ const createMotor = async (ctx) => {
   ...ctx.request.body,
   huur_locatie: ctx.request.body.huur_locatie,
   klant: ctx.request.body.klant,
+  rating: Number(ctx.request.body.rating),
   });
   ctx.status = 201;
   ctx.body = newMotor;
