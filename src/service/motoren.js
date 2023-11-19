@@ -14,7 +14,7 @@ const create = ({ name, price, date, available, rating, image, klant, huur_locat
     existingHuurLocatie = Huurlocatie.find((locatie) => locatie.id === huur_locatie.id);
 
     if (!existingHuurLocatie) {
-      throw new Error(`There is no huur_locatie with id ${huur_locatie.id}.`);
+      getLogger().info(`There is no huur_locatie with id ${huur_locatie.id}.`);
     }
   }
 

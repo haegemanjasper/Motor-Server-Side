@@ -1,56 +1,53 @@
 const Koa = require('koa');
-const Router = require('@koa/router');
 const config = require('config');
 const bodyParser = require('koa-bodyparser');
-const winston = require('winston');
-const motors = require('./service/motoren');
-
+const installRest = require('./rest');
 const NODE_ENV = config.get('env');
 const LOG_LEVEL = config.get('log.level');
 const LOG_DISABLED = config.get('log.disabled');
+const { initializeLogger, getLogger } = require('./core/logging');
+const koaCors = require ('@koa/cors');
+const CORS_ORIGINS = config.get('cors.origins');
+const CORS_MAX_AGE = config.get('cors.maxAge');
+//const { initializeData } = require('./data');
 
-console.log(`log level ${LOG_LEVEL}, logs enabled: ${LOG_DISABLED !== true}`);
+// CORS is een HTTP-functie waarmee een webapplicatie,
+// die wordt uitgevoerd onder één domein, toegang kan krijgen tot resources in een ander domein.
 
 const app = new Koa();
-const router = new Router();
+
+app.use(koaCors({
+  origin: (ctx) => {
+    if (CORS_ORIGINS.indexOf(ctx.request.header.origin) !== -1) {
+      return ctx.request.header.origin;
+    }
+    return CORS_ORIGINS[0];
+  },
+  allowHeaders: ['Accept', 'Content-Type', 'Authorization'],
+  maxAge: CORS_MAX_AGE,
+}))
+
+async function main() {
+
+initializeLogger({
+  level: LOG_LEVEL,
+  disabled: LOG_DISABLED,
+  defaultMeta: { 
+    NODE_ENV, 
+  },
+});
+
+//await initializeData();
+
+}
+
 
 app.use(bodyParser());
 
-const logger = winston.createLogger({
-  level: LOG_LEVEL,
-  format: winston.format.simple(),
-  transports: [
-    new winston.transports.Console({ silent: LOG_DISABLED }),
-  ],
-});
-
-router.get('/api/motors', async (ctx) => {
-  ctx.body = motors.getAll(); 
-});
-
-router.post('/api/motors', async (ctx) => {
-  try {
-    const { name, price, date, available, rating, image, klant, huur_locatie } = ctx.request.body; 
-    const newMotor = motors.create({
-      name,
-      price,
-      date: new Date(date),
-      available,
-      rating,
-      image,
-      klant,
-      huur_locatie,
-    });
-
-    ctx.body = newMotor;
-  } catch (error) {
-    ctx.status = 500;
-    ctx.body = { error: 'Internal Server Error' };
-  }
-});
-
-app.use(router.routes()).use(router.allowedMethods());
+installRest(app);
 
 app.listen(9000, () => {
-  logger.info('🚀 Server listening on http://localhost:9000');
+  getLogger().info('🚀 Server listening on http://localhost:9000');
 });
+
+main();
