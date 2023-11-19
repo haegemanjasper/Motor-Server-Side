@@ -1,5 +1,6 @@
 const knex = require('knex'); 
 const { getLogger } = require('../core/logging'); 
+const { join } = require('path');
 
 // start config
 const config = require('config');
@@ -21,16 +22,23 @@ async function initializeData() {
   const logger = getLogger(); 
   logger.info('Initializing connection to the database'); 
 
-  //  start knex opties
+  //  start knex opties (nakijken)
   const knexOptions = {
     client: DATABASE_CLIENT,
     connection: {
-      name: DATABASE_NAME,
       host: DATABASE_HOST,
       port: DATABASE_PORT,
       user: DATABASE_USERNAME,
       password: DATABASE_PASSWORD,
       insecureAuth: isDevelopment,
+    },
+      debug: isDevelopment,
+      migrations: {
+        tableName: 'knex_meta',
+        directory: join('src', 'data', 'migrations'),
+      },
+      seeds: {
+        directory: join('src', 'data', 'seeds'),
     },
   };
   // einde knex opties
@@ -39,13 +47,36 @@ async function initializeData() {
 
   try {
     await knexInstance.raw('SELECT 1+1 AS result');
+    await knexInstance.raw(`CREATE DATABASE IF NOT EXISTS ${DATABASE_NAME}`);
+
+    await knexInstance.destroy();
+
+    knexOptions.connection.database = DATABASE_NAME;
+    knexInstance = knex(knexOptions);
+    await knexInstance.raw('SELECT 1+1 AS result');
   } catch (error) {
     logger.error(error.message, { error }); 
     throw new Error('Could not initialize the data layer'); 
   }
 
-  logger.info('Successfully initialized connection to the database'); 
+  // run migrations
 
+  try {
+    await knexInstance.migrate.latest();
+  } catch (error) {
+    logger.error('Error while migrating the database', { error });
+
+    throw new Error('Migrations failed, check the logs!');
+  }
+
+  if (isDevelopment) {
+    try {
+      await knexInstance.seed.run();
+    } catch (error) {
+      logger.error('Error while seeding the database', { error });
+    }
+  }
+  logger.info('Successfully initialized connection to the database'); 
   return knexInstance; 
 }
 
@@ -57,10 +88,11 @@ function getKnex() {
   return knexInstance;
 }
 
+// nog na te kijken..
 const tables = Object.freeze({
-  transaction: 'transactions',
-  user: 'users',
-  place: 'places',
+  motor: 'motor',
+  klant: 'klanten',
+  huurlocatie: 'huurlocaties',
 });
 
 module.exports = {

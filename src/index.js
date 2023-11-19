@@ -14,19 +14,6 @@ const { initializeData } = require('./data');
 // CORS is een HTTP-functie waarmee een webapplicatie,
 // die wordt uitgevoerd onder één domein, toegang kan krijgen tot resources in een ander domein.
 
-const app = new Koa();
-
-app.use(koaCors({
-  origin: (ctx) => {
-    if (CORS_ORIGINS.indexOf(ctx.request.header.origin) !== -1) {
-      return ctx.request.header.origin;
-    }
-    return CORS_ORIGINS[0];
-  },
-  allowHeaders: ['Accept', 'Content-Type', 'Authorization'],
-  maxAge: CORS_MAX_AGE,
-}))
-
 async function main() {
 
 initializeLogger({
@@ -40,6 +27,19 @@ initializeLogger({
 await initializeData();
 
 }
+
+const app = new Koa();
+
+app.use(koaCors({
+  origin: (ctx) => {
+    if (CORS_ORIGINS.indexOf(ctx.request.header.origin) !== -1) {
+      return ctx.request.header.origin;
+    }
+    return CORS_ORIGINS[0];
+  },
+  allowHeaders: ['Accept', 'Content-Type', 'Authorization'],
+  maxAge: CORS_MAX_AGE,
+}));
 
 app.use(bodyParser());
 installRest(app);
