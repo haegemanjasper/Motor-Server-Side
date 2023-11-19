@@ -9,7 +9,7 @@ const { initializeLogger, getLogger } = require('./core/logging');
 const koaCors = require ('@koa/cors');
 const CORS_ORIGINS = config.get('cors.origins');
 const CORS_MAX_AGE = config.get('cors.maxAge');
-//const { initializeData } = require('./data');
+const { initializeData } = require('./data');
 
 // CORS is een HTTP-functie waarmee een webapplicatie,
 // die wordt uitgevoerd onder één domein, toegang kan krijgen tot resources in een ander domein.
@@ -37,13 +37,11 @@ initializeLogger({
   },
 });
 
-//await initializeData();
+await initializeData();
 
 }
 
-
 app.use(bodyParser());
-
 installRest(app);
 
 app.listen(9000, () => {
@@ -51,3 +49,4 @@ app.listen(9000, () => {
 });
 
 main();
+

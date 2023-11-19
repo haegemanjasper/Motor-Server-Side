@@ -1,5 +1,5 @@
 const Router = require('@koa/router');
-const installMotorRouter = require('./motoren');
+const installMotorRouter = require('./motor');
 const installHealthRoutes = require('./health');
 
 /**
