@@ -62,6 +62,8 @@ async function initializeData() {
   // run migrations
 
   try {
+    await knexInstance.raw('SET FOREIGN_KEY_CHECKS = 0');
+
     await knexInstance.migrate.latest();
   } catch (error) {
     logger.error('Error while migrating the database', { error });
@@ -70,13 +72,15 @@ async function initializeData() {
   }
 
   if (isDevelopment) {
+    logger.info('Attempting to seed the database')
     try {
       await knexInstance.seed.run();
+      await knexInstance.raw('SET FOREIGN_KEY_CHECKS = 1');
     } catch (error) {
       logger.error('Error while seeding the database', { error });
     }
   }
-  logger.info('Successfully initialized connection to the database'); 
+  logger.info('Successfully connected to the database'); 
   return knexInstance; 
 }
 
@@ -88,15 +92,28 @@ function getKnex() {
   return knexInstance;
 }
 
-// nog na te kijken..
+async function shutdownData() {
+  const logger = getLogger();
+
+  logger.info('Shutting down database connection');
+
+  await knexInstance.destroy();
+  knexInstance = null;
+
+  logger.info('Database connection closed');
+}
+
 const tables = Object.freeze({
+  huurlocatie: 'huurlocatie',
+  klant: 'klant',
+  betaling: 'betaling',
   motor: 'motor',
-  klant: 'klanten',
-  huurlocatie: 'huurlocaties',
 });
 
 module.exports = {
+  tables,
   initializeData, 
   getKnex, 
-  tables, 
+  
+  shutdownData,
 };

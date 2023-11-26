@@ -1,22 +1,22 @@
-const { tables, getKnex} = require('../src/data/index');
+const { tables, getKnex } = require('../src/data/index');
 const { getLogger } = require('../src/core/logging');
 
 const findAll = () => {
   getLogger().info('Finding all huurlocaties');
   return getKnex()(tables.huurlocatie)
-  .select()
-  .orderBy('name', 'ASC');
+    .select()
+    .orderBy('id', 'ASC');
 };
 
 const findCount = () => {
   return getKnex()(tables.huurlocatie)
-  .count('id as count');
+    .count('id as count');
 };
 
-const findByName = (name) => {
+const findByName = (naam) => {
   return getKnex()(tables.huurlocatie)
-  .where('name', name)
-  .first();
+    .where('naam', naam)
+    .first();
 };
 
 const findById = (id) => {
@@ -24,47 +24,47 @@ const findById = (id) => {
   return getKnex()(tables.huurlocatie).where('id', id).first();
 };
 
-const create = async ({ straat, nummer, postcode }) => {
- try {
-  const [id] = await getKnex()(tables.huurlocatie).insert({
-    straat,
-    nummer,
-    postcode,
-  });
-  return id;
-} catch (error){
-  getLogger().error('Error in create', {
-    error
-  });
-  throw error;
- }
+const create = async ({ huurlocatie_id, naam, straat, huisnummer, postcode }) => {
+  try {
+    const [id] = await getKnex()(tables.huurlocatie).insert({
+      huurlocatie_id,
+      naam,
+      straat,
+      huisnummer,
+      postcode,
+    });
+    return id;
+  } catch (error) {
+    getLogger().error('Error in create', {
+      error,
+    });
+    throw error;
+  }
 };
 
-const updateById = async (id, { straat, nummer, postcode }) => {
+const updateById = async (id, { huurlocatie_id, naam, straat, huisnummer, postcode }) => {
   try {
-    await getKnew()(tables.huurlocatie).update({ straat, nummer, postcode }).where('id', id);
-
+    await getKnex()(tables.huurlocatie).update({ huurlocatie_id, naam, straat, huisnummer, postcode }).where('huurlocatie_id', id);
     return id;
   } catch (error) {
     getLogger().error('Error in updateById', {
       error,
     });
     throw error;
-   }
-  };
+  }
+};
 
-  const deleteById = async (id) => {
-    try {
-      const rowsAffected = await getKnex()(tables.huurlocatie).delete().where('id', id);
-
-      return rowsAffected > 0;
-    } catch {
-      getLogger().error('Error in deleteById', {
-        error,
-      });
-      throw error;  
-    }
-  };
+const deleteById = async (id) => {
+  try {
+    const rowsAffected = await getKnex()(tables.huurlocatie).delete().where('huurlocatie_id', id);
+    return rowsAffected > 0;
+  } catch (error) {
+    getLogger().error('Error in deleteById', {
+      error,
+    });
+    throw error;
+  }
+};
 
 module.exports = {
   findAll,

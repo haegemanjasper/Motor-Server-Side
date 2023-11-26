@@ -1,12 +1,11 @@
 const { tables } = require('..');
-const motor = require('../../rest/motor');
 
 module.exports = {
   seed: async (knex) => {
     await knex(tables.motor).delete();
 
     await knex(tables.motor).insert([
-      { // KTM , data nog aan te passen, images toevoegen?
+      { //  images toevoegen?
         motor_id: 1,
         merk: 'KTM',
         model: '1290 Super Duke R',

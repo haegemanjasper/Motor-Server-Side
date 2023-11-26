@@ -3,34 +3,37 @@ const { tables, getKnex } = require('../src/data/index');
 
 const formatMotor = ({
   klant,
-  huur_locatie,
+  huurlocatie,
   ...motor
 }) => {
   return {
     ...motor,
-  klant: {
-    id: klant.id,
-    name: klant.name,
-  },
-  huur_locatie: {
-    id: huur_locatie.id,
-    name: huur_locatie.name,
-  },
-};
+    klant: {
+      id: klant.id,
+      voornaam: klant.voornaam,
+      achternaam: klant.achternaam,
+    },
+    huurlocatie: {
+      id: huurlocatie.id,
+      postcode: huurlocatie.postcode,
+    },
+  };
 };
 
 const SELECT_COLUMNS = [
   `${tables.motor}.motor_id as id`,
-  'merk as name',
-  'huurprijs_per_dag as price',
-  'jaar as date',
-  'beschikbaarheid as available',
+  `${tables.motor}.datum as date`,
+  `${tables.motor}.beschikbaarheid as available`,
+  `${tables.motor}.huurprijs_per_dag as price`,
+  `${tables.motor}.merk as brand`,
+  `${tables.motor}.model as model`,
   `${tables.motor}.rating as rating`,
-  'image',
+  // 'image', 
   `${tables.klant}.id as klant.id`,
-  `${tables.klant}.name as klant.name`,
-  `${tables.huurlocatie}.id as huur_locatie.id`,
-  `${tables.huurlocatie}.name as huur_locatie.name`,
+  `${tables.klant}.voornaam as klant.voornaam`,
+  `${tables.klant}.achternaam as klant.achternaam`,
+  `${tables.huurlocatie}.id as huurlocatie.id`,
+  `${tables.huurlocatie}.postcode as huurlocatie.postcode`,
 ];
 
 const findById = async (id) => {
@@ -45,14 +48,13 @@ const findById = async (id) => {
       tables.huurlocatie,
       `${tables.huurlocatie}.id`,
       '=',
-      `${tables.motor}.huur_locatie_id`
+      `${tables.motor}.huurlocatie_id`
     )
-    .where(`${tables.motor}.motor.id`, id)
+    .where(`${tables.motor}.motor_id`, id)
     .first(SELECT_COLUMNS);
 
   return motor && formatMotor(motor);
 };
-
 const findCount = async () => {
   const count = await getKnex()(tables.motor)
     .count('motor_id as count')
@@ -72,7 +74,7 @@ const findAll = async () => {
       tables.huurlocatie,
       `${tables.huurlocatie}.id`,
       '=',
-      `${tables.motor}.huur_locatie_id`
+      `${tables.motor}.huurlocatie_id`
     )
     .select(SELECT_COLUMNS)
     .orderBy('id', 'ASC');
@@ -80,17 +82,20 @@ const findAll = async () => {
   return motors.map(formatMotor);
 }
 
-const create = async ({merk,huurprijs_per_dag,jaar,beschikbaarheid,rating,image,klant_id,huur_locatie_id}) => {
+// image toevoegen?
+const create = async ({motor_id,datum,beschikbaarheid,huurprijs_per_dag,merk,model,rating,klant_id,huurlocatie_id}) => {
   try {
     const [id] = await getKnex()(tables.motor).insert({
-    merk,
-    huurprijs_per_dag,
-    jaar,
+    motor_id,
+    datum,
     beschikbaarheid,
+    huurprijs_per_dag,
+    merk,
+    model,
     rating,
-    image,
+    //image,
     klant_id,
-    huur_locatie_id,
+    huurlocatie_id,
   });
 
   return id;
@@ -101,18 +106,22 @@ const create = async ({merk,huurprijs_per_dag,jaar,beschikbaarheid,rating,image,
   throw error;
 }
 };
- const updateById = async (id, {merk,huurprijs_per_dag,jaar,beschikbaarheid,rating,image,klant_id,huur_locatie_id}) => {
+
+// image toevoegen?
+ const updateById = async (id, {motor_id,datum,beschikbaarheid,huurprijs_per_dag,merk,model,rating,klant_id,huurlocatie_id}) => {
    try {
     await getKnex()(tables.motor)
     .update({
-      merk,
-      huurprijs_per_dag,
-      jaar,
+      motor_id,
+      datum,
       beschikbaarheid,
+      huurprijs_per_dag,
+      merk,
+      model,
       rating,
-      image,
+      //image,
       klant_id,
-      huur_locatie_id,
+      huurlocatie_id,
     })
     .where(`${tables.motor}.motor_id`, id);
   return id;
@@ -124,7 +133,7 @@ const create = async ({merk,huurprijs_per_dag,jaar,beschikbaarheid,rating,image,
  }
 };
 
-const deleteById = async (id, klantId) => {
+const deleteById = async (id) => {
   try {
     const rowsAffected = await getKnex()(tables.motor)
     .where(`${tables.motor}.motor_id`, id)

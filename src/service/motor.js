@@ -1,3 +1,5 @@
+const ServiceError = require('../core/serviceError');
+const handleDBError = require('./_handleDBError');
 const motorRepository = require('../../repository/motor');
 const motorService = require('./huurlocatie');
 
@@ -13,50 +15,61 @@ const getById = async (id) => {
   const motor = await motorRepository.findById(id);
 
   if (!motor) {
-    throw Error (`Geen motor gevonden met id: ${id}`);
+    throw ServiceError.notFound (`Geen motor gevonden met id: ${id}`);
   }
 
   return motor;
 };
 
-const create = async ({ name, price, date, available, rating, image, klant, huur_locatie }) => {
+//image toevoegen?
+const create = async ({ motor_id, datum, beschikbaarheid, huurprijs_per_dag, merk, model, rating, klant, huur_locatie }) => {
   const existingHuurLocatie = await motorService.getById(huur_locatie.id);
 
     if (!existingHuurLocatie) {
-      throw Error (`Geen huurlocatie gevonden met id: ${huur_locatie.id}`);
+      throw ServiceError.notFound(`Geen huurlocatie gevonden met id: ${huur_locatie.id}`);
   }
 
- const id = await motorRepository.create({
-    name,
-    price,
-    date,
-    available,
-    rating,
-    image,
-    klant,
-    huur_locatie: existingHuurLocatie,
+try {
+ const id = await motorRepository
+ .create({
+  motor_id,
+  datum,
+  beschikbaarheid,
+  huurprijs_per_dag,
+  merk,
+  model,
+  rating,
+  //image,
+  klant_id: klant.id,
+  huur_locatie_id: huur_locatie.id,
   });
     return getById(id);
+} catch (error) {
+  throw handleDBError(error);
 }
+};
 
-const updateById = async (id, { name, price, date, available, rating, image, klant, huur_locatie }) => {
- if (huur_locatie) {
+//image toevoegen?
+const updateById = async (id, { motor_id, datum, beschikbaarheid, huurprijs_per_dag, merk, model, rating, klant, huur_locatie }) => {
+ if (huur_locatie && huur_locatie.id) {
   const existingHuurLocatie = await motorService.getById(huur_locatie.id);
 
     if (!existingHuurLocatie) {
-      throw Error (`Geen huurlocatie gevonden met id: ${huur_locatie.id}`);
+      throw ServiceError.notFound(`Geen huurlocatie gevonden met id: ${huur_locatie.id}`);
     }
   }
  
   await motorRepository.updateById(id, {
-    name,
-    price,
-    date,
-    available,
+    motor_id,
+    datum,
+    beschikbaarheid,
+    huurprijs_per_dag,
+    merk,
+    model,
     rating,
-    image,
-    klant,
-    huur_locatie: existingHuurLocatie,
+    //image,
+    klant_id: klant.id,
+    huur_locatie_id: huur_locatie.id,
   });
   return getById(id);
 };
@@ -65,7 +78,7 @@ const deleteById = async (id) => {
   const deleted = await motorRepository.deleteById(id);
 
   if (!deleted) {
-    throw Error (`Geen motor gevonden met id: ${id}`);
+    throw ServiceError.notFound(`Geen motor gevonden met id: ${id}`);
   }
 };
 
