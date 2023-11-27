@@ -5,7 +5,7 @@ const findAll = () => {
   getLogger().info('Finding all huurlocaties');
   return getKnex()(tables.huurlocatie)
     .select()
-    .orderBy('id', 'ASC');
+    .orderBy('huurlocatieId', 'ASC');
 };
 
 const findCount = () => {
@@ -19,19 +19,20 @@ const findByName = (naam) => {
     .first();
 };
 
-const findById = (id) => {
-  getLogger().info(`Finding huurlocatie with id ${id}`);
-  return getKnex()(tables.huurlocatie).where('id', id).first();
+const findById = (huurlocatieId) => {
+  getLogger().info(`Finding huurlocatie with id ${huurlocatieId}`);
+  return getKnex()(tables.huurlocatie).where('huurlocatieId', huurlocatieId).first();
 };
 
-const create = async ({ huurlocatie_id, naam, straat, huisnummer, postcode }) => {
+const create = async ({ huurlocatieId, naam, straat, huisnummer, postcode, stad }) => {
   try {
     const [id] = await getKnex()(tables.huurlocatie).insert({
-      huurlocatie_id,
+      huurlocatieId,
       naam,
       straat,
       huisnummer,
       postcode,
+      stad,
     });
     return id;
   } catch (error) {
@@ -42,9 +43,9 @@ const create = async ({ huurlocatie_id, naam, straat, huisnummer, postcode }) =>
   }
 };
 
-const updateById = async (id, { huurlocatie_id, naam, straat, huisnummer, postcode }) => {
+const updateById = async (id, { huurlocatieId, naam, straat, huisnummer, postcode, stad }) => {
   try {
-    await getKnex()(tables.huurlocatie).update({ huurlocatie_id, naam, straat, huisnummer, postcode }).where('huurlocatie_id', id);
+    await getKnex()(tables.huurlocatie).update({ huurlocatieId, naam, straat, huisnummer, postcode, stad }).where('huurlocatieId', id);
     return id;
   } catch (error) {
     getLogger().error('Error in updateById', {
@@ -56,7 +57,7 @@ const updateById = async (id, { huurlocatie_id, naam, straat, huisnummer, postco
 
 const deleteById = async (id) => {
   try {
-    const rowsAffected = await getKnex()(tables.huurlocatie).delete().where('huurlocatie_id', id);
+    const rowsAffected = await getKnex()(tables.huurlocatie).delete().where('huurlocatieId', id);
     return rowsAffected > 0;
   } catch (error) {
     getLogger().error('Error in deleteById', {

@@ -12,61 +12,41 @@ const getAll = async () => {
 
 const getById = async (id) => {
   const klant = await klantRepository.findById(id);
-
   if (!klant) {
     throw ServiceError.notFound(`Geen klant gevonden met id: ${id}`);
   }
   return klant;
 };
 
-const create = async ({ klant_id, voornaam, achternaam, straat, huisnummer, postcode }) => {
-  const existingKlant = await klantRepository.getById(klant_id);
-
-  if (existingKlant) {
-    throw new ServiceError(`Een klant met id ${klant_id} bestaat al.`);
-  }
-  try {
-    const id = await klantRepository.create({
-      klant_id,
-      voornaam,
-      achternaam,
-      straat,
-      huisnummer,
-      postcode,
-    });
-    return getById(id);
-  } catch (error) {
-    handleDBError(error);
-    }
-  };
-
-  const updateById = async (id, { klant_id, voornaam, achternaam, straat, huisnummer, postcode }) => {
-    const existingKlant = await klantRepository.getById(id);
-  
-    if (!existingKlant) {
-      throw ServiceError.notFound(`Geen klant gevonden met id: ${id}`);
-    }
-  
-    await klantRepository.updateById(id, {
-      klant_id,
-      voornaam,
-      achternaam,
-      straat,
-      huisnummer,
-      postcode,
-    });
-  
-    return getById(id);
-  };
-  
-
-const deleteById = async (id) => {
-  const deletedKlant = await klantRepository.deleteById(id);
-  
-  if (!deletedKlant) {
-    throw ServiceError.notFound(`Geen klant gevonden met id: ${id}`);
-  }
+const create = async (klant) => {
+  const id = await klantRepository.create(klant);
+  return getById(id);
 };
+
+  const updateById = async (id, klant) => {
+    try {
+      const existingKlant = await klantRepository.update(id, klant);
+  
+      if (!existingKlant) {
+        throw ServiceError.notFound(`No klant with id ${id} exists`, { id });
+      }
+  
+      return getById(id);
+    } catch (error) {
+      throw handleDBError(error);
+    }
+  };
+  const deleteById = async (id) => {
+    try {
+      const deleted = await klantRepository.deleteById(id);
+  
+      if (!deleted) {
+        throw ServiceError.notFound(`No klant with id ${id} exists`, { id });
+      }
+    } catch (error) {
+      throw handleDBError(error);
+    }
+  };
 
 module.exports = {
   getAll,

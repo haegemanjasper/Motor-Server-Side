@@ -1,7 +1,6 @@
 const ServiceError = require('../core/serviceError');
 const handleDBError = require('./_handleDBError');
 const motorRepository = require('../../repository/motor');
-const motorService = require('./huurlocatie');
 
 const getAll = async () => {
   const items = await motorRepository.findAll();
@@ -22,56 +21,24 @@ const getById = async (id) => {
 };
 
 //image toevoegen?
-const create = async ({ motor_id, datum, beschikbaarheid, huurprijs_per_dag, merk, model, rating, klant, huur_locatie }) => {
-  const existingHuurLocatie = await motorService.getById(huur_locatie.id);
-
-    if (!existingHuurLocatie) {
-      throw ServiceError.notFound(`Geen huurlocatie gevonden met id: ${huur_locatie.id}`);
+const create = async (motor) => {
+  const id = await motorRepository.create(motor);
+  return getById(id);
   }
-
-try {
- const id = await motorRepository
- .create({
-  motor_id,
-  datum,
-  beschikbaarheid,
-  huurprijs_per_dag,
-  merk,
-  model,
-  rating,
-  //image,
-  klant_id: klant.id,
-  huur_locatie_id: huur_locatie.id,
-  });
-    return getById(id);
-} catch (error) {
-  throw handleDBError(error);
-}
-};
 
 //image toevoegen?
-const updateById = async (id, { motor_id, datum, beschikbaarheid, huurprijs_per_dag, merk, model, rating, klant, huur_locatie }) => {
- if (huur_locatie && huur_locatie.id) {
-  const existingHuurLocatie = await motorService.getById(huur_locatie.id);
+const updateById = async (id, motor) => {
+  try {
+    const updated = await motorRepository.update(id, motor);
 
-    if (!existingHuurLocatie) {
-      throw ServiceError.notFound(`Geen huurlocatie gevonden met id: ${huur_locatie.id}`);
+    if (!updated) {
+      throw ServiceError.notFound(`No motor with id ${id} exists`, { id });
     }
+
+    return getById(id);
+  } catch (error) {
+    throw handleDBError(error);
   }
- 
-  await motorRepository.updateById(id, {
-    motor_id,
-    datum,
-    beschikbaarheid,
-    huurprijs_per_dag,
-    merk,
-    model,
-    rating,
-    //image,
-    klant_id: klant.id,
-    huur_locatie_id: huur_locatie.id,
-  });
-  return getById(id);
 };
 
 const deleteById = async (id) => {

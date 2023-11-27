@@ -6,7 +6,7 @@ module.exports = {
 
     await knex(tables.motor).insert([
       { //  images toevoegen?
-        motor_id: 1,
+        motorId: 1,
         merk: 'KTM',
         model: '1290 Super Duke R',
         datum: new Date(2021, 4, 10, 10, 0),
@@ -15,7 +15,7 @@ module.exports = {
         rating: 4,
       },
       {
-      motor_id: 2,
+      motorId: 2,
       merk: 'KTM',
       model: '790 Duke',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -24,7 +24,7 @@ module.exports = {
       rating: 5,
       },
       {
-      motor_id: 3,
+      motorId: 3,
       merk: 'KTM',
       model: '390 Duke',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -33,7 +33,7 @@ module.exports = {
       rating: 3,
       },
       {
-      motor_id: 4,
+      motorId: 4,
       merk: 'KTM',
       model: '690 Enduro R',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -42,7 +42,7 @@ module.exports = {
       rating: 4,
       },
       {
-      motor_id: 5,
+      motorId: 5,
       merk: 'KTM',
       model: '450 EXC-F Six Days',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -51,7 +51,7 @@ module.exports = {
       rating: 4,
       },
       {
-      motor_id: 6,
+      motorId: 6,
       merk: 'KTM',
       model: '250 SX-F',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -60,7 +60,7 @@ module.exports = {
       rating: 4,
       },
       {// BMW
-      motor_id: 7,
+      motorId: 7,
       merk: 'BMW',
       model: 'S 1000 RR',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -69,7 +69,7 @@ module.exports = {
       rating: 4,
       },
       {
-      motor_id: 8,
+      motorId: 8,
       merk: 'BMW',
       model: 'S 1000 XR',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -79,7 +79,7 @@ module.exports = {
       },
 
       {
-      motor_id: 9,
+      motorId: 9,
       merk: 'BMW',
       model: 'R 1250 GS',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -88,7 +88,7 @@ module.exports = {
       rating: 4,
       },
       {
-      motor_id: 10,
+      motorId: 10,
       merk: 'BMW',
       model: 'R 1250 GS Adventure',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -97,7 +97,7 @@ module.exports = {
       rating: 4,
       },
       {
-      motor_id: 11,
+      motorId: 11,
       merk: 'BMW',
       model: 'R 1250 RT',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -106,7 +106,7 @@ module.exports = {
       rating: 4,
       },
       {
-      motor_id: 12,
+      motorId: 12,
       merk: 'BMW',
       model: 'C400X',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -115,7 +115,7 @@ module.exports = {
       rating: 3,
       },
       { // Honda
-      motor_id: 13,
+      motorId: 13,
       merk: 'Honda',
       model: 'CBR1000RR-R Fireblade SP',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -124,7 +124,7 @@ module.exports = {
       rating: 4,
       },
       {
-      motor_id: 14,
+      motorId: 14,
       merk: 'Honda',
       model: 'Africa Twin',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -133,7 +133,7 @@ module.exports = {
       rating: 5,
       },
       {
-      motor_id: 15,
+      motorId: 15,
       merk: 'Honda',
       model: 'CBR650R',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -142,7 +142,7 @@ module.exports = {
       rating: 4,
       },
       {
-      motor_id: 16,
+      motorId: 16,
       merk: 'Honda',
       model: 'Goldwing',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -151,7 +151,7 @@ module.exports = {
       rating: 5,
       },
       {
-      motor_id: 17,
+      motorId: 17,
       merk: 'Honda',
       model: 'CB500X',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -160,7 +160,7 @@ module.exports = {
       rating: 3,
       },
       {
-      motor_id: 18,
+      motorId: 18,
       merk: 'Honda',
       model: 'Rebel 500',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -169,7 +169,7 @@ module.exports = {
       rating: 4,
       },
       { // Yamaha
-      motor_id: 19,
+      motorId: 19,
       merk: 'Yamaha',
       model: 'YZF-R1M',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -178,7 +178,7 @@ module.exports = {
       rating: 4,
       },
       {
-      motor_id: 20,
+      motorId: 20,
       merk: 'Yamaha',
       model: 'YZF-R6',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -187,7 +187,7 @@ module.exports = {
       rating: 3,
       },
       {
-      motor_id: 21,
+      motorId: 21,
       merk: 'Yamaha',
       model: 'MT-09 SP',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -196,7 +196,7 @@ module.exports = {
       rating: 5,
       },
       {
-      motor_id: 22,
+      motorId: 22,
       merk: 'Yamaha',
       model: 'MT-07',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -205,7 +205,7 @@ module.exports = {
       rating: 4,
       },
       {
-      motor_id: 23,
+      motorId: 23,
       merk: 'Yamaha',
       model: 'Tracer 700',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -214,7 +214,7 @@ module.exports = {
       rating: 4,
       },
       {
-      motor_id: 24,
+      motorId: 24,
       merk: 'Yamaha',
       model: 'XSR700',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -223,7 +223,7 @@ module.exports = {
       rating: 4,
       },
       { // Kawasaki
-      motor_id: 25,
+      motorId: 25,
       merk: 'Kawasaki',
       model: 'Ninja H2R',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -232,7 +232,7 @@ module.exports = {
       rating: 4,
       },
       {
-      motor_id: 26,
+      motorId: 26,
       merk: 'Kawasaki',
       model: 'Ninja 1000SX',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -241,7 +241,7 @@ module.exports = {
       rating: 5,
       },
       {
-      motor_id: 27,
+      motorId: 27,
       merk: 'Kawasaki',
       model: 'Z900',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -250,7 +250,7 @@ module.exports = {
       rating: 4,
       },
       {
-      motor_id: 28,
+      motorId: 28,
       merk: 'Kawasaki',
       model: 'Versys 1000 SE',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -259,7 +259,7 @@ module.exports = {
       rating: 4,
       },
       {
-      motor_id: 29,
+      motorId: 29,
       merk: 'Kawasaki',
       model: 'Z650',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -268,7 +268,7 @@ module.exports = {
       rating: 3,
       },
       {
-      motor_id: 30,
+      motorId: 30,
       merk: 'Kawasaki',
       model: 'Ninja 650',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -277,7 +277,7 @@ module.exports = {
       rating: 4,
       },
       { // Harley Davidson
-      motor_id: 31,
+      motorId: 31,
       merk: 'Harley Davidson',
       model: 'Street Bob',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -286,7 +286,7 @@ module.exports = {
       rating: 4,
       },
       {
-      motor_id: 32,
+      motorId: 32,
       merk: 'Harley Davidson',
       model: 'Fat Bob',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -295,7 +295,7 @@ module.exports = {
       rating: 5,
       },
       {
-      motor_id: 33,
+      motorId: 33,
       merk: 'Harley Davidson',
       model: 'Road King',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -304,7 +304,7 @@ module.exports = {
       rating: 4,
       },
       {
-      motor_id: 34,
+      motorId: 34,
       merk: 'Harley Davidson',
       model: 'Road Glide',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -313,7 +313,7 @@ module.exports = {
       rating: 4,
       },
       {
-      motor_id: 35,
+      motorId: 35,
       merk: 'Harley Davidson',
       model: 'Ultra Limited',
       datum: new Date(2021, 4, 10, 10, 0),
@@ -322,7 +322,7 @@ module.exports = {
       rating: 4,
       },
       {
-      motor_id: 36,
+      motorId: 36,
       merk: 'Harley Davidson',
       model: 'CVO Limited',
       datum: new Date(2021, 4, 10, 10, 0),

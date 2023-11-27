@@ -3,9 +3,8 @@ const { tables } = require('..');
 module.exports = {
   up: async (knex) => {
       await knex.schema.createTable(tables.huurlocatie, (table) => {
-      table.increments('id'); 
-
-      table.integer('huurlocatie_id').unsigned().notNullable();
+      // table.increments('id');
+      table.increments('huurlocatieId').primary();
 
       table.string('naam', 255).notNullable();
 
@@ -15,10 +14,11 @@ module.exports = {
 
       table.integer('postcode').notNullable();
 
-      table.unique('huurlocatie_id', 'idx_huurlocatie_id_unique'); 
+      table.string('stad', 255).notNullable();
+
     });
   },
-  down: (knex) => {
-    return knex.schema.dropTableIfExists(tables.huurlocatie);
+  down: async (knex) => {
+    await knex.schema.dropTableIfExists(tables.huurlocatie);
   },
 };

@@ -13,57 +13,39 @@ const getAll = async () => {
 
 const getById = async (id) => {
   const huurlocatie = await huurlocatieRepository.findById(id);
-
   if (!huurlocatie) {
     throw ServiceError.notFound(`Geen huurlocatie gevonden met id: ${id}`);
   }
   return huurlocatie;
 };
 
-const create = async ({ locatie_id, naam, straat, huisnummer, postcode }) => {
-  const existingHuurLocatie = await huurlocatieRepository.getById(naam);
-
-  if (existingHuurLocatie) {
-    throw new ServiceError(`Een huurlocatie met id ${naam} bestaat al.`);
-  }
+const create = async (huurlocatie) => {
+  const id = await huurlocatieRepository.create(huurlocatie);
+  return getById(id);
+}
+const updateById = async (id, huurlocatie) => {
   try {
-    const id = await huurlocatieRepository.create({
-      locatie_id,
-      naam,
-      straat,
-      huisnummer,
-      postcode,
-    });
+    const existingHuurlocatie = await huurlocatieRepository.update(id, huurlocatie);
+
+    if (!existingHuurlocatie) {
+      throw ServiceError.notFound(`No huurlocatie with id ${id} exists`, { id });
+    }
+
     return getById(id);
   } catch (error) {
-    handleDBError(error);
-    }
-  };
-
-  const updateById = async (id, { locatie_id,naam, straat, huisnummer, postcode }) => {
-    const existingHuurLocatie = await huurlocatieRepository.getById(id);
-  
-    if (!existingHuurLocatie) {
-      throw ServiceError.notFound(`Geen huurlocatie gevonden met id: ${id}`);
-    }
-  
-    await huurlocatieRepository.updateById(id, {
-      locatie_id,
-      naam,
-      straat,
-      huisnummer,
-      postcode,
-    });
-  
-    return getById(id);
-  };
-  
+    throw handleDBError(error);
+  }
+};
 
 const deleteById = async (id) => {
-  const deletedHuurlocatie = await huurlocatieRepository.deleteById(id);
-  
-  if (!deletedHuurlocatie) {
-    throw ServiceError.notFound(`Geen huurlocatie gevonden met id: ${id}`);
+  try {
+    const deleted = await huurlocatieRepository.deleteById(id);
+
+    if (!deleted) {
+      throw ServiceError.notFound(`No huurlocatie with id ${id} exists`, { id });
+    }
+  } catch (error) {
+    throw handleDBError(error);
   }
 };
 

@@ -19,51 +19,37 @@ const getById = async (id) => {
   return betaling;
 };
 
-const create = async ({ betaling_id, betalingsmethode, betaalstatus, bedrag}) => {
-  const existingBetaling = await betalingRepository.getById(betaling_id);
+const create = async (betaling) => {
+  const id = await betalingRepository.create(betaling);
+  return getById(id);
+};
 
-  if (existingBetaling) {
-    throw new ServiceError(`Een betaling met id ${betaling_id} bestaat al.`);
-  }
+const updateById = async (id, betaling) => {
   try {
-    const id = await betalingRepository.create({
-      betaling_id,
-      betalingsmethode,
-      betaalstatus,
-      bedrag,
-    });
+    const existingBetaling = await betalingRepository.update(id, betaling);
+
+    if (!existingBetaling) {
+      throw ServiceError.notFound(`No betaling with id ${id} exists`, { id });
+    }
+
     return getById(id);
   } catch (error) {
-    handleDBError(error);
-    }
-  };
-
-  const updateById = async (id, { betaling_id, betalingsmethode, betaalstatus, bedrag }) => {
-    const existingBetaling = await betalingRepository.getById(id);
-  
-    if (!existingBetaling) {
-      throw ServiceError.notFound(`Geen betaling gevonden met id: ${id}`);
-    }
-  
-    await betalingRepository.updateById(id, {
-      betaling_id,
-      betalingsmethode,
-      betaalstatus,
-      bedrag,
-    });
-  
-    return getById(id);
-  };
+    throw handleDBError(error);
+  }
+};
   
 
 const deleteById = async (id) => {
-  const deletedBetaling = await betalingRepository.deleteById(id);
-  
-  if (!deletedBetaling) {
-    throw ServiceError.notFound(`Geen betaling gevonden met id: ${id}`);
+  try {
+    const deleted = await betalingRepository.deleteById(id);
+
+    if (!deleted) {
+      throw ServiceError.notFound(`No betaling with id ${id} exists`, { id });
+    }
+  } catch (error) {
+    throw handleDBError(error);
   }
 };
-
 module.exports = {
   getAll,
   getById,

@@ -8,11 +8,10 @@ const bodyParser = require('koa-bodyparser');
 const koaCors = require('@koa/cors');
 const CORS_ORIGINS = config.get('cors.origins');
 const CORS_MAX_AGE = config.get('cors.maxAge');
-// ...
+
 
 module.exports = function installMiddleware(app) {
-  app.use(koaHelmet());
-
+ app.use(koaHelmet());
   app.use(
     koaCors({
       origin: (ctx) => {
@@ -27,7 +26,9 @@ module.exports = function installMiddleware(app) {
     })
   );
 
-app.use(async (ctx, next) => {
+  app.use(bodyParser());
+
+  app.use(async (ctx, next) => {
   getLogger().info(`${emoji.get('fast_forward')} ${ctx.method} ${ctx.url}`); 
 
 
@@ -57,7 +58,7 @@ app.use(async (ctx, next) => {
     throw error;
   }
 
-  app.use(bodyParser());
+
 
   app.use(async (ctx, next) => {
     try {
@@ -85,7 +86,7 @@ app.use(async (ctx, next) => {
       ctx.status = statusCode; 
       ctx.body = errorBody; 
     }
-  });
+  }); 
   
   // Handle 404 not found with uniform response
   app.use(async (ctx, next) => {

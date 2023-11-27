@@ -2,7 +2,6 @@ const supertest = require('supertest');
 const createServer = require('../../src/createServer'); 
 const { getKnex } = require('../../src/data'); 
 
-
 describe('Motors', () => {
   let server;
   let request;

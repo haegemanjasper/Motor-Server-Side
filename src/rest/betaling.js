@@ -19,10 +19,12 @@ const createBetaling = async (ctx) => {
 
 createBetaling.validationScheme = {
   body: {
-    betaling_id: Joi.number().positive().required(),
-    betalingsmethode: Joi.string().max(255).required(),
-    betaalstatus: Joi.string().max(50).required(),
+    betalingId: Joi.number().positive().required(),
+    klantId: Joi.number().positive().required(),
+    huurlocatieId: Joi.number().positive().required(),
     bedrag: Joi.number().positive().required(),
+    betaalmethode: Joi.string().max(255).required(),
+    datum: Joi.date().required(),
   },
 };
 
@@ -39,15 +41,19 @@ getBetalingById.validationScheme = {
 const updateBetaling = async (ctx) => {
   ctx.body = await betalingService.updateById(Number(ctx.params.id), {
     ...ctx.request.body,
+    huurlocatie: ctx.request.body.huurlocatie,
+    klant: ctx.request.body.klant,
   });
 };
 
 updateBetaling.validationScheme = {
   body: {
-    betaling_id: Joi.number().positive().required(),
-    betalingsmethode: Joi.string().max(255).required(),
-    betaalstatus: Joi.string().max(50).required(),
+    betalingId: Joi.number().positive().required(),
+    klantId: Joi.number().positive().required(),
+    huurlocatieId: Joi.number().positive().required(),
     bedrag: Joi.number().positive().required(),
+    betaalmethode: Joi.string().max(255).required(),
+    datum: Joi.date().required(),
   },
   params: {
     id: Joi.number().positive().required(),

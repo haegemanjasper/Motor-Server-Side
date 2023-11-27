@@ -1,60 +1,35 @@
-const { getLogger } = require('../src/core/logging');
 const { tables, getKnex } = require('../src/data/index');
+const { getLogger } = require('../src/core/logging');
 
-const SELECT_COLUMNS = [
-  `${tables.klant}.klant_id as id`,
-  `${tables.klant}.voornaam`,
-  `${tables.klant}.achternaam`,
-  `${tables.klant}.straat`,
-  `${tables.klant}.huisnummer`,
-  `${tables.klant}.postcode`,
-];
-
-const formatKlant = (klant) => {
-  return {
-    id: klant.id,
-    voornaam: klant.voornaam,
-    achternaam: klant.achternaam,
-    straat: klant.straat,
-    huisnummer: klant.huisnummer,
-    postcode: klant.postcode,
-  };
+const findAll = () => {
+  getLogger().info('Finding all klanten');
+  return getKnex()(tables.klant)
+    .select()
+    .orderBy('klantId', 'ASC');
 };
 
-const findById = async (id) => {
-  const klant = await getKnex()(tables.klant)
-    .where(`${tables.klant}.klant_id`, id)
-    .first(SELECT_COLUMNS);
-
-  return klant && formatKlant(klant);
+const findCount = () => {
+  return getKnex()(tables.klant)
+    .count('id as count');
 };
 
-const findCount = async () => {
-  const count = await getKnex()(tables.klant)
-    .count('klant_id as count')
-    .first();
-  return count && count.count;
+
+const findById = (klantId) => {
+  getLogger().info(`Finding klant with id ${klantId}`);
+  return getKnex()(tables.klant).where('klantId', klantId).first();
 };
 
-const findAll = async () => {
-  const klanten = await getKnex()(tables.klant)
-    .select(SELECT_COLUMNS)
-    .orderBy('id', 'ASC');
-
-  return klanten.map(formatKlant);
-};
-
-const create = async ({ klant_id, voornaam, achternaam, straat, huisnummer, postcode }) => {
+const create = async ({ klantId, naam, voornaam, straat, huisnummer, postcode, stad }) => {
   try {
     const [id] = await getKnex()(tables.klant).insert({
-      klant_id,
+      klantId,
+      naam,
       voornaam,
-      achternaam,
       straat,
       huisnummer,
       postcode,
+      stad,
     });
-
     return id;
   } catch (error) {
     getLogger().error('Error in create', {
@@ -64,12 +39,9 @@ const create = async ({ klant_id, voornaam, achternaam, straat, huisnummer, post
   }
 };
 
-const updateById = async (id, { voornaam, achternaam, straat, huisnummer, postcode }) => {
+const updateById = async (id, { klantId, naam, voornaam, straat, huisnummer, postcode, stad }) => {
   try {
-    await getKnex()(tables.klant)
-      .update({ voornaam, achternaam, straat, huisnummer, postcode })
-      .where(`${tables.klant}.klant_id`, id);
-
+    await getKnex()(tables.klant).update({ klantId, naam, voornaam, straat, huisnummer, postcode, stad }).where('klantId', id);
     return id;
   } catch (error) {
     getLogger().error('Error in updateById', {
@@ -81,10 +53,7 @@ const updateById = async (id, { voornaam, achternaam, straat, huisnummer, postco
 
 const deleteById = async (id) => {
   try {
-    const rowsAffected = await getKnex()(tables.klant)
-      .where(`${tables.klant}.klant_id`, id)
-      .delete();
-
+    const rowsAffected = await getKnex()(tables.klant).delete().where('klantId', id);
     return rowsAffected > 0;
   } catch (error) {
     getLogger().error('Error in deleteById', {
@@ -95,10 +64,10 @@ const deleteById = async (id) => {
 };
 
 module.exports = {
-  findById,
   findAll,
   findCount,
-  create,
-  updateById,
+  findById,
   deleteById,
+  updateById,
+  create,
 };

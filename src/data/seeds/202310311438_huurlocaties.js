@@ -7,26 +7,28 @@ module.exports = {
 
     await knex(tables.huurlocatie).insert([
       {  
-        huurlocatie_id: 1,
+        huurlocatieId: 1,
         naam: 'MotoHaven',
         straat: 'Sluipweg',
         huisnummer: 31,
         postcode: 9000,
-        
+        stad: 'Gent',
       },
       { 
-        huurlocatie_id: 2,
+        huurlocatieId: 2,
         naam: 'SpeedCruisers Rentals',
         straat: 'Spanweg',
         huisnummer: 75,
         postcode: 9200,
+        stad: 'Dendermonde',
       },
       { 
-        huurlocatie_id: 3,
+        huurlocatieId: 3,
         naam: 'RideRevolution Motors',
         straat: 'Steenakkerwegel',
         huisnummer: 27,
         postcode: 9300,
+        stad: 'Aalst',
       },
 
     ]);

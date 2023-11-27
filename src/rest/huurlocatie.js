@@ -19,10 +19,12 @@ const createHuurlocatie = async (ctx) => {
 
 createHuurlocatie.validationScheme = {
   body: {
-    huurlocatie_id: Joi.number().positive().required(),
+    huurlocatieId: Joi.number().positive().required(),
+    naam: Joi.string().max(255).required(),
     straat: Joi.string().max(255).required(),
     huisnummer: Joi.number().positive().required(),
     postcode: Joi.number().positive().required(),
+    stad: Joi.string().max(255).required(),
   },
 };
 
@@ -44,10 +46,12 @@ const updateHuurlocatie = async (ctx) => {
 
 updateHuurlocatie.validationScheme = {
   body: {
-    huurlocatie_id: Joi.number().positive().required(),
+    huurlocatieId: Joi.number().positive().required(),
+    naam: Joi.string().max(255).required(),
     straat: Joi.string().max(255).required(),
     huisnummer: Joi.number().positive().required(),
     postcode: Joi.number().positive().required(),
+    stad: Joi.string().max(255).required(),
   },
   params: {
     id: Joi.number().positive().required(),

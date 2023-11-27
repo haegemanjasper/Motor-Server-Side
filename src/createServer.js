@@ -26,7 +26,6 @@ module.exports = async function createServer() { // 👈 1
 
   installRest(app);
 
-  // 👇 2
   return {
     getApp() {
       return app;

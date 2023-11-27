@@ -46,7 +46,6 @@ async function initializeData() {
 
 
   try {
-    await knexInstance.raw('SELECT 1+1 AS result');
     await knexInstance.raw(`CREATE DATABASE IF NOT EXISTS ${DATABASE_NAME}`);
 
     await knexInstance.destroy();
@@ -62,20 +61,17 @@ async function initializeData() {
   // run migrations
 
   try {
-    await knexInstance.raw('SET FOREIGN_KEY_CHECKS = 0');
-
     await knexInstance.migrate.latest();
   } catch (error) {
     logger.error('Error while migrating the database', { error });
 
-    throw new Error('Migrations failed, check the logs!');
+    logger.info('Migrations failed, check the logs!');
   }
 
   if (isDevelopment) {
     logger.info('Attempting to seed the database')
     try {
       await knexInstance.seed.run();
-      await knexInstance.raw('SET FOREIGN_KEY_CHECKS = 1');
     } catch (error) {
       logger.error('Error while seeding the database', { error });
     }
@@ -105,15 +101,14 @@ async function shutdownData() {
 
 const tables = Object.freeze({
   huurlocatie: 'huurlocatie',
+  motor: 'motor',
   klant: 'klant',
   betaling: 'betaling',
-  motor: 'motor',
 });
 
 module.exports = {
   tables,
   initializeData, 
   getKnex, 
-  
   shutdownData,
 };

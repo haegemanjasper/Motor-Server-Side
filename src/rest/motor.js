@@ -21,12 +21,12 @@ const createMotor = async (ctx) => {
 
 createMotor.validationScheme = {
   body: {
-    motor_id: Joi.number().positive().required(),
-    datum: Joi.date().required(),
-    beschikbaarheid: Joi.boolean().required(),
-    huurprijs_per_dag: Joi.number().positive().required(),
+    motorId: Joi.number().positive().required(),
     merk: Joi.string().max(50).required(),
     model: Joi.string().max(50).required(),
+    datum: Joi.date().required(),
+    huurprijs_per_dag: Joi.number().positive().required(),
+    beschikbaarheid: Joi.boolean().required(),
     rating: Joi.number().positive().required(),
   },
 };
@@ -44,19 +44,17 @@ getMotorById.validationScheme = {
 const updateMotor = async (ctx) => {
   ctx.body = await motorService.updateById(Number(ctx.params.id), {
     ...ctx.request.body,
-    huur_locatie: ctx.request.body.huur_locatie,
-    klant: ctx.request.body.klant,
   });
 };
 
 updateMotor.validationScheme = {
   body: {
-    motor_id: Joi.number().positive().required(),
-    datum: Joi.date().required(),
-    beschikbaarheid: Joi.boolean().required(),
-    huurprijs_per_dag: Joi.number().positive().required(),
+    motorId: Joi.number().positive().required(),
     merk: Joi.string().max(50).required(),
     model: Joi.string().max(50).required(),
+    datum: Joi.date().required(),
+    huurprijs_per_dag: Joi.number().positive().required(),
+    beschikbaarheid: Joi.boolean().required(),
     rating: Joi.number().positive().required(),
   },
   params: {
