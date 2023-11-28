@@ -14,18 +14,20 @@ const getAll = async () => {
 const getById = async (id) => {
   const huurlocatie = await huurlocatieRepository.findById(id);
   if (!huurlocatie) {
-    throw ServiceError.notFound(`Geen huurlocatie gevonden met id: ${id}`);
+    throw ServiceError.notFound(`No huurlocatie with id ${id} exists`, { id });
   }
   return huurlocatie;
 };
 
-const create = async (huurlocatie) => {
-  const id = await huurlocatieRepository.create(huurlocatie);
+const create = async ({ naam, straat, huisnummer, postcode, stad }) => {
+  const id = await huurlocatieRepository.create({ naam, straat, huisnummer, postcode, stad });
   return getById(id);
 }
-const updateById = async (id, huurlocatie) => {
+
+const updateById = async (id, { naam, straat, huisnummer, postcode, stad }) => {
   try {
-    const existingHuurlocatie = await huurlocatieRepository.update(id, huurlocatie);
+    const existingHuurlocatie = await huurlocatieRepository
+    .updateById(id, { naam, straat, huisnummer, postcode, stad });
 
     if (!existingHuurlocatie) {
       throw ServiceError.notFound(`No huurlocatie with id ${id} exists`, { id });

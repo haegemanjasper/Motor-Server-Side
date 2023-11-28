@@ -4,33 +4,25 @@ const klantService = require('../service/klant');
 const validate = require('../core/validation');
 
 const getAllKlanten = async (ctx) => {
-  ctx.body = await klantService.getAll();
+  const klanten = await klantService.getAll();
+  ctx.body = klanten;
 };
 
 getAllKlanten.validationScheme = null;
 
-const createKlant = async (ctx) => {
-  const newKlant = await klantService.create({
-    ...ctx.request.body,
-  });
-  ctx.status = 201;
-  ctx.body = newKlant;
+/*
+const register = async (ctx) => {
+  const klant = await klantService.register(ctx.request.body);
+  ctx.status = 200;
+  ctx.body = klant;
 };
 
-createKlant.validationScheme = {
-  body: {
-    klantId: Joi.number().positive().required(),
-    naam: Joi.string().max(255).required(),
-    voornaam: Joi.string().max(255).required(),
-    straat: Joi.string().max(255).required(),
-    huisnummer: Joi.number().positive().required(),
-    postcode: Joi.number().positive().required(),
-    stad: Joi.string().max(255).required(),
-  },
-};
+*/
 
 const getKlantById = async (ctx) => {
-  ctx.body = await klantService.getById(Number(ctx.params.id));
+  const klant = await klantService.getById(ctx.params.id);
+  ctx.status = 200;
+  ctx.body = klant;
 };
 
 getKlantById.validationScheme = {
@@ -39,17 +31,18 @@ getKlantById.validationScheme = {
   },
 };
 
-const updateKlant = async (ctx) => {
-  ctx.body = await klantService.updateById(Number(ctx.params.id), {
-    ...ctx.request.body,
-  });
+
+const updateKlantById = async (ctx) => {
+  const klant = await klantService.updateById(ctx.params.id, ctx.request.body);
+  ctx.status = 200;
+  ctx.body = klant;
 };
 
-updateKlant.validationScheme = {
+updateKlantById.validationScheme = {
   body: {
-    klantId: Joi.number().positive().required(),
     naam: Joi.string().max(255).required(),
     voornaam: Joi.string().max(255).required(),
+    email: Joi.string().max(255).required(),
     straat: Joi.string().max(255).required(),
     huisnummer: Joi.number().positive().required(),
     postcode: Joi.number().positive().required(),
@@ -60,27 +53,27 @@ updateKlant.validationScheme = {
   },
 };
 
-const deleteKlant = async (ctx) => {
+const deleteKlantById = async (ctx) => {
   await klantService.deleteById(ctx.params.id);
   ctx.status = 204;
 };
 
-deleteKlant.validationScheme = {
+deleteKlantById.validationScheme = {
   params: {
     id: Joi.number().positive().required(),
   },
 };
 
-module.exports = (app) => {
+module.exports = function installKlantRoutes(app) {
   const router = new Router({
     prefix: '/klanten',
   });
 
   router.get('/', validate(getAllKlanten.validationScheme), getAllKlanten);
-  router.post('/', validate(createKlant.validationScheme), createKlant);
   router.get('/:id', validate(getKlantById.validationScheme), getKlantById);
-  router.put('/:id', validate(updateKlant.validationScheme), updateKlant);
-  router.delete('/:id', validate(deleteKlant.validationScheme), deleteKlant);
+  //router.post('/register', validate(register.validationScheme), register);
+  router.put('/:id', validate(updateKlantById.validationScheme), updateKlantById);
+  router.delete('/:id', validate(deleteKlantById.validationScheme), deleteKlantById);
 
   app.use(router.routes()).use(router.allowedMethods());
 };

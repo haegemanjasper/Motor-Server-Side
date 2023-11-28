@@ -7,29 +7,29 @@ module.exports = {
 
     await knex(tables.betaling).insert([
       {  
-        betalingId: 1,
-        klantId: 1,
-        huurlocatieId: 1,
+        id: 1,
+        klant_id: 1,
+        huurlocatie_id: 1,
         bedrag: 50,
         betaalmethode: 'bancontact',
-        datum: '2023-11-27',
+        datum: new Date(2023, 11, 10, 23, 0),
         
       },
       { 
-        betalingId: 2,
-        klantId: 2,
-        huurlocatieId: 2,
+        id: 2,
+        klant_id: 2,
+        huurlocatie_id: 2,
         bedrag: 100,
         betaalmethode: 'paypal',
-        datum: '2023-11-27',
+        datum: new Date(2023, 11, 11, 23, 0),
       },
       { 
-        betalingId: 3,
-        klantId: 3,
-        huurlocatieId: 3,
+        id: 3,
+        klant_id: 3,
+        huurlocatie_id: 3,
         bedrag: 150,
         betaalmethode: 'bancontact',
-        datum: '2023-11-30',
+        datum: new Date(2021, 11, 12, 23, 0),
       },
 
     ]);

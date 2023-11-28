@@ -1,13 +1,12 @@
 const { tables } = require('..');
 
 module.exports = {
-
   seed: async (knex) => {
     await knex(tables.huurlocatie).delete();
 
     await knex(tables.huurlocatie).insert([
       {  
-        huurlocatieId: 1,
+        id: 1,
         naam: 'MotoHaven',
         straat: 'Sluipweg',
         huisnummer: 31,
@@ -15,7 +14,7 @@ module.exports = {
         stad: 'Gent',
       },
       { 
-        huurlocatieId: 2,
+        id: 2,
         naam: 'SpeedCruisers Rentals',
         straat: 'Spanweg',
         huisnummer: 75,
@@ -23,7 +22,7 @@ module.exports = {
         stad: 'Dendermonde',
       },
       { 
-        huurlocatieId: 3,
+        id: 3,
         naam: 'RideRevolution Motors',
         straat: 'Steenakkerwegel',
         huisnummer: 27,

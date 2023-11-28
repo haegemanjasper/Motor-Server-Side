@@ -3,8 +3,7 @@ const { tables } = require('..');
 module.exports = {
   up: async (knex) => {
       await knex.schema.createTable(tables.huurlocatie, (table) => {
-      // table.increments('id');
-      table.increments('huurlocatieId').primary();
+      table.increments('id').primary();
 
       table.string('naam', 255).notNullable();
 

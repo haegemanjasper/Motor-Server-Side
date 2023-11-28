@@ -2,10 +2,8 @@ const { tables } = require('..');
 
 module.exports = {
   up: async (knex) => {
-    await knex.schema.createTable(tables.motor, (table) => {
-     // table.increments('id');
-    
-      table.increments('motorId').primary();
+    await knex.schema.createTable(tables.motor, (table) => {    
+      table.increments('id').primary();
 
       table.string('merk', 50).notNullable();
 

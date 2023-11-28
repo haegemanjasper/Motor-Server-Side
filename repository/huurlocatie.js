@@ -3,37 +3,28 @@ const { getLogger } = require('../src/core/logging');
 
 const findAll = () => {
   getLogger().info('Finding all huurlocaties');
-  return getKnex()(tables.huurlocatie)
-    .select()
-    .orderBy('huurlocatieId', 'ASC');
-};
-
-const findCount = () => {
-  return getKnex()(tables.huurlocatie)
-    .count('id as count');
+  return getKnex()(tables.huurlocatie).select().orderBy('naam', 'ASC');
 };
 
 const findByName = (naam) => {
-  return getKnex()(tables.huurlocatie)
-    .where('naam', naam)
-    .first();
+  return getKnex()(tables.huurlocatie).where('naam', naam).first();
 };
 
-const findById = (huurlocatieId) => {
-  getLogger().info(`Finding huurlocatie with id ${huurlocatieId}`);
-  return getKnex()(tables.huurlocatie).where('huurlocatieId', huurlocatieId).first();
+const findById = (id) => {
+  getLogger().info('Querying huurlocatie by id', { id });
+  return getKnex()(tables.huurlocatie).where('id', id).first();
 };
 
-const create = async ({ huurlocatieId, naam, straat, huisnummer, postcode, stad }) => {
+const create = async ({ naam, straat, huisnummer, postcode, stad }) => {
   try {
     const [id] = await getKnex()(tables.huurlocatie).insert({
-      huurlocatieId,
       naam,
       straat,
       huisnummer,
       postcode,
       stad,
     });
+
     return id;
   } catch (error) {
     getLogger().error('Error in create', {
@@ -43,9 +34,18 @@ const create = async ({ huurlocatieId, naam, straat, huisnummer, postcode, stad 
   }
 };
 
-const updateById = async (id, { huurlocatieId, naam, straat, huisnummer, postcode, stad }) => {
+const updateById = async (id, {  naam, straat, huisnummer, postcode, stad }) => {
   try {
-    await getKnex()(tables.huurlocatie).update({ huurlocatieId, naam, straat, huisnummer, postcode, stad }).where('huurlocatieId', id);
+    await getKnex()(tables.huurlocatie)
+    .update({  
+      naam,
+      straat,
+      huisnummer,
+      postcode,
+      stad 
+    })
+    .where('id', id);
+
     return id;
   } catch (error) {
     getLogger().error('Error in updateById', {
@@ -57,7 +57,8 @@ const updateById = async (id, { huurlocatieId, naam, straat, huisnummer, postcod
 
 const deleteById = async (id) => {
   try {
-    const rowsAffected = await getKnex()(tables.huurlocatie).delete().where('huurlocatieId', id);
+    const rowsAffected = await getKnex()(tables.huurlocatie).delete().where('id', id);
+
     return rowsAffected > 0;
   } catch (error) {
     getLogger().error('Error in deleteById', {
@@ -69,7 +70,6 @@ const deleteById = async (id) => {
 
 module.exports = {
   findAll,
-  findCount,
   findByName,
   findById,
   deleteById,

@@ -1,6 +1,7 @@
 const ServiceError = require('../core/serviceError'); 
 const handleDBError = require('./_handleDBError'); 
 const betalingRepository = require('../../repository/betaling');
+const huurlocatieService = require('./huurlocatie');
 
 const getAll = async () => {
   const items = await betalingRepository.findAll();
@@ -14,23 +15,43 @@ const getById = async (id) => {
   const betaling = await betalingRepository.findById(id);
 
   if (!betaling) {
-    throw ServiceError.notFound(`Geen betaling gevonden met id: ${id}`);
+    throw ServiceError.notFound(`No betaling with id ${id} exists`, { id });
   }
   return betaling;
 };
 
-const create = async (betaling) => {
-  const id = await betalingRepository.create(betaling);
+const create = async ( { bedrag, betaalmethode, datum, huurlocatieId, klantId }) => {
+  const existingHuurlocatie = await huurlocatieService.getById(huurlocatieId);
+  
+  if (!existingHuurlocatie) {
+    throw ServiceError.notFound(`There is no huurlocatie with id ${id}.`, { id });
+};
+
+  const id = await betalingRepository.create({
+    bedrag,
+    betaalmethode,
+    datum,
+    huurlocatieId,
+    klantId,
+  });
   return getById(id);
 };
 
-const updateById = async (id, betaling) => {
+const updateById = async (id, { bedrag, betaalmethode, datum, huurlocatieId, klantId }) => {
   try {
-    const existingBetaling = await betalingRepository.update(id, betaling);
+    const existingHuurlocatie = await huurlocatieService.getById(huurlocatieId);
 
-    if (!existingBetaling) {
-      throw ServiceError.notFound(`No betaling with id ${id} exists`, { id });
+    if (!existingHuurlocatie) {
+      throw ServiceError.notFound(`There is no huurlocatie with id ${id}.`, { id });
     }
+
+    await betalingRepository.updateById(id, {
+      bedrag,
+      betaalmethode,
+      datum,
+      huurlocatieId,
+      klantId,
+    });
 
     return getById(id);
   } catch (error) {

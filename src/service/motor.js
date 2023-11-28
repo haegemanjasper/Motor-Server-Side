@@ -14,24 +14,24 @@ const getById = async (id) => {
   const motor = await motorRepository.findById(id);
 
   if (!motor) {
-    throw ServiceError.notFound (`Geen motor gevonden met id: ${id}`);
+    throw ServiceError.notFound(`No motor with id ${id} exists`, { id });
   }
 
   return motor;
 };
 
 //image toevoegen?
-const create = async (motor) => {
-  const id = await motorRepository.create(motor);
+const create = async ({ merk, model, datum, huurprijs_per_dag, beschikbaarheid, rating }) => {
+  const id = await motorRepository.create({ merk, model, datum, huurprijs_per_dag, beschikbaarheid, rating });
   return getById(id);
   }
 
 //image toevoegen?
-const updateById = async (id, motor) => {
+const updateById = async (id, { merk, model, datum, huurprijs_per_dag, beschikbaarheid, rating }) => {
   try {
-    const updated = await motorRepository.update(id, motor);
+    const existingMotor = await motorRepository.updateById(id, { merk, model, datum, huurprijs_per_dag, beschikbaarheid, rating });
 
-    if (!updated) {
+    if (!existingMotor) {
       throw ServiceError.notFound(`No motor with id ${id} exists`, { id });
     }
 
@@ -45,7 +45,7 @@ const deleteById = async (id) => {
   const deleted = await motorRepository.deleteById(id);
 
   if (!deleted) {
-    throw ServiceError.notFound(`Geen motor gevonden met id: ${id}`);
+    throw ServiceError.notFound(`No motor with id ${id} exists`, { id });
   }
 };
 

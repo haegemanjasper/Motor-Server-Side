@@ -19,7 +19,6 @@ const createHuurlocatie = async (ctx) => {
 
 createHuurlocatie.validationScheme = {
   body: {
-    huurlocatieId: Joi.number().positive().required(),
     naam: Joi.string().max(255).required(),
     straat: Joi.string().max(255).required(),
     huisnummer: Joi.number().positive().required(),
@@ -46,7 +45,6 @@ const updateHuurlocatie = async (ctx) => {
 
 updateHuurlocatie.validationScheme = {
   body: {
-    huurlocatieId: Joi.number().positive().required(),
     naam: Joi.string().max(255).required(),
     straat: Joi.string().max(255).required(),
     huisnummer: Joi.number().positive().required(),

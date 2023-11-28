@@ -2,29 +2,28 @@ const { tables, getKnex } = require('../src/data/index');
 const { getLogger } = require('../src/core/logging');
 
 const findAll = () => {
-  getLogger().info('Finding all klanten');
-  return getKnex()(tables.klant)
-    .select()
-    .orderBy('klantId', 'ASC');
+  return getKnex()(tables.klant).select().orderBy('naam', 'ASC');
 };
 
-const findCount = () => {
-  return getKnex()(tables.klant)
-    .count('id as count');
+const findCount = async () => {
+  const [count] = await getKnex()(tables.klant).count();
+  return count['count(*)'];
 };
 
-
-const findById = (klantId) => {
-  getLogger().info(`Finding klant with id ${klantId}`);
-  return getKnex()(tables.klant).where('klantId', klantId).first();
+const findById = (id) => {
+  return getKnex()(tables.klant).where('id', id).first();
 };
 
-const create = async ({ klantId, naam, voornaam, straat, huisnummer, postcode, stad }) => {
+const findByEmail = (email) => {
+  return getKnex()(tables.klant).where('email', email).first();
+};
+
+const create = async ({ naam, voornaam, email, straat, huisnummer, postcode, stad }) => {
   try {
     const [id] = await getKnex()(tables.klant).insert({
-      klantId,
       naam,
       voornaam,
+      email,
       straat,
       huisnummer,
       postcode,
@@ -39,9 +38,19 @@ const create = async ({ klantId, naam, voornaam, straat, huisnummer, postcode, s
   }
 };
 
-const updateById = async (id, { klantId, naam, voornaam, straat, huisnummer, postcode, stad }) => {
+const updateById = async (id, { naam, voornaam, email, straat, huisnummer, postcode, stad }) => {
   try {
-    await getKnex()(tables.klant).update({ klantId, naam, voornaam, straat, huisnummer, postcode, stad }).where('klantId', id);
+    await getKnex()(tables.klant)
+    .update({
+       naam,
+       voornaam,
+       email,
+       straat, 
+       huisnummer, 
+       postcode, 
+       stad 
+      })
+      .where('id', id);
     return id;
   } catch (error) {
     getLogger().error('Error in updateById', {
@@ -53,7 +62,7 @@ const updateById = async (id, { klantId, naam, voornaam, straat, huisnummer, pos
 
 const deleteById = async (id) => {
   try {
-    const rowsAffected = await getKnex()(tables.klant).delete().where('klantId', id);
+    const rowsAffected = await getKnex()(tables.klant).delete().where('id', id);
     return rowsAffected > 0;
   } catch (error) {
     getLogger().error('Error in deleteById', {

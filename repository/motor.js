@@ -2,34 +2,28 @@ const { tables, getKnex } = require('../src/data/index');
 const { getLogger } = require('../src/core/logging');
 
 const findAll = () => {
-  getLogger().info('Finding all motors');
-  return getKnex()(tables.motor)
-    .select()
-    .orderBy('motorId', 'ASC');
+  return getKnex()(tables.motor).select().orderBy('merk', 'ASC');
 };
 
-const findCount = () => {
-  return getKnex()(tables.motor)
-    .count('id as count');
+const findCount = async () => {
+  const [count] = await getKnex()(tables.motor).count();
+  return count['count(*)'];
 };
 
 
-const findById = (motorId) => {
-  getLogger().info(`Finding motor with id ${motorId}`);
-  return getKnex()(tables.motor).where('motorId', motorId).first();
+const findById = (id) => {
+  return getKnex()(tables.motor).where('id', id).first();
 };
 
-const create = async ({ motorId, merk, model, datum, huurprijs_per_dag, beschikbaarheid, rating }) => {
+const create = async ({ merk, model, datum, huurprijs_per_dag, beschikbaarheid, rating }) => {
   try {
     const [id] = await getKnex()(tables.motor).insert({
-      motorId,
       merk,
       model,
       datum,
       huurprijs_per_dag,
       beschikbaarheid,
       rating,
-
     });
     return id;
   } catch (error) {
@@ -40,9 +34,18 @@ const create = async ({ motorId, merk, model, datum, huurprijs_per_dag, beschikb
   }
 };
 
-const updateById = async (id, { motorId, merk, model, datum, huurprijs_per_dag, beschikbaarheid, rating }) => {
+const updateById = async (id, { merk, model, datum, huurprijs_per_dag, beschikbaarheid, rating }) => {
   try {
-    await getKnex()(tables.motor).update({ motorId, merk, model, datum, huurprijs_per_dag, beschikbaarheid, rating }).where('motorId', id);
+    await getKnex()(tables.motor)
+      .update({
+        merk,
+        model,
+        datum,
+        huurprijs_per_dag,
+        beschikbaarheid,
+        rating,
+      })
+      .where('id', id);
     return id;
   } catch (error) {
     getLogger().error('Error in updateById', {
@@ -54,7 +57,7 @@ const updateById = async (id, { motorId, merk, model, datum, huurprijs_per_dag, 
 
 const deleteById = async (id) => {
   try {
-    const rowsAffected = await getKnex()(tables.motor).delete().where('motorId', id);
+    const rowsAffected = await getKnex()(tables.motor).delete().where('id', id);
     return rowsAffected > 0;
   } catch (error) {
     getLogger().error('Error in deleteById', {

@@ -1,9 +1,8 @@
-const knex = require('knex'); 
-const { getLogger } = require('../core/logging'); 
+const config = require('config');
+const knex = require('knex');
 const { join } = require('path');
 
-// start config
-const config = require('config');
+const { getLogger } = require('../core/logging');
 
 const NODE_ENV = config.get('env');
 const isDevelopment = NODE_ENV === 'development';
@@ -14,9 +13,8 @@ const DATABASE_HOST = config.get('database.host');
 const DATABASE_PORT = config.get('database.port');
 const DATABASE_USERNAME = config.get('database.username');
 const DATABASE_PASSWORD = config.get('database.password');
-// einde config
 
-let knexInstance; 
+let knexInstance;
 
 async function initializeData() {
   const logger = getLogger(); 
@@ -41,43 +39,51 @@ async function initializeData() {
         directory: join('src', 'data', 'seeds'),
     },
   };
-  // einde knex opties
-  knexInstance = knex(knexOptions); 
+ 
+  knexInstance = knex(knexOptions);
 
-
+  // Check the connection, create the database and then reconnect
   try {
+    await knexInstance.raw('SELECT 1+1 AS result');
     await knexInstance.raw(`CREATE DATABASE IF NOT EXISTS ${DATABASE_NAME}`);
 
+    // We need to update the Knex configuration and reconnect to use the created database by default
+    // USE ... would not work because a pool of connections is used
     await knexInstance.destroy();
 
     knexOptions.connection.database = DATABASE_NAME;
     knexInstance = knex(knexOptions);
     await knexInstance.raw('SELECT 1+1 AS result');
   } catch (error) {
-    logger.error(error.message, { error }); 
-    throw new Error('Could not initialize the data layer'); 
+    logger.error(error.message, { error });
+    throw new Error('Could not initialize the data layer');
   }
 
-  // run migrations
-
+  // Run migrations
   try {
     await knexInstance.migrate.latest();
   } catch (error) {
-    logger.error('Error while migrating the database', { error });
+    logger.error('Error while migrating the database', {
+      error,
+    });
 
-    logger.info('Migrations failed, check the logs!');
+    // No point in starting the server when migrations failed
+    throw new Error('Migrations failed, check the logs');
   }
 
   if (isDevelopment) {
-    logger.info('Attempting to seed the database')
     try {
       await knexInstance.seed.run();
     } catch (error) {
-      logger.error('Error while seeding the database', { error });
+      logger.error('Error while seeding database', {
+        error,
+      });
     }
   }
-  logger.info('Successfully connected to the database'); 
-  return knexInstance; 
+
+  logger.info('Succesfully connected to the database');
+
+  return knexInstance;
 }
 
 function getKnex() {
@@ -100,10 +106,10 @@ async function shutdownData() {
 }
 
 const tables = Object.freeze({
-  huurlocatie: 'huurlocatie',
-  motor: 'motor',
-  klant: 'klant',
-  betaling: 'betaling',
+  huurlocatie: 'huurlocaties',
+  motor: 'motoren',
+  klant: 'klanten',
+  betaling: 'betalingen',
 });
 
 module.exports = {

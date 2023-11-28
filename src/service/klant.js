@@ -12,8 +12,9 @@ const getAll = async () => {
 
 const getById = async (id) => {
   const klant = await klantRepository.findById(id);
+
   if (!klant) {
-    throw ServiceError.notFound(`Geen klant gevonden met id: ${id}`);
+    throw ServiceError.notFound(`No klant with id ${id} exists`, { id });
   }
   return klant;
 };
@@ -23,9 +24,20 @@ const create = async (klant) => {
   return getById(id);
 };
 
-  const updateById = async (id, klant) => {
+/*
+  const register = async ({ naam }) => {
+  const klantId = await klantRepository.create({ naam });
+
+  const klant = await klantRepository.findById(klantId);
+
+  return klant;
+};
+*/
+
+  const updateById = async (id, { naam, voornaam, email, straat, huisnummer, postcode, stad}) => {
     try {
-      const existingKlant = await klantRepository.update(id, klant);
+      const existingKlant = await klantRepository
+      .updateById(id, { naam, voornaam, email, straat, huisnummer, postcode, stad});
   
       if (!existingKlant) {
         throw ServiceError.notFound(`No klant with id ${id} exists`, { id });

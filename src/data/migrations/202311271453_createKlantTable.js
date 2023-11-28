@@ -3,13 +3,13 @@ const { tables } = require('..');
 module.exports = {
   up: async (knex) => {
     await knex.schema.createTable(tables.klant, (table) => {
-     // table.increments('id');
-
-      table.increments('klantId').primary();
+     table.increments('id').primary();
 
       table.string('naam', 255).notNullable();
 
       table.string('voornaam', 255).notNullable();
+
+      table.string('email', 255).notNullable();
 
       table.string('straat', 255).notNullable();
 
@@ -18,6 +18,8 @@ module.exports = {
       table.integer('postcode').notNullable();
       
       table.string('stad', 255).notNullable();
+
+      //table.string('roles', 255).notNullable();
     
     });
   },

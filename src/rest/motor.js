@@ -3,17 +3,15 @@ const Router = require('@koa/router');
 const motorService = require('../service/motor');
 const validate = require('../core/validation');
 
-const getAllMotor = async (ctx) => {
+const getAllMotors = async (ctx) => {
   ctx.body = await motorService.getAll();
 };
 
-getAllMotor.validationScheme = null;
+getAllMotors.validationScheme = null;
 
 const createMotor = async (ctx) => {
   const newMotor = await motorService.create({
     ...ctx.request.body,
-    huurlocatie: ctx.request.body.huurlocatie,
-    klant: ctx.request.body.klant,
   });
   ctx.status = 201;
   ctx.body = newMotor;
@@ -21,10 +19,9 @@ const createMotor = async (ctx) => {
 
 createMotor.validationScheme = {
   body: {
-    motorId: Joi.number().positive().required(),
     merk: Joi.string().max(50).required(),
     model: Joi.string().max(50).required(),
-    datum: Joi.date().required(),
+    datum: Joi.date().required(), // date of datetime?
     huurprijs_per_dag: Joi.number().positive().required(),
     beschikbaarheid: Joi.boolean().required(),
     rating: Joi.number().positive().required(),
@@ -49,10 +46,9 @@ const updateMotor = async (ctx) => {
 
 updateMotor.validationScheme = {
   body: {
-    motorId: Joi.number().positive().required(),
     merk: Joi.string().max(50).required(),
     model: Joi.string().max(50).required(),
-    datum: Joi.date().required(),
+    datum: Joi.date().required(), // date of datetime?
     huurprijs_per_dag: Joi.number().positive().required(),
     beschikbaarheid: Joi.boolean().required(),
     rating: Joi.number().positive().required(),
@@ -79,12 +75,11 @@ module.exports = (app) => {
     prefix: '/motors',
   });
 
-  router.get('/', validate(getAllMotor.validationScheme), getAllMotor);
+  router.get('/', validate(getAllMotors.validationScheme), getAllMotors);
   router.post('/', validate(createMotor.validationScheme), createMotor);
   router.get('/:id', validate(getMotorById.validationScheme), getMotorById); 
   router.put('/:id', validate(updateMotor.validationScheme), updateMotor);
   router.delete('/:id', validate(deleteMotor.validationScheme), deleteMotor);
 
-  app.use(router.routes())
-     .use(router.allowedMethods());
+  app.use(router.routes()).use(router.allowedMethods());
 };
