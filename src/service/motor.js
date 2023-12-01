@@ -1,6 +1,6 @@
-const ServiceError = require('../core/serviceError');
-const handleDBError = require('./_handleDBError');
-const motorRepository = require('../../repository/motor');
+const ServiceError = require("../core/serviceError");
+const handleDBError = require("./_handleDBError");
+const motorRepository = require("../repository/motor");
 
 const getAll = async () => {
   const items = await motorRepository.findAll();
@@ -21,15 +21,42 @@ const getById = async (id) => {
 };
 
 //image toevoegen?
-const create = async ({ merk, model, datum, huurprijs_per_dag, beschikbaarheid, rating }) => {
-  const id = await motorRepository.create({ merk, model, datum, huurprijs_per_dag, beschikbaarheid, rating });
+const create = async ({
+  merk,
+  model,
+  datum,
+  huurprijs_per_dag,
+  beschikbaarheid,
+  rating,
+  image,
+}) => {
+  const id = await motorRepository.create({
+    merk,
+    model,
+    datum,
+    huurprijs_per_dag,
+    beschikbaarheid,
+    rating,
+    image,
+  });
   return getById(id);
-  }
+};
 
 //image toevoegen?
-const updateById = async (id, { merk, model, datum, huurprijs_per_dag, beschikbaarheid, rating }) => {
+const updateById = async (
+  id,
+  { merk, model, datum, huurprijs_per_dag, beschikbaarheid, rating, image }
+) => {
   try {
-    const existingMotor = await motorRepository.updateById(id, { merk, model, datum, huurprijs_per_dag, beschikbaarheid, rating });
+    const existingMotor = await motorRepository.updateById(id, {
+      merk,
+      model,
+      datum,
+      huurprijs_per_dag,
+      beschikbaarheid,
+      rating,
+      image,
+    });
 
     if (!existingMotor) {
       throw ServiceError.notFound(`No motor with id ${id} exists`, { id });
@@ -42,10 +69,14 @@ const updateById = async (id, { merk, model, datum, huurprijs_per_dag, beschikba
 };
 
 const deleteById = async (id) => {
-  const deleted = await motorRepository.deleteById(id);
+  try {
+    const deleted = await motorRepository.deleteById(id);
 
-  if (!deleted) {
-    throw ServiceError.notFound(`No motor with id ${id} exists`, { id });
+    if (!deleted) {
+      throw ServiceError.notFound(`No motor with id ${id} exists`, { id });
+    }
+  } catch (error) {
+    throw handleDBError(error);
   }
 };
 

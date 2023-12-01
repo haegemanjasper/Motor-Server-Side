@@ -1,4 +1,4 @@
-const { generateJWT, verifyJWT } = require('./core/jwt');
+/*const { generateJWT, verifyJWT } = require('./core/jwt');
 
 function messWithPayload(jwt) {
   const [header, payload, signature] = jwt.split('.');
@@ -41,4 +41,4 @@ async function main() {
   valid = await verifyJWT(messedUpJwt);
 }
 
-main();
+main();*/

@@ -1,7 +1,7 @@
-const Joi = require('joi');
-const Router = require('@koa/router');
-const betalingService = require('../service/betaling');
-const validate = require('../core/validation');
+const Joi = require("joi");
+const Router = require("@koa/router");
+const betalingService = require("../service/betaling");
+const validate = require("../core/validation");
 
 const getAllBetalingen = async (ctx) => {
   ctx.body = await betalingService.getAll();
@@ -71,18 +71,31 @@ deleteBetaling.validationScheme = {
   params: {
     id: Joi.number().positive().required(),
   },
+  body: Joi.object({}).unknown(true),
 };
 
 module.exports = (app) => {
   const router = new Router({
-    prefix: '/betalingen',
+    prefix: "/betalingen",
   });
 
-  router.get('/', validate(getAllBetalingen.validationScheme), getAllBetalingen);
-  router.post('/', validate(createBetaling.validationScheme), createBetaling);
-  router.get('/:id', validate(getBetalingById.validationScheme), getBetalingById);
-  router.put('/:id', validate(updateBetaling.validationScheme), updateBetaling);
-  router.delete('/:id', validate(deleteBetaling.validationScheme), deleteBetaling);
+  router.get(
+    "/",
+    validate(getAllBetalingen.validationScheme),
+    getAllBetalingen
+  );
+  router.post("/", validate(createBetaling.validationScheme), createBetaling);
+  router.get(
+    "/:id",
+    validate(getBetalingById.validationScheme),
+    getBetalingById
+  );
+  router.put("/:id", validate(updateBetaling.validationScheme), updateBetaling);
+  router.delete(
+    "/:id",
+    validate(deleteBetaling.validationScheme),
+    deleteBetaling
+  );
 
   app.use(router.routes()).use(router.allowedMethods());
 };

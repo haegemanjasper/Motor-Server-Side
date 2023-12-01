@@ -1,7 +1,7 @@
-const ServiceError = require('../core/serviceError'); 
-const handleDBError = require('./_handleDBError'); 
-const betalingRepository = require('../../repository/betaling');
-const huurlocatieService = require('./huurlocatie');
+const ServiceError = require("../core/serviceError");
+const handleDBError = require("./_handleDBError");
+const betalingRepository = require("../repository/betaling");
+const huurlocatieService = require("./huurlocatie");
 
 const getAll = async () => {
   const items = await betalingRepository.findAll();
@@ -20,12 +20,20 @@ const getById = async (id) => {
   return betaling;
 };
 
-const create = async ( { bedrag, betaalmethode, datum, huurlocatieId, klantId }) => {
+const create = async ({
+  bedrag,
+  betaalmethode,
+  datum,
+  huurlocatieId,
+  klantId,
+}) => {
   const existingHuurlocatie = await huurlocatieService.getById(huurlocatieId);
-  
+
   if (!existingHuurlocatie) {
-    throw ServiceError.notFound(`There is no huurlocatie with id ${id}.`, { id });
-};
+    throw ServiceError.notFound(`There is no huurlocatie with id ${id}.`, {
+      id,
+    });
+  }
 
   const id = await betalingRepository.create({
     bedrag,
@@ -37,12 +45,17 @@ const create = async ( { bedrag, betaalmethode, datum, huurlocatieId, klantId })
   return getById(id);
 };
 
-const updateById = async (id, { bedrag, betaalmethode, datum, huurlocatieId, klantId }) => {
+const updateById = async (
+  id,
+  { bedrag, betaalmethode, datum, huurlocatieId, klantId }
+) => {
   try {
     const existingHuurlocatie = await huurlocatieService.getById(huurlocatieId);
 
     if (!existingHuurlocatie) {
-      throw ServiceError.notFound(`There is no huurlocatie with id ${id}.`, { id });
+      throw ServiceError.notFound(`There is no huurlocatie with id ${id}.`, {
+        id,
+      });
     }
 
     await betalingRepository.updateById(id, {
@@ -58,7 +71,6 @@ const updateById = async (id, { bedrag, betaalmethode, datum, huurlocatieId, kla
     throw handleDBError(error);
   }
 };
-  
 
 const deleteById = async (id) => {
   try {

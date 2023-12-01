@@ -1,6 +1,6 @@
-const ServiceError = require('../core/serviceError'); 
-const handleDBError = require('./_handleDBError'); 
-const klantRepository = require('../../repository/klant');
+const ServiceError = require("../core/serviceError");
+const handleDBError = require("./_handleDBError");
+const klantRepository = require("../repository/klant");
 
 const getAll = async () => {
   const items = await klantRepository.findAll();
@@ -34,31 +34,41 @@ const create = async (klant) => {
 };
 */
 
-  const updateById = async (id, { naam, voornaam, email, straat, huisnummer, postcode, stad}) => {
-    try {
-      const existingKlant = await klantRepository
-      .updateById(id, { naam, voornaam, email, straat, huisnummer, postcode, stad});
-  
-      if (!existingKlant) {
-        throw ServiceError.notFound(`No klant with id ${id} exists`, { id });
-      }
-  
-      return getById(id);
-    } catch (error) {
-      throw handleDBError(error);
+const updateById = async (
+  id,
+  { naam, voornaam, email, straat, huisnummer, postcode, stad }
+) => {
+  try {
+    const existingKlant = await klantRepository.updateById(id, {
+      naam,
+      voornaam,
+      email,
+      straat,
+      huisnummer,
+      postcode,
+      stad,
+    });
+
+    if (!existingKlant) {
+      throw ServiceError.notFound(`No klant with id ${id} exists`, { id });
     }
-  };
-  const deleteById = async (id) => {
-    try {
-      const deleted = await klantRepository.deleteById(id);
-  
-      if (!deleted) {
-        throw ServiceError.notFound(`No klant with id ${id} exists`, { id });
-      }
-    } catch (error) {
-      throw handleDBError(error);
+
+    return getById(id);
+  } catch (error) {
+    throw handleDBError(error);
+  }
+};
+const deleteById = async (id) => {
+  try {
+    const deleted = await klantRepository.deleteById(id);
+
+    if (!deleted) {
+      throw ServiceError.notFound(`No klant with id ${id} exists`, { id });
     }
-  };
+  } catch (error) {
+    throw handleDBError(error);
+  }
+};
 
 module.exports = {
   getAll,

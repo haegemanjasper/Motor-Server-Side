@@ -1,7 +1,7 @@
-const Joi = require('joi');
-const Router = require('@koa/router');
-const motorService = require('../service/motor');
-const validate = require('../core/validation');
+const Joi = require("joi");
+const Router = require("@koa/router");
+const motorService = require("../service/motor");
+const validate = require("../core/validation");
 
 const getAllMotors = async (ctx) => {
   ctx.body = await motorService.getAll();
@@ -25,6 +25,7 @@ createMotor.validationScheme = {
     huurprijs_per_dag: Joi.number().positive().required(),
     beschikbaarheid: Joi.boolean().required(),
     rating: Joi.number().positive().required(),
+    image: Joi.string().max(255).required(),
   },
 };
 
@@ -48,10 +49,11 @@ updateMotor.validationScheme = {
   body: {
     merk: Joi.string().max(50).required(),
     model: Joi.string().max(50).required(),
-    datum: Joi.date().required(), // date of datetime?
+    datum: Joi.date().required(),
     huurprijs_per_dag: Joi.number().positive().required(),
     beschikbaarheid: Joi.boolean().required(),
     rating: Joi.number().positive().required(),
+    image: Joi.string().max(255).required(),
   },
   params: {
     id: Joi.number().positive().required(),
@@ -67,19 +69,20 @@ deleteMotor.validationScheme = {
   params: {
     id: Joi.number().positive().required(),
   },
+  body: Joi.object({}).unknown(true),
 };
 
 // {Router} app
 module.exports = (app) => {
   const router = new Router({
-    prefix: '/motors',
+    prefix: "/motoren",
   });
 
-  router.get('/', validate(getAllMotors.validationScheme), getAllMotors);
-  router.post('/', validate(createMotor.validationScheme), createMotor);
-  router.get('/:id', validate(getMotorById.validationScheme), getMotorById); 
-  router.put('/:id', validate(updateMotor.validationScheme), updateMotor);
-  router.delete('/:id', validate(deleteMotor.validationScheme), deleteMotor);
+  router.get("/", validate(getAllMotors.validationScheme), getAllMotors);
+  router.post("/", validate(createMotor.validationScheme), createMotor);
+  router.get("/:id", validate(getMotorById.validationScheme), getMotorById);
+  router.put("/:id", validate(updateMotor.validationScheme), updateMotor);
+  router.delete("/:id", validate(deleteMotor.validationScheme), deleteMotor);
 
   app.use(router.routes()).use(router.allowedMethods());
 };

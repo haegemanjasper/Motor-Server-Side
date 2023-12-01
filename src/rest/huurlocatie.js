@@ -1,7 +1,7 @@
-const Joi = require('joi');
-const Router = require('@koa/router');
-const huurlocatieService = require('../service/huurlocatie');
-const validate = require('../core/validation');
+const Joi = require("joi");
+const Router = require("@koa/router");
+const huurlocatieService = require("../service/huurlocatie");
+const validate = require("../core/validation");
 
 const getAllHuurlocatie = async (ctx) => {
   ctx.body = await huurlocatieService.getAll();
@@ -65,18 +65,39 @@ deleteHuurlocatie.validationScheme = {
   params: {
     id: Joi.number().positive().required(),
   },
+  body: Joi.object({}).unknown(true),
 };
 
 module.exports = (app) => {
   const router = new Router({
-    prefix: '/huurlocaties',
+    prefix: "/huurlocaties",
   });
 
-  router.get('/', validate(getAllHuurlocatie.validationScheme), getAllHuurlocatie);
-  router.post('/', validate(createHuurlocatie.validationScheme), createHuurlocatie);
-  router.get('/:id', validate(getHuurlocatieById.validationScheme), getHuurlocatieById);
-  router.put('/:id', validate(updateHuurlocatie.validationScheme), updateHuurlocatie);
-  router.delete('/:id', validate(deleteHuurlocatie.validationScheme), deleteHuurlocatie);
+  router.get(
+    "/",
+    validate(getAllHuurlocatie.validationScheme),
+    getAllHuurlocatie
+  );
+  router.post(
+    "/",
+    validate(createHuurlocatie.validationScheme),
+    createHuurlocatie
+  );
+  router.get(
+    "/:id",
+    validate(getHuurlocatieById.validationScheme),
+    getHuurlocatieById
+  );
+  router.put(
+    "/:id",
+    validate(updateHuurlocatie.validationScheme),
+    updateHuurlocatie
+  );
+  router.delete(
+    "/:id",
+    validate(deleteHuurlocatie.validationScheme),
+    deleteHuurlocatie
+  );
 
   app.use(router.routes()).use(router.allowedMethods());
 };

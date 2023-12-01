@@ -1,7 +1,7 @@
-const Joi = require('joi');
-const Router = require('@koa/router');
-const klantService = require('../service/klant');
-const validate = require('../core/validation');
+const Joi = require("joi");
+const Router = require("@koa/router");
+const klantService = require("../service/klant");
+const validate = require("../core/validation");
 
 const getAllKlanten = async (ctx) => {
   const klanten = await klantService.getAll();
@@ -30,7 +30,6 @@ getKlantById.validationScheme = {
     id: Joi.number().positive().required(),
   },
 };
-
 
 const updateKlantById = async (ctx) => {
   const klant = await klantService.updateById(ctx.params.id, ctx.request.body);
@@ -62,18 +61,27 @@ deleteKlantById.validationScheme = {
   params: {
     id: Joi.number().positive().required(),
   },
+  body: Joi.object({}).unknown(true),
 };
 
 module.exports = function installKlantRoutes(app) {
   const router = new Router({
-    prefix: '/klanten',
+    prefix: "/klanten",
   });
 
-  router.get('/', validate(getAllKlanten.validationScheme), getAllKlanten);
-  router.get('/:id', validate(getKlantById.validationScheme), getKlantById);
+  router.get("/", validate(getAllKlanten.validationScheme), getAllKlanten);
+  router.get("/:id", validate(getKlantById.validationScheme), getKlantById);
   //router.post('/register', validate(register.validationScheme), register);
-  router.put('/:id', validate(updateKlantById.validationScheme), updateKlantById);
-  router.delete('/:id', validate(deleteKlantById.validationScheme), deleteKlantById);
+  router.put(
+    "/:id",
+    validate(updateKlantById.validationScheme),
+    updateKlantById
+  );
+  router.delete(
+    "/:id",
+    validate(deleteKlantById.validationScheme),
+    deleteKlantById
+  );
 
   app.use(router.routes()).use(router.allowedMethods());
 };
