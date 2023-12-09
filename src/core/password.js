@@ -1,11 +1,10 @@
-/*const config = require('config');
-const argon2 = require('argon2');
+const config = require("config");
+const argon2 = require("argon2");
 
-const ARGON_SALT_LENGTH = config.get('auth.argon.saltLength');
-const ARGON_HASH_LENGTH = config.get('auth.argon.hashLength');
-const ARGON_TIME_COST = config.get('auth.argon.timeCost');
-const ARGON_MEMORY_COST = config.get('auth.argon.memoryCost');
-
+const ARGON_SALT_LENGTH = config.get("auth.argon.saltLength");
+const ARGON_HASH_LENGTH = config.get("auth.argon.hashLength");
+const ARGON_TIME_COST = config.get("auth.argon.timeCost");
+const ARGON_MEMORY_COST = config.get("auth.argon.memoryCost");
 
 const hashPassword = async (password) => {
   return argon2.hash(password, {
@@ -25,8 +24,8 @@ const verifyPassword = async (password, passwordHash) => {
     timeCost: ARGON_TIME_COST,
     memoryCost: ARGON_MEMORY_COST,
   });
-  };
+};
 module.exports = {
   hashPassword,
   verifyPassword,
-};*/
+};

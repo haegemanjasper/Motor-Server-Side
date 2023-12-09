@@ -1,4 +1,4 @@
-/*module.exports = Object.freeze({
-  ADMIN: 'admin',
-  KLANT: 'klant',
-}); */
+module.exports = Object.freeze({
+  ADMIN: "admin",
+  KLANT: "klant",
+});

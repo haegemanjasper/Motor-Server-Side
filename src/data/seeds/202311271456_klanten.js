@@ -1,4 +1,5 @@
-const {tables} = require('..');
+const { tables } = require("..");
+const Role = require("../../core/roles");
 
 module.exports = {
   seed: async (knex) => {
@@ -7,41 +8,44 @@ module.exports = {
     await knex(tables.klant).insert([
       {
         id: 1,
-        naam: 'Van den Broeck',
-        voornaam: 'Jan',
-        email: 'jan.vdb@hotmail.com',
-        straat: 'Sluipweg',
+        naam: "Haegeman",
+        voornaam: "Jasper",
+        email: "jasper.haegeman@student.hogent.be",
+        straat: "Sluipweg",
         huisnummer: 31,
-        postcode: 9000,
-        stad: 'Gent',
-        //roles: ['admin', 'klant'],
-      
+        postcode: 9300,
+        stad: "Aalst",
+        password_hash:
+          "$argon2id$v=19$m=131072,t=6,p=1$9AMcua9h7va8aUQSEgH/TA$TUFuJ6VPngyGThMBVo3ONOZ5xYfee9J1eNMcA5bSpq4",
+        roles: JSON.stringify([Role.ADMIN, Role.KLANT]),
       },
 
       {
         id: 2,
-        naam: 'De Smet',
-        voornaam: 'Jef',
-        email: 'jef.ds@hotmail.com',
-        straat: 'Kortrijksesteenweg',
+        naam: "De Smet",
+        voornaam: "Jef",
+        email: "jef.ds@hotmail.com",
+        straat: "Kortrijksesteenweg",
         huisnummer: 11,
         postcode: 9200,
-        stad: 'Dendermonde',
-        //roles: ['klant'],
-
+        stad: "Dendermonde",
+        password_hash:
+          "$argon2id$v=19$m=131072,t=6,p=1$9AMcua9h7va8aUQSEgH/TA$TUFuJ6VPngyGThMBVo3ONOZ5xYfee9J1eNMcA5bSpq4",
+        roles: JSON.stringify([Role.KLANT]),
       },
 
       {
         id: 3,
-        naam: 'De Vos',
-        voornaam: 'Johan',
-        email: 'johan.dv@hotmail.com',
-        straat: 'Kouter',
+        naam: "De Vos",
+        voornaam: "Johan",
+        email: "johan.dv@hotmail.com",
+        straat: "Kouter",
         huisnummer: 1,
         postcode: 9300,
-        stad: 'Aalst',
-        //roles: ['klant'],
-
+        stad: "Aalst",
+        password_hash:
+          "$argon2id$v=19$m=131072,t=6,p=1$9AMcua9h7va8aUQSEgH/TA$TUFuJ6VPngyGThMBVo3ONOZ5xYfee9J1eNMcA5bSpq4",
+        roles: JSON.stringify([Role.KLANT]),
       },
     ]);
   },

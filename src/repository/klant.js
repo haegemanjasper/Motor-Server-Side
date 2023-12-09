@@ -26,6 +26,8 @@ const create = async ({
   huisnummer,
   postcode,
   stad,
+  passwordHash,
+  roles,
 }) => {
   try {
     const [id] = await getKnex()(tables.klant).insert({
@@ -36,6 +38,8 @@ const create = async ({
       huisnummer,
       postcode,
       stad,
+      password_hash: passwordHash,
+      roles: JSON.stringify(roles),
     });
     return id;
   } catch (error) {
@@ -89,6 +93,7 @@ const deleteById = async (id) => {
 module.exports = {
   findAll,
   findCount,
+  findByEmail,
   findById,
   deleteById,
   updateById,

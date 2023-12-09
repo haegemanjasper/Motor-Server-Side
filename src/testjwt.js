@@ -1,44 +1,44 @@
-/*const { generateJWT, verifyJWT } = require('./core/jwt');
+const { generateJWT, verifyJWT } = require("./core/jwt");
 
 function messWithPayload(jwt) {
-  const [header, payload, signature] = jwt.split('.');
+  const [header, payload, signature] = jwt.split(".");
   const parsedPayload = JSON.parse(
-    Buffer.from(payload, 'base64url').toString()
+    Buffer.from(payload, "base64url").toString()
   );
 
-  // make me admin please ^^
-  parsedPayload.roles.push('admin');
+  parsedPayload.roles.push("admin");
 
   const newPayload = Buffer.from(
     JSON.stringify(parsedPayload),
-    'ascii'
-  ).toString('base64url');
-  return [header, newPayload, signature].join('.');
+    "ascii"
+  ).toString("base64url");
+  return [header, newPayload, signature].join(".");
 }
 
 async function main() {
   const fakeKlant = {
     id: 1,
-    naam: 'Thomas',
-    voornaam: 'Aelbrecht',
-    //email: 'thomas.aelbrecht@hogent.be',
-    roles: ['user'],
+    naam: "Jasper",
+    voornaam: "Haegeman",
+    email: "jasper.haegeman@student.hogent.ne",
+    straat: "Sluipweg",
+    huisnummer: 31,
+    postcode: 9300,
+    stad: "Aalst",
+    roles: ["admin"],
   };
 
   const jwt = await generateJWT(fakeKlant);
-  // copy and paste the JWT in the textfield on https://jwt.io
-  // inspect the content
-  console.log('The JWT:', jwt);
+  console.log("The JWT:", jwt);
 
   let valid = await verifyJWT(jwt);
-  console.log('This JWT is', valid ? 'valid' : 'incorrect');
+  console.log("This JWT is", valid ? "valid" : "incorrect");
 
-  // Let's mess with the payload
   const messedUpJwt = messWithPayload(jwt);
-  console.log('Messed up JWT:', messedUpJwt);
+  console.log("Messed up JWT:", messedUpJwt);
 
-  console.log('Verifying this JWT will throw an error:');
+  console.log("Verifying this JWT will throw an error:");
   valid = await verifyJWT(messedUpJwt);
 }
 
-main();*/
+main();
