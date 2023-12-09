@@ -3,6 +3,8 @@ const Router = require("@koa/router");
 const klantService = require("../service/klant");
 const validate = require("../core/validation");
 const zxcvbn = require("zxcvbn");
+const { requireAuthentication, makeRequireRole } = require("../core/auth");
+const Role = require("../core/roles");
 
 const passwordStrengthValidator = (value, helpers) => {
   const result = zxcvbn(value);
@@ -40,9 +42,9 @@ const getAllKlanten = async (ctx) => {
 getAllKlanten.validationScheme = null;
 
 const register = async (ctx) => {
-  const klant = await klantService.register(ctx.request.body);
+  const token = await klantService.register(ctx.request.body);
   ctx.status = 200;
-  ctx.body = klant;
+  ctx.body = token;
 };
 
 register.validationScheme = {
@@ -54,7 +56,7 @@ register.validationScheme = {
     huisnummer: Joi.number().positive().required(),
     postcode: Joi.number().positive().required(),
     stad: Joi.string().max(255).required(),
-    password: passwordSchema,
+    password: Joi.string().min(8).max(30), // of PasswordSchema?
   },
 };
 
@@ -123,25 +125,69 @@ deleteKlantById.validationScheme = {
   body: Joi.object({}).unknown(true),
 };
 
+const checkKlantId = (ctx, next) => {
+  const { klantId, roles } = ctx.state.session;
+  const { id } = ctx.params;
+
+  // You can only get our own data unless you're an admin
+  if (id !== klantId && !roles.includes(Role.ADMIN)) {
+    return ctx.throw(
+      403,
+      "You are not allowed to view this user's information",
+      {
+        code: "FORBIDDEN",
+      }
+    );
+  }
+  return next();
+};
+
 module.exports.passwordSchema = passwordSchema;
 module.exports = function installKlantRoutes(app) {
   const router = new Router({
     prefix: "/klanten",
   });
 
-  router.get("/", validate(getAllKlanten.validationScheme), getAllKlanten);
-  router.get("/:id", validate(getKlantById.validationScheme), getKlantById);
-  router.post("/", validate(createKlant.validationScheme), createKlant);
+  // public routes
   router.post("/register", validate(register.validationScheme), register);
   router.post("/login", validate(login.validationScheme), login);
+
+  const requireAdmin = makeRequireRole(Role.ADMIN);
+
+  // Routes with authentication and authorization
+  router.get(
+    "/",
+    requireAuthentication,
+    requireAdmin,
+    validate(getAllKlanten.validationScheme),
+    getAllKlanten
+  );
+  router.get(
+    "/:id",
+    requireAuthentication,
+    validate(getKlantById.validationScheme),
+    checkKlantId,
+    getKlantById
+  );
+  router.post(
+    "/",
+    requireAuthentication,
+    validate(createKlant.validationScheme),
+    createKlant
+  );
+
   router.put(
     "/:id",
-    validate(updateKlantById.validationScheme),
+    requireAuthentication,
+    validate(requireAuthentication, updateKlantById.validationScheme),
+    checkKlantId,
     updateKlantById
   );
   router.delete(
     "/:id",
+    requireAuthentication,
     validate(deleteKlantById.validationScheme),
+    checkKlantId,
     deleteKlantById
   );
 
