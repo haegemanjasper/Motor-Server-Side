@@ -2,6 +2,7 @@ const Joi = require("joi");
 const Router = require("@koa/router");
 const huurlocatieService = require("../service/huurlocatie");
 const validate = require("../core/validation");
+const { requireAuthentication } = require("../core/auth");
 
 const getAllHuurlocatie = async (ctx) => {
   ctx.body = await huurlocatieService.getAll();
@@ -72,6 +73,8 @@ module.exports = (app) => {
   const router = new Router({
     prefix: "/huurlocaties",
   });
+
+  router.use(requireAuthentication);
 
   router.get(
     "/",

@@ -2,6 +2,7 @@ const Joi = require("joi");
 const Router = require("@koa/router");
 const betalingService = require("../service/betaling");
 const validate = require("../core/validation");
+const { requireAuthentication } = require("../core/auth");
 
 const getAllBetalingen = async (ctx) => {
   ctx.body = await betalingService.getAll();
@@ -45,7 +46,7 @@ const updateBetaling = async (ctx) => {
     ...ctx.request.body,
     huurlocatieId: Number(ctx.request.body.huurlocatieId),
     datum: new Date(ctx.request.body.datum),
-    klantId: Number(ctx.request.body.klantId),
+    klantId: ctx.state.session.klantId,
   });
 };
 
@@ -78,6 +79,8 @@ module.exports = (app) => {
   const router = new Router({
     prefix: "/betalingen",
   });
+
+  router.use(requireAuthentication);
 
   router.get(
     "/",

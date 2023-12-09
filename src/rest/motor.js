@@ -2,6 +2,7 @@ const Joi = require("joi");
 const Router = require("@koa/router");
 const motorService = require("../service/motor");
 const validate = require("../core/validation");
+const { requireAuthentication } = require("../core/auth");
 
 const getAllMotors = async (ctx) => {
   ctx.body = await motorService.getAll();
@@ -77,6 +78,8 @@ module.exports = (app) => {
   const router = new Router({
     prefix: "/motoren",
   });
+
+  router.use(requireAuthentication);
 
   router.get("/", validate(getAllMotors.validationScheme), getAllMotors);
   router.post("/", validate(createMotor.validationScheme), createMotor);

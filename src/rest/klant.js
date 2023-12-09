@@ -42,9 +42,9 @@ const getAllKlanten = async (ctx) => {
 getAllKlanten.validationScheme = null;
 
 const register = async (ctx) => {
-  const token = await klantService.register(ctx.request.body);
+  const klant = await klantService.register(ctx.request.body);
   ctx.status = 200;
-  ctx.body = token;
+  ctx.body = klant;
 };
 
 register.validationScheme = {
@@ -88,7 +88,7 @@ const getKlantById = async (ctx) => {
 
 getKlantById.validationScheme = {
   params: {
-    id: Joi.number().positive().required(),
+    id: Joi.number().integer().positive(),
   },
 };
 
