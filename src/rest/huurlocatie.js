@@ -74,30 +74,33 @@ module.exports = (app) => {
     prefix: "/huurlocaties",
   });
 
-  router.use(requireAuthentication);
-
   router.get(
     "/",
+    requireAuthentication,
     validate(getAllHuurlocatie.validationScheme),
     getAllHuurlocatie
   );
   router.post(
     "/",
+    requireAuthentication,
     validate(createHuurlocatie.validationScheme),
     createHuurlocatie
   );
   router.get(
     "/:id",
+    requireAuthentication,
     validate(getHuurlocatieById.validationScheme),
     getHuurlocatieById
   );
   router.put(
     "/:id",
+    requireAuthentication,
     validate(updateHuurlocatie.validationScheme),
     updateHuurlocatie
   );
   router.delete(
     "/:id",
+    requireAuthentication,
     validate(deleteHuurlocatie.validationScheme),
     deleteHuurlocatie
   );

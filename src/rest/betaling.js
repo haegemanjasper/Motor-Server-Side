@@ -5,7 +5,8 @@ const validate = require("../core/validation");
 const { requireAuthentication } = require("../core/auth");
 
 const getAllBetalingen = async (ctx) => {
-  ctx.body = await betalingService.getAll();
+  const { klantId } = ctx.state.session;
+  ctx.body = await betalingService.getAll(klantId);
 };
 
 getAllBetalingen.validationScheme = null;
@@ -14,7 +15,7 @@ const createBetaling = async (ctx) => {
   const newBetaling = await betalingService.create({
     ...ctx.request.body,
     huurlocatieId: Number(ctx.request.body.huurlocatieId),
-    klantId: Number(ctx.request.body.klantId),
+    klantId: ctx.state.session.klantId,
     datum: new Date(ctx.request.body.datum),
   });
   ctx.status = 201;
@@ -23,7 +24,6 @@ const createBetaling = async (ctx) => {
 
 createBetaling.validationScheme = {
   body: {
-    klantId: Joi.number().positive().required(),
     huurlocatieId: Joi.number().positive().required(),
     bedrag: Joi.number().positive().required(),
     betaalmethode: Joi.string().max(255).required(),
@@ -32,7 +32,10 @@ createBetaling.validationScheme = {
 };
 
 const getBetalingById = async (ctx) => {
-  ctx.body = await betalingService.getById(Number(ctx.params.id));
+  ctx.body = await betalingService.getById(
+    Number(ctx.params.id),
+    ctx.state.session.klantId
+  );
 };
 
 getBetalingById.validationScheme = {
@@ -52,7 +55,6 @@ const updateBetaling = async (ctx) => {
 
 updateBetaling.validationScheme = {
   body: {
-    klantId: Joi.number().positive().required(),
     huurlocatieId: Joi.number().positive().required(),
     bedrag: Joi.number().positive().required(),
     betaalmethode: Joi.string().max(255).required(),
@@ -64,7 +66,7 @@ updateBetaling.validationScheme = {
 };
 
 const deleteBetaling = async (ctx) => {
-  await betalingService.deleteById(ctx.params.id);
+  await betalingService.deleteById(ctx.params.id, ctx.state.session.klantId);
   ctx.status = 204;
 };
 
@@ -80,22 +82,33 @@ module.exports = (app) => {
     prefix: "/betalingen",
   });
 
-  router.use(requireAuthentication);
-
   router.get(
     "/",
+    requireAuthentication,
     validate(getAllBetalingen.validationScheme),
     getAllBetalingen
   );
-  router.post("/", validate(createBetaling.validationScheme), createBetaling);
+  router.post(
+    "/",
+    requireAuthentication,
+    validate(createBetaling.validationScheme),
+    createBetaling
+  );
   router.get(
     "/:id",
+    requireAuthentication,
     validate(getBetalingById.validationScheme),
     getBetalingById
   );
-  router.put("/:id", validate(updateBetaling.validationScheme), updateBetaling);
+  router.put(
+    "/:id",
+    requireAuthentication,
+    validate(updateBetaling.validationScheme),
+    updateBetaling
+  );
   router.delete(
     "/:id",
+    requireAuthentication,
     validate(deleteBetaling.validationScheme),
     deleteBetaling
   );

@@ -1,9 +1,8 @@
-const supertest = require("supertest");
+const { tables } = require("../../src/data");
+const { withServer, login } = require("../supertest.setup");
+const { testAuthHeader } = require("../common/auth");
 
-const createServer = require("../src/createServer");
-const { tables, getKnex } = require("../src/data");
-
-const testData = {
+const data = {
   motoren: [
     {
       id: 1,
@@ -15,7 +14,6 @@ const testData = {
       rating: 4,
       image: "bmw1.png",
     },
-
     {
       id: 2,
       merk: "Honda",
@@ -42,25 +40,22 @@ const testData = {
 const motorToDelete = [1, 2, 3];
 
 describe("Motoren", () => {
-  let server;
-  let request;
-  let knex;
+  let request, knex, authHeader;
 
-  beforeAll(async () => {
-    server = await createServer();
-    request = supertest(server.getApp().callback());
-    knex = getKnex();
+  withServer(({ supertest, knex: k }) => {
+    request = supertest;
+    knex = k;
   });
 
-  afterAll(async () => {
-    await server.stop();
+  beforeAll(async () => {
+    authHeader = await login(request);
   });
 
   const url = "/api/motoren";
 
   describe("GET /api/motoren", () => {
     beforeAll(async () => {
-      await knex(tables.motor).insert(testData.motoren);
+      await knex(tables.motor).insert(data.motoren);
     });
 
     afterAll(async () => {
@@ -68,7 +63,7 @@ describe("Motoren", () => {
     });
 
     it("should 200 and return all motoren", async () => {
-      const response = await request.get(url);
+      const response = await request.get(url).set("Authorization", authHeader);
       expect(response.status).toBe(200);
       expect(response.body.items.length).toBe(3);
 
@@ -93,11 +88,14 @@ describe("Motoren", () => {
         image: "honda1.png",
       });
     });
+    testAuthHeader(() => request.get(url));
   });
 
   describe("POST /api/motoren", () => {
+    const motorToDelete = [];
+
     beforeAll(async () => {
-      await knex(tables.motor).insert(testData.motoren);
+      await knex(tables.motor).insert(data.motoren);
     });
 
     afterAll(async () => {
@@ -105,15 +103,18 @@ describe("Motoren", () => {
     });
 
     it("should 201 and return the created motor", async () => {
-      const response = await request.post(url).send({
-        merk: "Honda",
-        model: "testmodel",
-        datum: new Date(2023, 4, 10, 10, 0),
-        huurprijs_per_dag: 75,
-        beschikbaarheid: true,
-        rating: 5,
-        image: "honda1.png",
-      });
+      const response = await request
+        .post(url)
+        .set("Authorization", authHeader)
+        .send({
+          merk: "Honda",
+          model: "testmodel",
+          datum: new Date(2023, 4, 10, 10, 0),
+          huurprijs_per_dag: 75,
+          beschikbaarheid: true,
+          rating: 5,
+          image: "honda1.png",
+        });
 
       expect(response.status).toBe(201);
       expect(response.body.id).toBeTruthy();
@@ -127,11 +128,13 @@ describe("Motoren", () => {
 
       motorToDelete.push(response.body.id);
     });
+    testAuthHeader(() => request.post(url));
   });
 
   describe("PUT /api/motoren/:id", () => {
     beforeAll(async () => {
-      await knex(tables.motor).insert(testData.motoren);
+      await knex(tables.motor).whereIn("id", motorToDelete).delete();
+      await knex(tables.motor).insert(data.motoren);
     });
 
     afterAll(async () => {
@@ -139,55 +142,78 @@ describe("Motoren", () => {
     });
 
     it("should 200 and update the specified motor", async () => {
-      const motorIdToUpdate = testData.motoren[0].id;
+      const response = await request
+        .put(`${url}/1`)
+        .set("Authorization", authHeader)
+        .send({
+          merk: "BMW",
+          model: "testmodel",
+          datum: new Date(2023, 4, 10, 10, 0),
+          huurprijs_per_dag: 150,
+          beschikbaarheid: false,
+          rating: 4,
+          image: "bmw1.png",
+        });
 
-      const response = await request.put(`${url}/${motorIdToUpdate}`).send({
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        id: 1,
         merk: "BMW",
         model: "testmodel",
-        datum: new Date(2023, 4, 10, 10, 0),
-        huurprijs_per_dag: 125,
-        beschikbaarheid: false,
+        datum: "2023-05-10T08:00:00.000Z",
+        huurprijs_per_dag: "150.00",
+        beschikbaarheid: 0,
         rating: 4,
         image: "bmw1.png",
       });
-
-      expect(response.status).toBe(200);
-      expect(response.body.id).toBe(motorIdToUpdate);
-      expect(response.body.merk).toBe("BMW");
-      expect(response.body.model).toBe("testmodel");
-      expect(response.body.datum).toEqual("2023-05-10T08:00:00.000Z");
-      expect(response.body.huurprijs_per_dag).toBe("125.00");
-      expect(response.body.beschikbaarheid).toBe(0);
-      expect(response.body.rating).toBe(4);
-      expect(response.body.image).toBe("bmw1.png");
     });
+
+    testAuthHeader(() => request.put(`${url}/1`));
   });
 
   describe("DELETE /api/motoren/:id", () => {
     beforeAll(async () => {
-      await knex(tables.motor).insert(testData.motoren);
+      await knex(tables.motor).insert(data.motoren[0]);
     });
 
     afterAll(async () => {
       await knex(tables.motor).whereIn("id", motorToDelete).delete();
     });
 
-    it("should 204 and delete the specified motor", async () => {
-      const motorIdToDelete = testData.motoren[0].id;
+    it("should 204 and return nothing", async () => {
+      const response = await request
+        .delete(`${url}/1`)
+        .set("Authorization", authHeader);
 
-      const response = await request.delete(`${url}/${motorIdToDelete}`);
-
-      expect(response.status).toBe(204);
-
-      const deletedMotor = await knex(tables.motor)
-        .where("id", motorIdToDelete)
-        .first();
-      expect(deletedMotor).toBeUndefined();
-
-      const index = motorToDelete.indexOf(motorIdToDelete);
-      if (index !== -1) {
-        motorToDelete.splice(index, 1);
-      }
+      expect(response.statusCode).toBe(204);
+      expect(response.body).toEqual({});
     });
+
+    it("should 404 with not existing motor", async () => {
+      const response = await request
+        .delete(`${url}/99`)
+        .set("Authorization", authHeader);
+
+      expect(response.statusCode).toBe(404);
+      expect(response.body).toMatchObject({
+        code: "NOT_FOUND",
+        message: "No motor with id 99 exists",
+        details: {
+          id: 99,
+        },
+      });
+      expect(response.body.stack).toBeTruthy();
+    });
+
+    it("should 400 with invalid motor id", async () => {
+      const response = await request
+        .delete(`${url}/invalid`)
+        .set("Authorization", authHeader);
+
+      expect(response.statusCode).toBe(400);
+      expect(response.body.code).toBe("VALIDATION_FAILED");
+      expect(response.body.details.params).toHaveProperty("id");
+    });
+    testAuthHeader(() => request.delete(`${url}/99`));
   });
 });

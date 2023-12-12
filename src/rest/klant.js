@@ -22,7 +22,7 @@ const passwordSchema = Joi.string()
   .custom(passwordStrengthValidator, "Custom Password Strength")
   .required();
 
-const login = async (ctx) => {
+const login = async (ctx, next) => {
   const { email, password } = ctx.request.body;
   const token = await klantService.login(email, password);
   ctx.body = token;
@@ -42,25 +42,25 @@ const getAllKlanten = async (ctx) => {
 getAllKlanten.validationScheme = null;
 
 const register = async (ctx) => {
-  const klant = await klantService.register(ctx.request.body);
+  const token = await klantService.register(ctx.request.body);
   ctx.status = 200;
-  ctx.body = klant;
+  ctx.body = token;
 };
 
 register.validationScheme = {
   body: {
-    naam: Joi.string().max(255).required(),
-    voornaam: Joi.string().max(255).required(),
-    email: Joi.string().max(255).required(),
-    straat: Joi.string().max(255).required(),
-    huisnummer: Joi.number().positive().required(),
-    postcode: Joi.number().positive().required(),
-    stad: Joi.string().max(255).required(),
+    naam: Joi.string().max(255),
+    voornaam: Joi.string().max(255),
+    email: Joi.string().email(),
+    straat: Joi.string().max(255),
+    huisnummer: Joi.number().positive(),
+    postcode: Joi.number().positive(),
+    stad: Joi.string().max(255),
     password: Joi.string().min(8).max(30), // of PasswordSchema?
   },
 };
 
-const createKlant = async (ctx) => {
+/*const createKlant = async (ctx) => {
   const newKlant = await klantService.create({
     ...ctx.request.body,
   });
@@ -78,7 +78,7 @@ createKlant.validationScheme = {
     postcode: Joi.number().positive().required(),
     stad: Joi.string().max(255).required(),
   },
-};
+}; */
 
 const getKlantById = async (ctx) => {
   const klant = await klantService.getById(ctx.params.id);
@@ -100,16 +100,16 @@ const updateKlantById = async (ctx) => {
 
 updateKlantById.validationScheme = {
   body: {
-    naam: Joi.string().max(255).required(),
-    voornaam: Joi.string().max(255).required(),
-    email: Joi.string().max(255).required(),
-    straat: Joi.string().max(255).required(),
-    huisnummer: Joi.number().positive().required(),
-    postcode: Joi.number().positive().required(),
-    stad: Joi.string().max(255).required(),
+    naam: Joi.string().max(255),
+    voornaam: Joi.string().max(255),
+    email: Joi.string().email(),
+    straat: Joi.string().max(255),
+    huisnummer: Joi.number().positive(),
+    postcode: Joi.number().positive(),
+    stad: Joi.string().max(255),
   },
   params: {
-    id: Joi.number().positive().required(),
+    id: Joi.number().positive(),
   },
 };
 
@@ -168,12 +168,6 @@ module.exports = function installKlantRoutes(app) {
     validate(getKlantById.validationScheme),
     checkKlantId,
     getKlantById
-  );
-  router.post(
-    "/",
-    requireAuthentication,
-    validate(createKlant.validationScheme),
-    createKlant
   );
 
   router.put(

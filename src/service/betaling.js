@@ -3,18 +3,18 @@ const handleDBError = require("./_handleDBError");
 const betalingRepository = require("../repository/betaling");
 const huurlocatieService = require("./huurlocatie");
 
-const getAll = async () => {
-  const items = await betalingRepository.findAll();
+const getAll = async (klantId) => {
+  const items = await betalingRepository.findAll(klantId);
   return {
     items,
     count: items.length,
   };
 };
 
-const getById = async (id) => {
+const getById = async (id, klantId) => {
   const betaling = await betalingRepository.findById(id);
 
-  if (!betaling) {
+  if (!betaling || betaling.klant.id != klantId) {
     throw ServiceError.notFound(`No betaling with id ${id} exists`, { id });
   }
   return betaling;
@@ -42,7 +42,7 @@ const create = async ({
     huurlocatieId,
     klantId,
   });
-  return getById(id);
+  return getById(id, klantId);
 };
 
 const updateById = async (
@@ -66,15 +66,15 @@ const updateById = async (
       klantId,
     });
 
-    return getById(id);
+    return getById(id, klantId);
   } catch (error) {
     throw handleDBError(error);
   }
 };
 
-const deleteById = async (id) => {
+const deleteById = async (id, klantId) => {
   try {
-    const deleted = await betalingRepository.deleteById(id);
+    const deleted = await betalingRepository.deleteById(id, klantId);
 
     if (!deleted) {
       throw ServiceError.notFound(`No betaling with id ${id} exists`, { id });

@@ -1,7 +1,7 @@
-const UNAUTHORIZED = "UNAUTHORIZED";
-const FORBIDDEN = "FORBIDDEN";
 const NOT_FOUND = "NOT_FOUND";
 const VALIDATION_FAILED = "VALIDATION_FAILED";
+const UNAUTHORIZED = "UNAUTHORIZED";
+const FORBIDDEN = "FORBIDDEN";
 class ServiceError extends Error {
   constructor(code, message, details = {}) {
     super(message);

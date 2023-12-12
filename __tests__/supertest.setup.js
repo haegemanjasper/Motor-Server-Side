@@ -1,34 +1,26 @@
-const supertest = require("supertest"); // 👈 4
-const createServer = require("../src/createServer"); // 👈 3
-const { getKnex } = require("../src/data"); // 👈 4
+const supertest = require("supertest");
+const createServer = require("../src/createServer");
+const { getKnex } = require("../src/data");
 
-// allemaal nog aan te passen!
-
-// 👇 6
 const login = async (supertest) => {
-  // 👇 7
-  const response = await supertest.post("/api/users/login").send({
-    email: "test.user@hogent.be",
+  const response = await supertest.post("/api/klanten/login").send({
+    email: "test.klant@hogent.be",
     password: "12345678",
   });
 
-  // 👇 8
   if (response.statusCode !== 200) {
     throw new Error(response.body.message || "Unknown error occured");
   }
 
-  return `Bearer ${response.body.token}`; // 👈 9
+  return `Bearer ${response.body.token}`;
 };
 
-// 👇 1
 const withServer = (setter) => {
-  // 👈 4
-  let server; // 👈 2
+  let server;
 
   beforeAll(async () => {
-    server = await createServer(); // 👈 3
+    server = await createServer();
 
-    // 👇 4
     setter({
       knex: getKnex(),
       supertest: supertest(server.getApp().callback()),
@@ -36,11 +28,25 @@ const withServer = (setter) => {
   });
 
   afterAll(async () => {
-    await server.stop(); // 👈 5
+    await server.stop();
   });
+};
+
+const loginAdmin = async (supertest) => {
+  const response = await supertest.post("/api/klanten/login").send({
+    email: "admin.klant@hogent.be",
+    password: "12345678",
+  });
+
+  if (response.statusCode !== 200) {
+    throw new Error(response.body.message || "Unknown error occured");
+  }
+
+  return `Bearer ${response.body.token}`;
 };
 
 module.exports = {
   login,
+  loginAdmin,
   withServer,
-}; // 👈 1 en 6
+};

@@ -1,122 +1,11 @@
-const config = require("config");
-const { getLogger } = require("../core/logging");
-const ServiceError = require("../core/serviceError");
-const handleDBError = require("./_handleDBError");
 const klantRepository = require("../repository/klant");
+const ServiceError = require("../core/serviceError");
 const { hashPassword, verifyPassword } = require("../core/password");
 const { generateJWT, verifyJWT } = require("../core/jwt");
 const Role = require("../core/roles");
-const roles = require("../core/roles");
+const { getLogger } = require("../core/logging");
 
-const getAll = async () => {
-  const items = await klantRepository.findAll();
-  return {
-    items,
-    count: items.length,
-  };
-};
-
-const getById = async (id) => {
-  const klant = await klantRepository.findById(id);
-
-  if (!klant) {
-    throw ServiceError.notFound(`No klant with id ${id} exists`, { id });
-  }
-  return klant;
-};
-
-const create = async (klant) => {
-  const id = await klantRepository.create(klant);
-  return getById(id);
-};
-
-const updateById = async (
-  id,
-  { naam, voornaam, email, straat, huisnummer, postcode, stad }
-) => {
-  try {
-    const existingKlant = await klantRepository.updateById(id, {
-      naam,
-      voornaam,
-      email,
-      straat,
-      huisnummer,
-      postcode,
-      stad,
-    });
-
-    if (!existingKlant) {
-      throw ServiceError.notFound(`No klant with id ${id} exists`, { id });
-    }
-
-    return getById(id);
-  } catch (error) {
-    throw handleDBError(error);
-  }
-};
-const deleteById = async (id) => {
-  try {
-    const deleted = await klantRepository.deleteById(id);
-
-    if (!deleted) {
-      throw ServiceError.notFound(`No klant with id ${id} exists`, { id });
-    }
-  } catch (error) {
-    throw handleDBError(error);
-  }
-};
-
-const register = async ({
-  naam,
-  voornaam,
-  email,
-  straat,
-  huisnummer,
-  postcode,
-  stad,
-  password,
-}) => {
-  const passwordHash = await hashPassword(password);
-
-  const klantId = await klantRepository.create({
-    naam,
-    voornaam,
-    email,
-    straat,
-    huisnummer,
-    postcode,
-    stad,
-    passwordHash,
-    roles: [Role.KLANT],
-  });
-
-  const klant = await klantRepository.findById(klantId);
-  return await makeLoginData(klant);
-};
-
-const checkAndParseSession = async (authHeader) => {
-  if (!authHeader) {
-    throw ServiceError.unauthorized("You need to be signed in");
-  }
-
-  if (!authHeader.startsWith("Bearer ")) {
-    throw ServiceError.unauthorized("Invalid authentication token");
-  }
-
-  const authToken = authHeader.substring(7);
-  try {
-    const { roles, klantId } = await verifyJWT(authToken);
-
-    return {
-      klantId,
-      roles,
-      authToken,
-    };
-  } catch (error) {
-    getLogger().error(error.message, { error });
-    throw new Error(error.message);
-  }
-};
+const handleDBError = require("./_handleDBError");
 
 const makeExposedKlant = ({
   id,
@@ -143,9 +32,41 @@ const makeExposedKlant = ({
 const makeLoginData = async (klant) => {
   const token = await generateJWT(klant);
   return {
-    token,
     klant: makeExposedKlant(klant),
+    token,
   };
+};
+
+const checkAndParseSession = async (authHeader) => {
+  if (!authHeader) {
+    throw ServiceError.unauthorized("You need to be signed in");
+  }
+
+  if (!authHeader.startsWith("Bearer ")) {
+    throw ServiceError.unauthorized("Invalid authentication token");
+  }
+
+  const authToken = authHeader.substring(7);
+  try {
+    const { roles, klantId } = await verifyJWT(authToken);
+
+    return {
+      klantId,
+      roles,
+      authToken,
+    };
+  } catch (error) {
+    getLogger().error(error.message, { error });
+    throw new Error(error.message);
+  }
+};
+
+const checkRole = (role, roles) => {
+  const hasPermission = roles.includes(role);
+
+  if (!hasPermission) {
+    throw ServiceError.forbidden("You do not have permission to do this");
+  }
 };
 
 const login = async (email, password) => {
@@ -168,22 +89,97 @@ const login = async (email, password) => {
   return makeLoginData(klant);
 };
 
-const checkRole = (role, roles) => {
-  const hasPermission = roles.includes(role);
+/**
+ * Get all users.
+ */
 
-  if (!hasPermission) {
-    throw ServiceError.forbidden("You do not have permission to do this");
+const getAll = async () => {
+  const items = await klantRepository.findAll();
+  return {
+    items: items.map(makeExposedKlant),
+    count: items.length,
+  };
+};
+
+const getById = async (id) => {
+  const klant = await klantRepository.findById(id);
+
+  if (!klant) {
+    throw ServiceError.notFound(`No klant with id ${id} exists`, { id });
+  }
+  return makeExposedKlant(klant);
+};
+
+const register = async ({
+  naam,
+  voornaam,
+  email,
+  straat,
+  huisnummer,
+  postcode,
+  stad,
+  password,
+}) => {
+  try {
+    const passwordHash = await hashPassword(password);
+
+    const klantId = await klantRepository.create({
+      naam,
+      voornaam,
+      email,
+      straat,
+      huisnummer,
+      postcode,
+      stad,
+      passwordHash,
+      roles: [Role.KLANT],
+    });
+    const klant = await klantRepository.findById(klantId);
+    return await makeLoginData(klant);
+  } catch (error) {
+    throw handleDBError(error);
+  }
+};
+
+const updateById = async (
+  id,
+  { naam, voornaam, email, straat, huisnummer, postcode, stad }
+) => {
+  try {
+    await klantRepository.updateById(id, {
+      naam,
+      voornaam,
+      email,
+      straat,
+      huisnummer,
+      postcode,
+      stad,
+    });
+    return getById(id);
+  } catch (error) {
+    throw handleDBError(error);
+  }
+};
+
+const deleteById = async (id) => {
+  try {
+    const deleted = await klantRepository.deleteById(id);
+
+    if (!deleted) {
+      throw ServiceError.notFound(`No klant with id ${id} exists`, { id });
+    }
+  } catch (error) {
+    throw handleDBError(error);
   }
 };
 
 module.exports = {
-  checkRole,
   checkAndParseSession,
+  checkRole,
+  login,
   getAll,
   getById,
-  create,
+  register,
   updateById,
   deleteById,
-  register,
-  login,
 };

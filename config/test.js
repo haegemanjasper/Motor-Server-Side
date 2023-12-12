@@ -17,7 +17,7 @@ module.exports = {
 
   log: {
     level: "silly",
-    disabled: true,
+    disabled: false,
   },
   cors: {
     origins: ["http://localhost:5173"],

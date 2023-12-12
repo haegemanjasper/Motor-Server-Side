@@ -32,7 +32,7 @@ const SELECT_COLUMNS = [
   `${tables.klant}.naam as klant_naam`,
 ];
 
-const findAll = async () => {
+const findAll = async (klantId) => {
   const betalingen = await getKnex()(tables.betaling)
     .join(
       tables.huurlocatie,
@@ -46,6 +46,7 @@ const findAll = async () => {
       "=",
       `${tables.klant}.id`
     )
+    .where(`${tables.betaling}.klant_id`, klantId)
     .select(SELECT_COLUMNS)
     .orderBy("datum", "ASC");
 
@@ -124,10 +125,11 @@ const updateById = async (
   }
 };
 
-const deleteById = async (id) => {
+const deleteById = async (id, klantId) => {
   try {
     const rowsAffected = await getKnex()(tables.betaling)
       .where(`${tables.betaling}.id`, id)
+      .where(`${tables.betaling}.klant_id`, klantId)
       .delete();
 
     return rowsAffected > 0;
