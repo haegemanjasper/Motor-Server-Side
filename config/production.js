@@ -1,4 +1,8 @@
 module.exports = {
+  database: {
+    client: "mysql2",
+  },
+  port: 9000,
   auth: {
     argon: {
       saltLength: 16,
