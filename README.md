@@ -1,7 +1,6 @@
 d[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/snPWRHYg)
-# Examenopdracht Front-end Web Development / Web Services
 
-> Schrap hierboven wat niet past
+# Examenopdracht Front-end Web Development / Web Services
 
 - Student: Jasper Haegeman
 - Studentennummer: 202292134
@@ -16,12 +15,33 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
 - [MySQL Community Server](https://dev.mysql.com/downloads/mysql/)
 - ...
 
-> Vul eventueel aan
+## Voor het starten / testen van dit project
+
+Maak een `.env` (development) bestand met volgende inhoud:
+
+```ini
+NODE_ENV=development
+DATABASE_USERNAME=root
+DATABASE_PASSWORD=MySQLtest123
+```
 
 ## Opstarten
 
-> Schrijf hier hoe we de applicatie starten (.env bestanden aanmaken, commando's om uit te voeren...)
+## Start this project
+
+- Installeer alles van: `yarn`
+- Zorg dat uw `.env` bestand aangemaakt is.
+- Start de server op: `yarn start`
 
 ## Testen
 
-> Schrijf hier hoe we de testen uitvoeren (.env bestanden aanmaken, commando's om uit te voeren...)
+- Installeer alles van: `yarn`
+- Zorg dat een `.env.test` bestaat met `NODE_ENV=test` (zie hier onder)
+
+```ini
+NODE_ENV=test
+DATABASE_USERNAME=root
+DATABASE_PASSWORD=MySQLtest123
+```
+
+- Start de server: `yarn test`

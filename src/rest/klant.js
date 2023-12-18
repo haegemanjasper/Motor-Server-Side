@@ -60,26 +60,6 @@ register.validationScheme = {
   },
 };
 
-/*const createKlant = async (ctx) => {
-  const newKlant = await klantService.create({
-    ...ctx.request.body,
-  });
-  ctx.status = 201;
-  ctx.body = newKlant;
-};
-
-createKlant.validationScheme = {
-  body: {
-    naam: Joi.string().max(255).required(),
-    voornaam: Joi.string().max(255).required(),
-    email: Joi.string().max(255).required(),
-    straat: Joi.string().max(255).required(),
-    huisnummer: Joi.number().positive().required(),
-    postcode: Joi.number().positive().required(),
-    stad: Joi.string().max(255).required(),
-  },
-}; */
-
 const getKlantById = async (ctx) => {
   const klant = await klantService.getById(ctx.params.id);
   ctx.status = 200;

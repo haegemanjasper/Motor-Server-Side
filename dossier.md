@@ -1,15 +1,15 @@
 # Voornaam Familienaam (Studentennummer)
 
-> Duid aan welke vakken je volgt en vermeld voor deze vakken de link naar jouw GitHub repository. In het geval je slechts één vak volgt, verwijder alle inhoud omtrent het andere vak uit dit document.
-> Lees <https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet> om te weten hoe een Markdown-bestand opgemaakt moet worden.
-> Verwijder alle instructies (lijnen die starten met >).
+- Student: Jasper Haegeman
+- Studentennummer: 202292134
+- E-mailadres: <mailto:jasper.haegeman@student.hogent.be>
 
 - [x] Front-end Web Development
-  - <>
-  - <>
+  - <https://github.com/Web-IV/2324-frontendweb-JasperHmn.git>
+  - <LINK_ONLINE_VERSIE_HIER>
 - [x] Web Services: GITHUB URL
-  - <>
-  - <>
+  - <https://github.com/Web-IV/2324-webservices-JasperHmn.git>
+  - <https://webservices-motor.onrender.com>
 
 **Logingegevens**
 
@@ -20,7 +20,9 @@
 
 ## Projectbeschrijving
 
-> Omschrijf hier duidelijk waarover jouw project gaat. Voeg een domeinmodel (of EERD) toe om jouw entiteiten te verduidelijken.
+Het Motorverhuurbeheersysteem heeft tot doel een efficiënte en geautomatiseerde manier te bieden om het verhuurproces van motoren te beheren. Het systeem zal de verhuur van motoren aan klanten vergemakkelijken, betalingen registreren en een overzicht bieden van beschikbare motoren en huurlocaties.
+
+![ERD, motorverhuur](/public/ERD/ERDmotor.png)
 
 ## Screenshots
 
@@ -29,18 +31,40 @@
 
 ## API calls
 
-> Maak hier een oplijsting van alle API cals in jouw applicatie. Groepeer dit per entiteit. Hieronder een voorbeeld.
-> Dit is weinig zinvol indien je enkel Front-end Web Development volgt, verwijder dan deze sectie.
-> Indien je als extra Swagger koos, dan voeg je hier een link toe naar jouw online documentatie. Swagger geeft nl. exact (en nog veel meer) wat je hieronder moet schrijven.
+### Klanten
 
-### Gebruikers
+- `GET /api/klanten`: alle gebruikers ophalen
+- `GET /api/klanten/:id`: gebruiker met een bepaald id ophalen
+- `POST /api/klanten/register`: gebruiker registeren
+- `POST /api/klanten/login`: gebruiker inloggen
+- `PUT /api/klanten/:id`: gebruiker met een bepaald id wijzigen
+- `DELETE /api/klanten/:id`: gebruiker met een bepaald id verwijderen
 
-- `GET /api/users`: alle gebruikers ophalen
-- `GET /api/users/:id`: gebruiker met een bepaald id ophalen
+### Huurlocaties
+
+- `GET /api/huurlocaties`: alle huurlocaties ophalen
+- `GET /api/huurlocaties/:id`: huurlocatie met een bepaald id ophalen
+- `POST /api/huurlocaties`: huurlocatie toevoegen
+- `PUT /api/huurlocaties/:id`: huurlocatie met een bepaald id wijzigen
+- `DELETE /api/huurlocaties/:id`: huurlocatie met een bepaald id verwijderen
+
+### Betalingen
+
+- `GET /api/betalingen`: alle betalingen ophalen
+- `GET /api/betalingen/:id`: betaling met een bepaald id ophalen
+- `POST /api/betalingen`: betaling toevoegen
+- `PUT /api/betalingen/:id`: betaling met een bepaald id wijzigen
+- `DELETE /api/betalingen/:id`: betaling met een bepaald id verwijderen
+
+### Motoren
+
+- `GET /api/motoren`: alle motoren ophalen
+- `GET /api/motoren/:id`: motor met een bepaald id ophalen
+- `POST /api/motoren`: motor toevoegen
+- `PUT /api/motoren/:id`: motor met een bepaald id wijzigen
+- `DELETE /api/motoren/:id`: motor met een bepaald id verwijderen
 
 ## Behaalde minimumvereisten
-
-> Duid per vak aan welke minimumvereisten je denkt behaald te hebben
 
 ### Front-end Web Development
 
@@ -84,42 +108,42 @@
 
 - **datalaag**
 
-  - [ ] voldoende complex (meer dan één tabel, 2 een-op-veel of veel-op-veel relaties)
-  - [ ] één module beheert de connectie + connectie wordt gesloten bij sluiten server
-  - [ ] heeft migraties - indien van toepassing
-  - [ ] heeft seeds
+  - [x] voldoende complex (meer dan één tabel, 2 een-op-veel of veel-op-veel relaties)
+  - [x] één module beheert de connectie + connectie wordt gesloten bij sluiten server
+  - [x] heeft migraties - indien van toepassing
+  - [x] heeft seeds
         <br />
 
 - **repositorylaag**
 
-  - [ ] definieert één repository per entiteit (niet voor tussentabellen) - indien van toepassing
-  - [ ] mapt OO-rijke data naar relationele tabellen en vice versa - indien van toepassing
+  - [x] definieert één repository per entiteit (niet voor tussentabellen) - indien van toepassing
+  - [x] mapt OO-rijke data naar relationele tabellen en vice versa - indien van toepassing
         <br />
 
 - **servicelaag met een zekere complexiteit**
 
-  - [ ] bevat alle domeinlogica
-  - [ ] bevat geen SQL-queries of databank-gerelateerde code
+  - [x] bevat alle domeinlogica
+  - [x] bevat geen SQL-queries of databank-gerelateerde code
         <br />
 
 - **REST-laag**
 
-  - [ ] meerdere routes met invoervalidatie
-  - [ ] degelijke foutboodschappen
-  - [ ] volgt de conventies van een RESTful API
-  - [ ] bevat geen domeinlogica
-  - [ ] geen API calls voor entiteiten die geen zin hebben zonder hun ouder (bvb tussentabellen)
-  - [ ] degelijke authorisatie/authenticatie op alle routes
+  - [x] meerdere routes met invoervalidatie
+  - [x] degelijke foutboodschappen
+  - [x] volgt de conventies van een RESTful API
+  - [x] bevat geen domeinlogica
+  - [x] geen API calls voor entiteiten die geen zin hebben zonder hun ouder (bvb tussentabellen)
+  - [x] degelijke authorisatie/authenticatie op alle routes
         <br />
 
 - **algemeen**
 
-  - [ ] er is een minimum aan logging voorzien
-  - [ ] een aantal niet-triviale integratietesten (min. 1 controller >=80% coverage)
-  - [ ] minstens één extra technologie
-  - [ ] maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)
+  - [x] er is een minimum aan logging voorzien
+  - [x] een aantal niet-triviale integratietesten (min. 1 controller >=80% coverage)
+  - [x] minstens één extra technologie
+  - [x] maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)
   - [ ] duidelijke en volledige README.md
-  - [ ] volledig en tijdig ingediend dossier en voldoende commits
+  - [x] volledig en tijdig ingediend dossier en voldoende commits
 
 ## Projectstructuur
 
@@ -139,7 +163,12 @@
 
 ### Web Services
 
-> Wat is de extra technologie? Hoe werkt het? Voeg een link naar het npm package toe!
+Gebruik van zxcvbn.
+Het is een wachtwoordsterkte-inschattingstool die beordeelt wachtwoorden op basis van hun sterkte en geeft feedback over hoe ze kunnen worden verbeterd.
+
+zxcvbn evalueert de sterkte van een wachtwoord op basis van verschillende criteria, waaronder lengte, complexiteit en het al dan niet gberuik van woordenboekwoorden.
+
+npm install zxcvbn
 
 ## Testresultaten
 
@@ -149,7 +178,25 @@
 
 ### Web Services
 
-> Schrijf hier een korte oplijsting en beschrijving van de geschreven testen + voeg een screenshot van de coverage en uitvoering toe
+#### huurlocaties
+
+We kijken of de software de lijst van beschikbare huurlocaties correct weergeeft.
+We controleren ook of de software goed omgaat met situaties waarin gebruikers verkeerde informatie invoeren.
+We passen dit ook toe voor het toevoegen, bijwerken en verwijderen van een huurlocatie.
+
+#### health
+
+Deze test evalueert de gezondheids- en versie-eindpunten van de server om ervoor te zorgen dat ze correct reageren en de verwachte informatie verstrekken. Daarnaast wordt gecontroleerd of de server zich goed gedraagt bij het benaderen van een onbekende URL.
+
+#### motoren
+
+Deze test waarborgt de correcte werking van de API voor motorbeheer in verschillende scenario's, inclusief toevoegen, bijwerken en verwijderen van motoren. Ze dienen als waarborg voor een goede functionaliteit en beveiliging van de applicatie.
+
+### Screenshots
+
+![screenshot, testen](/public/testen/testscreenshot.png)
+
+![screenshot, testcoverage](/public/testen/testcoverage.png)
 
 ## Gekende bugs
 
@@ -159,16 +206,4 @@
 
 ### Web Services
 
-> Zijn er gekende bugs?
-
-## Wat is er verbeterd/aangepast?
-
-> Deze sectie is enkel voor 2e zittijd, verwijder deze in 1e zittijd.
-
-### Front-end Web Development
-
-- Dit en dat
-
-### Web Services
-
-- Oh en dit ook
+Ik heb geen bugs opgemerkt binnen het project.
