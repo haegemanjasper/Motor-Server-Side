@@ -18,7 +18,7 @@ module.exports = function installMiddleware(app) {
   app.use(
     koaCors({
       origin: (ctx) => {
-        if (CORS_ORIGINS.indexOf(ctx.request.header.origin) !== -1) {
+        if (ctx.request.header.origin === "http://localhost:5174") {
           return ctx.request.header.origin;
         }
         // Not a valid domain at this point, let's return the first valid as we should return a string
