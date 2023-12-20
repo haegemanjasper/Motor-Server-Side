@@ -56,7 +56,7 @@ register.validationScheme = {
     huisnummer: Joi.number().positive(),
     postcode: Joi.number().positive(),
     stad: Joi.string().max(255),
-    password: Joi.string().min(8).max(30), // of PasswordSchema?
+    password: passwordSchema.required(),
   },
 };
 

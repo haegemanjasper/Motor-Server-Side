@@ -25,42 +25,15 @@ DATABASE_USERNAME=root
 DATABASE_PASSWORD=MySQLtest123
 ```
 
-## Opstarten
-
 ## Start het project
 
-- Installeer alles van: `yarn`
-- yarn add koa
-- yarn install
-- yarn add nodemon --dev
-- yarn add config
-- yarn add env-cmd --dev
-- yarn add winston
-- yarn add @koa/router
-- yarn add koa-bodyparser
-- yarn add @koa/cors
-- yarn add knex
-- yarn add mysql2
-- Zorg dat uw `.env` bestand aangemaakt is.
-- Start de server op na alles van yarn te downloaden (start, validatie,authenticatie & autorisatie) : `yarn start`
+- `yarn install`
+- maak een `.env` bestand (zie hier boven)
+- start de server: `yarn start`
 
-## Validatie
+## Test het project
 
 - Installeer alles van: `yarn`
-- yarn add joi
-- yarn add node-emoji@1.11.0
-- yarn add koa-helmet
-
-## Authenticatie & autorisatie
-
-- Installeer alles van: `yarn`
-- yarn add argon2
-- yarn add jsonwebtoken
-
-## Testen
-
-- Installeer alles van: `yarn`
-
 - Zorg dat een `.env.test` bestaat met `NODE_ENV=test` (zie hier onder)
 
 ```ini

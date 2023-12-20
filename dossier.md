@@ -13,10 +13,8 @@
 
 **Logingegevens**
 
-- Gebruikersnaam/e-mailadres:
-- Wachtwoord:
-
-> Vul eventueel aan met extra accounts voor administrators of andere rollen.
+- Gebruikersnaam/e-mailadres: jasper.haegeman@student.hogent.be
+- Wachtwoord: 12345678
 
 ## Projectbeschrijving
 
@@ -70,16 +68,16 @@ Het Motorverhuurbeheersysteem heeft tot doel een efficiënte en geautomatiseerde
 
 - **componenten**
 
-  - [ ] heeft meerdere componenten - dom & slim (naast login/register)
-  - [ ] applicatie is voldoende complex
-  - [ ] definieert constanten (variabelen, functies en componenten) buiten de component
-  - [ ] minstens één form met meerdere velden met validatie (naast login/register)
-  - [ ] login systeem
+  - [x] heeft meerdere componenten - dom & slim (naast login/register)
+  - [x] applicatie is voldoende complex
+  - [x] definieert constanten (variabelen, functies en componenten) buiten de component
+  - [x] minstens één form met meerdere velden met validatie (naast login/register)
+  - [x] login systeem
         <br />
 
 - **routing**
 
-  - [ ] heeft minstens 2 pagina's (naast login/register)
+  - [x] heeft minstens 2 pagina's (naast login/register)
   - [ ] routes worden afgeschermd met authenticatie en autorisatie
         <br />
 
@@ -87,21 +85,21 @@ Het Motorverhuurbeheersysteem heeft tot doel een efficiënte en geautomatiseerde
 
   - [ ] meerdere API calls (naast login/register)
   - [ ] degelijke foutmeldingen indien API-call faalt
-  - [ ] gebruikt useState enkel voor lokale state
-  - [ ] gebruikt gepast state management voor globale state - indien van toepassing
+  - [x] gebruikt useState enkel voor lokale state
+  - [x] gebruikt gepast state management voor globale state - indien van toepassing
         <br />
 
 - **hooks**
 
-  - [ ] gebruikt de hooks op de juiste manier
+  - [x] gebruikt de hooks op de juiste manier
         <br />
 
 - **varia**
 
   - [ ] een aantal niet-triviale e2e testen
-  - [ ] minstens één extra technologie
-  - [ ] maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)
-  - [ ] duidelijke en volledige README.md
+  - [x] minstens één extra technologie
+  - [x] maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)
+  - [x] duidelijke en volledige README.md
   - [ ] volledig en tijdig ingediend dossier en voldoende commits
 
 ### Web Services
@@ -142,7 +140,7 @@ Het Motorverhuurbeheersysteem heeft tot doel een efficiënte en geautomatiseerde
   - [x] een aantal niet-triviale integratietesten (min. 1 controller >=80% coverage)
   - [x] minstens één extra technologie
   - [x] maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)
-  - [ ] duidelijke en volledige README.md
+  - [x] duidelijke en volledige README.md
   - [x] volledig en tijdig ingediend dossier en voldoende commits
 
 ## Projectstructuur
@@ -153,13 +151,80 @@ Het Motorverhuurbeheersysteem heeft tot doel een efficiënte en geautomatiseerde
 
 ### Web Services
 
-> Hoe heb je jouw applicatie gestructureerd (mappen, design patterns...)?
+- `2324-webservices-JasperHmn`
+  - `__tests__`
+    - `global.setup.js`
+    - `global.teardown.js`
+    - `supertest.setup.js`
+    - `common`
+      - `auth.js`
+    - `coverage`
+    - `rest`
+      - `health.spec.js`
+      - `huurlocaties.spec.js`
+      - `motoren.spec.js`
+  - `.vscode`
+  - `config`
+  - `coverage`
+  - `node_modules`
+  - `public`
+    - `ERD` (foto)
+    - `images`
+    - `testen` (fotos)
+  - `src`
+    - `core`
+      - `auth.js`
+      - `installMiddleware.js`
+      - `jwt.js`
+      - `logging.js`
+      - `password.js`
+      - `roles.js`
+      - `serviceError.js`
+      - `validation.js`
+    - `data`
+      - `migrations`
+      - `seeds`
+      - `index.js`
+    - `repository`
+      - `betaling.js`
+      - `huurlocatie.js`
+      - `klant.js`
+      - `motor.js`
+    - `rest`
+      - `betaling.js`
+      - `health.js`
+      - `huurlocatie.js`
+      - `index.js`
+      - `klant.js`
+      - `motor.js`
+    - `service`
+      - `_handleDBError.js`
+      - `betaling.js`
+      - `health.js`
+      - `huurlocatie.js`
+      - `klant.js`
+      - `motor.js`
+    - `createServer.js`
+    - `index.js`
+    - `testjwt.js`
+    - `testpw.js`
+  - `.env`
+  - `.env.test`
+  - `.gitignore`
+  - `jest.config.js`
+  - `package.json`
+  - `README.md`
 
 ## Extra technologie
 
 ### Front-end Web Development
 
-> Wat is de extra technologie? Hoe werkt het? Voeg een link naar het npm package toe!
+Gebruik van Chakra UI. Het is een technologie die gebruikt maakt van een standaardlibrary om zo
+op een gemakelijke manier een mooie UI te maken. Het is een open-source design systeem dat bestaat uit een componentenbibliotheek en een aantal tools die helpen bij het bouwen van toegankelijke React-applicaties.
+
+https://www.npmjs.com/package/@chakra-ui/react
+
+https://chakra-ui.com/
 
 ### Web Services
 
@@ -168,7 +233,9 @@ Het is een wachtwoordsterkte-inschattingstool die beordeelt wachtwoorden op basi
 
 zxcvbn evalueert de sterkte van een wachtwoord op basis van verschillende criteria, waaronder lengte, complexiteit en het al dan niet gberuik van woordenboekwoorden.
 
-npm install zxcvbn
+`yarn add zxcvbn`
+
+https://www.npmjs.com/package/zxcvbn
 
 ## Testresultaten
 
@@ -180,7 +247,7 @@ npm install zxcvbn
 
 #### huurlocaties
 
-We kijken of de software de lijst van beschikbare huurlocaties correct weergeeft.
+Deze test kijkt of de software de lijst van beschikbare huurlocaties correct weergeeft.
 We controleren ook of de software goed omgaat met situaties waarin gebruikers verkeerde informatie invoeren.
 We passen dit ook toe voor het toevoegen, bijwerken en verwijderen van een huurlocatie.
 
