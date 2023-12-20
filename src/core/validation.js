@@ -1,17 +1,16 @@
-const Joi = require("joi");
+const Joi = require("joi"); // 👈 1
 
 const JOI_OPTIONS = {
-  abortEarly: true, //stoppen bij de eerste fout (fail-fast)
-  allowUnknown: false, // iets niet gekend -> weigeren
-  context: true, // Joi.ref kunnen gebruiken -> verwijzen naar andere velden
-  convert: true, // automatisch omzetten van types (bv. string naar number)
-  presence: "required", // default aanwezigheid verplicht
+  abortEarly: true,
+  allowUnknown: false,
+  context: true,
+  convert: true,
+  presence: "required",
 };
 
 const cleanupJoiError = (error) =>
   error.details.reduce((resultObj, { message, path, type }) => {
     const joinedPath = path.join(".") || "value";
-
     if (!resultObj[joinedPath]) {
       resultObj[joinedPath] = [];
     }
@@ -19,8 +18,6 @@ const cleanupJoiError = (error) =>
       type,
       message,
     });
-
-    console.error(`Validation error at ${joinedPath}: ${message} (${type})`);
 
     return resultObj;
   }, {});
@@ -57,7 +54,7 @@ const validate = (schema) => {
     }
 
     const { error: bodyError, value: bodyValue } = schema.body.validate(
-      ctx.method === "GET" ? {} : ctx.request.body,
+      ctx.request.body,
       JOI_OPTIONS
     );
 
@@ -72,18 +69,17 @@ const validate = (schema) => {
     }
 
     const { error: queryError, value: queryValue } = schema.query.validate(
-      ctx.request.query,
+      ctx.query,
       JOI_OPTIONS
     );
 
     if (queryError) {
       errors.query = cleanupJoiError(queryError);
     } else {
-      ctx.request.query = queryValue;
+      ctx.query = queryValue;
     }
 
     if (Object.keys(errors).length) {
-      console.log("Validation Errors:", errors);
       ctx.throw(400, "Validation failed, check details for more information", {
         code: "VALIDATION_FAILED",
         details: errors,
