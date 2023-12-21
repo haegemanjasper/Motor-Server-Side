@@ -20,12 +20,16 @@
 
 Het Motorverhuurbeheersysteem heeft tot doel een efficiënte en geautomatiseerde manier te bieden om het verhuurproces van motoren te beheren. Het systeem zal de verhuur van motoren aan klanten vergemakkelijken, betalingen registreren en een overzicht bieden van beschikbare motoren en huurlocaties.
 
-![ERD, motorverhuur](/public/ERD/ERDmotor.png)
+![Alt text](ERDmotor.png)
 
 ## Screenshots
 
-> Voeg enkele (nuttige!) screenshots toe die tonen wat de app doet.
-> Dit is weinig zinvol indien je enkel Web Services volgt, verwijder dan deze sectie.
+![Alt text](<Screenshot 2023-12-21 115639.png>)
+![Alt text](<Screenshot 2023-12-21 115800.png>)
+![Alt text](<Screenshot 2023-12-21 115841.png>)
+![Alt text](<Screenshot 2023-12-21 115931.png>)
+![Alt text](<Screenshot 2023-12-21 120001.png>)
+![Alt text](<Screenshot 2023-12-21 120027.png>)
 
 ## API calls
 
@@ -69,7 +73,7 @@ Het Motorverhuurbeheersysteem heeft tot doel een efficiënte en geautomatiseerde
 - **componenten**
 
   - [x] heeft meerdere componenten - dom & slim (naast login/register)
-  - [x] applicatie is voldoende complex
+  - [ ] applicatie is voldoende complex
   - [x] definieert constanten (variabelen, functies en componenten) buiten de component
   - [x] minstens één form met meerdere velden met validatie (naast login/register)
   - [x] login systeem
@@ -147,7 +151,7 @@ Het Motorverhuurbeheersysteem heeft tot doel een efficiënte en geautomatiseerde
 
 ### Front-end Web Development
 
-> Hoe heb je jouw applicatie gestructureerd (mappen, design patterns, hiërarchie van componenten, state...)?
+( nog in te vullen later )
 
 ### Web Services
 
@@ -241,7 +245,7 @@ https://www.npmjs.com/package/zxcvbn
 
 ### Front-end Web Development
 
-> Schrijf hier een korte oplijsting en beschrijving van de geschreven testen
+(nog in te vullen later)
 
 ### Web Services
 
@@ -261,15 +265,14 @@ Deze test waarborgt de correcte werking van de API voor motorbeheer in verschill
 
 ### Screenshots
 
-![screenshot, testen](/public/testen/testscreenshot.png)
-
-![screenshot, testcoverage](/public/testen/testcoverage.png)
+![Alt text](testscreenshot.png)
+![Alt text](testcoverage.png)
 
 ## Gekende bugs
 
 ### Front-end Web Development
 
-> Zijn er gekende bugs?
+(nog in te vullen later)
 
 ### Web Services
 
