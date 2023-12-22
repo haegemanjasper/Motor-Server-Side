@@ -4,7 +4,7 @@
 - Studentennummer: 202292134
 - E-mailadres: <mailto:jasper.haegeman@student.hogent.be>
 
-- [x] Front-end Web Development
+- [x] Front-end Web Development <Strong>(Front-end 2de zit)</strong>
   - <https://github.com/Web-IV/2324-frontendweb-JasperHmn.git>
   - <https://frontendweb-motor.onrender.com>
 - [x] Web Services: GITHUB URL
@@ -22,7 +22,7 @@ Het Motorverhuurbeheersysteem heeft tot doel een efficiënte en geautomatiseerde
 
 ![Alt text](ERDmotor.png)
 
-## Screenshots
+## Voorlopige Screenshots -> kan nog gewijzigd worden (2de zit)
 
 ![Alt text](<Screenshot 2023-12-21 115639.png>)
 ![Alt text](<Screenshot 2023-12-21 115800.png>)
@@ -151,7 +151,7 @@ Het Motorverhuurbeheersysteem heeft tot doel een efficiënte en geautomatiseerde
 
 ### Front-end Web Development
 
-( nog in te vullen later )
+( nog in te vullen later 2de zit)
 
 ### Web Services
 
@@ -172,9 +172,7 @@ Het Motorverhuurbeheersysteem heeft tot doel een efficiënte en geautomatiseerde
   - `coverage`
   - `node_modules`
   - `public`
-    - `ERD` (foto)
     - `images`
-    - `testen` (fotos)
   - `src`
     - `core`
       - `auth.js`
@@ -245,7 +243,7 @@ https://www.npmjs.com/package/zxcvbn
 
 ### Front-end Web Development
 
-(nog in te vullen later)
+(nog in te vullen 2de zit)
 
 ### Web Services
 
@@ -272,7 +270,7 @@ Deze test waarborgt de correcte werking van de API voor motorbeheer in verschill
 
 ### Front-end Web Development
 
-(nog in te vullen later)
+(nog in te vullen later 2de zit)
 
 ### Web Services
 
