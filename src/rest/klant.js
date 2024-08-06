@@ -83,8 +83,8 @@ const updateKlantById = async (ctx) => {
 
 updateKlantById.validationScheme = {
     body: {
-        naam: Joi.string().min(1).max(25),
-        voornaam: Joi.string().min(1).max(25),
+        naam: Joi.string().max(25),
+        voornaam: Joi.string().max(25),
         email: Joi.string().email(),
         straat: Joi.string().max(25),
         huisnummer: Joi.number().positive(),
