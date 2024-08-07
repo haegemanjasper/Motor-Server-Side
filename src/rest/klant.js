@@ -156,7 +156,7 @@ module.exports = function installKlantRoutes(app) {
     router.put(
         "/:id",
         requireAuthentication,
-        validate(requireAuthentication, updateKlantById.validationScheme),
+        validate(updateKlantById.validationScheme),
         checkKlantId,
         updateKlantById
     );
