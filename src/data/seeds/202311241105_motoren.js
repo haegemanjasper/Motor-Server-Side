@@ -58,7 +58,7 @@ module.exports = {
             {
                 id: 6,
                 merk: "Kawasaki",
-                model: "testmodel",
+                model: "testmodell",
                 datum: new Date(2021, 4, 10, 10, 0),
                 huurprijs_per_dag: 75,
                 beschikbaarheid: false,
