@@ -12,7 +12,7 @@ module.exports = {
                 datum: new Date(2021, 4, 10, 10, 0),
                 huurprijs_per_dag: 150,
                 beschikbaarheid: true,
-                rating: 4,
+                rating: 5,
                 image: "bmw.png",
             },
             {
@@ -22,7 +22,7 @@ module.exports = {
                 datum: new Date(2021, 4, 10, 10, 0),
                 huurprijs_per_dag: 100,
                 beschikbaarheid: true,
-                rating: 5,
+                rating: 4.5,
                 image: "yamaha.png",
             },
             {
@@ -32,7 +32,7 @@ module.exports = {
                 datum: new Date(2021, 4, 10, 10, 0),
                 huurprijs_per_dag: 50,
                 beschikbaarheid: true,
-                rating: 3,
+                rating: 4.7,
                 image: "ktm.png",
             },
             {
@@ -42,7 +42,7 @@ module.exports = {
                 datum: new Date(2021, 4, 10, 10, 0),
                 huurprijs_per_dag: 75,
                 beschikbaarheid: true,
-                rating: 4,
+                rating: 4.5,
                 image: "honda.png",
             },
             {
