@@ -15,94 +15,104 @@ const CORS_MAX_AGE = config.get("cors.maxAge");
 //const isDevelopment = NODE_ENV === "development";
 
 module.exports = function installMiddleware(app) {
-  app.use(
-    koaCors({
-      origin: (ctx) => {
-        if (ctx.request.header.origin === "http://localhost:5174") {
-          return ctx.request.header.origin;
+    app.use(
+        koaCors({
+            origin: (ctx) => {
+                // Allow requests from localhost:5173 and other specified origins
+                const allowedOrigins = [
+                    "http://localhost:5173", // Your frontend development URL
+                    "https://frontendweb-motor.onrender.com", // Production URL
+                ];
+                const origin = ctx.request.header.origin;
+                if (allowedOrigins.includes(origin)) {
+                    return origin;
+                }
+                // Default to the first allowed origin if no match
+                return allowedOrigins[0];
+            },
+            allowHeaders: ["Accept", "Content-Type", "Authorization"],
+            maxAge: CORS_MAX_AGE,
+        })
+    );
+
+    app.use(async (ctx, next) => {
+        getLogger().info(
+            `${emoji.get("fast_forward")} ${ctx.method} ${ctx.url}`
+        );
+
+        const getStatusEmoji = () => {
+            if (ctx.status >= 500) return emoji.get("skull");
+            if (ctx.status >= 400) return emoji.get("x");
+            if (ctx.status >= 300) return emoji.get("rocket");
+            if (ctx.status >= 200) return emoji.get("white_check_mark");
+            return emoji.get("rewind");
+        };
+
+        try {
+            await next();
+
+            getLogger().info(
+                `${getStatusEmoji()} ${ctx.method} ${ctx.status} ${ctx.url}`
+            );
+        } catch (error) {
+            getLogger().error(
+                `${emoji.get("x")} ${ctx.method} ${ctx.status} ${ctx.url}`,
+                {
+                    error,
+                }
+            );
+
+            throw error;
         }
-        // Not a valid domain at this point, let's return the first valid as we should return a string
-        return CORS_ORIGINS[0];
-      },
-      allowHeaders: ["Accept", "Content-Type", "Authorization"],
-      maxAge: CORS_MAX_AGE,
-    })
-  );
+    });
 
-  app.use(async (ctx, next) => {
-    getLogger().info(`${emoji.get("fast_forward")} ${ctx.method} ${ctx.url}`);
+    app.use(bodyParser());
 
-    const getStatusEmoji = () => {
-      if (ctx.status >= 500) return emoji.get("skull");
-      if (ctx.status >= 400) return emoji.get("x");
-      if (ctx.status >= 300) return emoji.get("rocket");
-      if (ctx.status >= 200) return emoji.get("white_check_mark");
-      return emoji.get("rewind");
-    };
+    app.use(
+        koaHelmet({
+            //contentSecurityPolicy: isDevelopment ? false : undefined,
+        })
+    );
 
-    try {
-      await next();
+    app.use(async (ctx, next) => {
+        try {
+            await next();
+        } catch (error) {
+            getLogger().error("Error occured while handling a request", {
+                error,
+            });
+            let statusCode = error.status || 500;
+            let errorBody = {
+                code: error.code || "INTERNAL_SERVER_ERROR",
+                message: error.message,
+                details: error.details || {},
+                stack: NODE_ENV !== "production" ? error.stack : undefined,
+            };
 
-      getLogger().info(
-        `${getStatusEmoji()} ${ctx.method} ${ctx.status} ${ctx.url}`
-      );
-    } catch (error) {
-      getLogger().error(
-        `${emoji.get("x")} ${ctx.method} ${ctx.status} ${ctx.url}`,
-        {
-          error,
+            if (error instanceof ServiceError) {
+                if (error.isNotFound) {
+                    statusCode = 404;
+                }
+
+                if (error.isValidationFailed) {
+                    statusCode = 400;
+                }
+
+                if (error.isUnauthorized) {
+                    statusCode = 401;
+                }
+
+                if (error.isForbidden) {
+                    statusCode = 403;
+                }
+            }
+
+            ctx.status = statusCode;
+            ctx.body = errorBody;
         }
-      );
+    });
 
-      throw error;
-    }
-  });
-
-  app.use(bodyParser());
-
-  app.use(
-    koaHelmet({
-      //contentSecurityPolicy: isDevelopment ? false : undefined,
-    })
-  );
-
-  app.use(async (ctx, next) => {
-    try {
-      await next();
-    } catch (error) {
-      getLogger().error("Error occured while handling a request", { error });
-      let statusCode = error.status || 500;
-      let errorBody = {
-        code: error.code || "INTERNAL_SERVER_ERROR",
-        message: error.message,
-        details: error.details || {},
-        stack: NODE_ENV !== "production" ? error.stack : undefined,
-      };
-
-      if (error instanceof ServiceError) {
-        if (error.isNotFound) {
-          statusCode = 404;
-        }
-
-        if (error.isValidationFailed) {
-          statusCode = 400;
-        }
-
-        if (error.isUnauthorized) {
-          statusCode = 401;
-        }
-
-        if (error.isForbidden) {
-          statusCode = 403;
-        }
-      }
-
-      ctx.status = statusCode;
-      ctx.body = errorBody;
-    }
-  });
-
-  /* if (isDevelopment) {
+    /* if (isDevelopment) {
     const spec = swaggerJsdoc(swaggerOptions);
     // Install Swagger docs
     app.use(
@@ -117,16 +127,16 @@ module.exports = function installMiddleware(app) {
     );
   }*/
 
-  // Handle 404 not found with uniform response
-  app.use(async (ctx, next) => {
-    await next();
+    // Handle 404 not found with uniform response
+    app.use(async (ctx, next) => {
+        await next();
 
-    if (ctx.status === 404) {
-      ctx.status = 404;
-      ctx.body = {
-        code: "NOT_FOUND",
-        message: `Unknown resource: ${ctx.url}`,
-      };
-    }
-  });
+        if (ctx.status === 404) {
+            ctx.status = 404;
+            ctx.body = {
+                code: "NOT_FOUND",
+                message: `Unknown resource: ${ctx.url}`,
+            };
+        }
+    });
 };

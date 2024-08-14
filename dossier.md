@@ -1,221 +1,248 @@
 # Voornaam Familienaam (Studentennummer)
 
-- Student: Jasper Haegeman
-- Studentennummer: 202292134
-- E-mailadres: <mailto:jasper.haegeman@student.hogent.be>
+-   Student: Jasper Haegeman
+-   Studentennummer: 202292134
+-   E-mailadres: <mailto:jasper.haegeman@student.hogent.be>
 
-- [x] Front-end Web Development <Strong>(Front-end 2de zit)</strong>
-  - <https://github.com/Web-IV/2324-frontendweb-JasperHmn.git>
-  - <https://frontendweb-motor.onrender.com>
-- [x] Web Services: GITHUB URL
-  - <https://github.com/Web-IV/2324-webservices-JasperHmn.git>
-  - <https://webservices-motor.onrender.com>
+-   [x] Front-end Web Development
+    -   <https://github.com/Web-IV/2324-frontendweb-JasperHmn.git>
+    -   <https://frontendweb-motor.onrender.com>
+-   [x] Web Services:
+    -   <https://github.com/Web-IV/2324-webservices-JasperHmn.git>
+    -   <https://webservices-motor.onrender.com>
 
 **Logingegevens**
 
-- Gebruikersnaam/e-mailadres: jasper.haegeman@student.hogent.be
-- Wachtwoord: 12345678
+**Admin**
+
+-   Gebruikersnaam/e-mailadres: jasper.haegeman@student.hogent.be
+-   Wachtwoord: 12345678
+
+**Klant**
+
+-   Gebruikersnaam/e-mailadres: jef.ds@hotmail.com
+-   Wachtwoord: 12345678
 
 ## Projectbeschrijving
 
-Het Motorverhuurbeheersysteem heeft tot doel een efficiënte en geautomatiseerde manier te bieden om het verhuurproces van motoren te beheren. Het systeem zal de verhuur van motoren aan klanten vergemakkelijken, betalingen registreren en een overzicht bieden van beschikbare motoren en huurlocaties.
+Dit is een motorverhuursite waarmee je eenvoudig motoren kunt huren. Als gast kun je alleen de motoren bekijken, maar na registratie en inloggen kun je als klant motoren reserveren voor een bepaald aantal dagen en de betaling regelen op een locatie naar keuze. Klanten kunnen ook hun betalingsgeschiedenis inzien. Beheerders hebben extra mogelijkheden, zoals het beheren van klantgegevens, locaties, en motoren. Daarnaast kunnen zowel klanten als beheerders hun eigen gegevens aanpassen.
 
-![Alt text](ERDmotor.png)
+![Alt text](./public/images/screenshot/ERDmotor.png)
 
-## Voorlopige Screenshots -> kan nog gewijzigd worden (2de zit)
+## Screenshots
 
-![Alt text](<Screenshot 2023-12-21 115639.png>)
-![Alt text](<Screenshot 2023-12-21 115800.png>)
-![Alt text](<Screenshot 2023-12-21 115841.png>)
-![Alt text](<Screenshot 2023-12-21 115931.png>)
-![Alt text](<Screenshot 2023-12-21 120001.png>)
-![Alt text](<Screenshot 2023-12-21 120027.png>)
+![Alt text](<./public/images/screenshot/Screenshot 2024-08-14 121243.png>)
+![Alt text](<./public/images/screenshot/Screenshot 2024-08-14 121314.png>)
+![Alt text](<./public/images/screenshot/Screenshot 2024-08-14 121914.png>)
+![Alt text](<./public/images/screenshot/Screenshot 2024-08-14 122213.png>)
+![Alt text](<./public/images/screenshot/Screenshot 2024-08-14 122004.png>)
+![Alt text](<./public/images/screenshot/Screenshot 2024-08-14 122037.png>)
 
 ## API calls
 
 ### Klanten
 
-- `GET /api/klanten`: alle gebruikers ophalen
-- `GET /api/klanten/:id`: gebruiker met een bepaald id ophalen
-- `POST /api/klanten/register`: gebruiker registeren
-- `POST /api/klanten/login`: gebruiker inloggen
-- `PUT /api/klanten/:id`: gebruiker met een bepaald id wijzigen
-- `DELETE /api/klanten/:id`: gebruiker met een bepaald id verwijderen
+-   `GET /api/klanten`: alle gebruikers ophalen
+-   `GET /api/klanten/:id`: gebruiker met een bepaald id ophalen
+-   `POST /api/klanten/register`: gebruiker registeren
+-   `POST /api/klanten/login`: gebruiker inloggen
+-   `PUT /api/klanten/:id`: gebruiker met een bepaald id wijzigen
+-   `DELETE /api/klanten/:id`: gebruiker met een bepaald id verwijderen
 
 ### Huurlocaties
 
-- `GET /api/huurlocaties`: alle huurlocaties ophalen
-- `GET /api/huurlocaties/:id`: huurlocatie met een bepaald id ophalen
-- `POST /api/huurlocaties`: huurlocatie toevoegen
-- `PUT /api/huurlocaties/:id`: huurlocatie met een bepaald id wijzigen
-- `DELETE /api/huurlocaties/:id`: huurlocatie met een bepaald id verwijderen
+-   `GET /api/huurlocaties`: alle huurlocaties ophalen
+-   `GET /api/huurlocaties/:id`: huurlocatie met een bepaald id ophalen
+-   `POST /api/huurlocaties`: huurlocatie toevoegen
+-   `PUT /api/huurlocaties/:id`: huurlocatie met een bepaald id wijzigen
+-   `DELETE /api/huurlocaties/:id`: huurlocatie met een bepaald id verwijderen
 
 ### Betalingen
 
-- `GET /api/betalingen`: alle betalingen ophalen
-- `GET /api/betalingen/:id`: betaling met een bepaald id ophalen
-- `POST /api/betalingen`: betaling toevoegen
-- `PUT /api/betalingen/:id`: betaling met een bepaald id wijzigen
-- `DELETE /api/betalingen/:id`: betaling met een bepaald id verwijderen
+-   `GET /api/betalingen`: alle betalingen ophalen
+-   `GET /api/betalingen/:id`: betaling met een bepaald id ophalen
+-   `POST /api/betalingen`: betaling toevoegen
+-   `PUT /api/betalingen/:id`: betaling met een bepaald id wijzigen
+-   `DELETE /api/betalingen/:id`: betaling met een bepaald id verwijderen
 
 ### Motoren
 
-- `GET /api/motoren`: alle motoren ophalen
-- `GET /api/motoren/:id`: motor met een bepaald id ophalen
-- `POST /api/motoren`: motor toevoegen
-- `PUT /api/motoren/:id`: motor met een bepaald id wijzigen
-- `DELETE /api/motoren/:id`: motor met een bepaald id verwijderen
+-   `GET /api/motoren`: alle motoren ophalen
+-   `GET /api/motoren/:id`: motor met een bepaald id ophalen
+-   `POST /api/motoren`: motor toevoegen
+-   `PUT /api/motoren/:id`: motor met een bepaald id wijzigen
+-   `DELETE /api/motoren/:id`: motor met een bepaald id verwijderen
 
 ## Behaalde minimumvereisten
 
 ### Front-end Web Development
 
-- **componenten**
+-   **componenten**
 
-  - [x] heeft meerdere componenten - dom & slim (naast login/register)
-  - [ ] applicatie is voldoende complex
-  - [x] definieert constanten (variabelen, functies en componenten) buiten de component
-  - [x] minstens één form met meerdere velden met validatie (naast login/register)
-  - [x] login systeem
-        <br />
+    -   [x] heeft meerdere componenten - dom & slim (naast login/register)
+    -   [x] applicatie is voldoende complex
+    -   [x] definieert constanten (variabelen, functies en componenten) buiten de component
+    -   [x] minstens één form met meerdere velden met validatie (naast login/register)
+    -   [x] login systeem
+            <br />
 
-- **routing**
+-   **routing**
 
-  - [x] heeft minstens 2 pagina's (naast login/register)
-  - [ ] routes worden afgeschermd met authenticatie en autorisatie
-        <br />
+    -   [x] heeft minstens 2 pagina's (naast login/register)
+    -   [x] routes worden afgeschermd met authenticatie en autorisatie
+            <br />
 
-- **state-management**
+-   **state-management**
 
-  - [ ] meerdere API calls (naast login/register)
-  - [ ] degelijke foutmeldingen indien API-call faalt
-  - [x] gebruikt useState enkel voor lokale state
-  - [x] gebruikt gepast state management voor globale state - indien van toepassing
-        <br />
+    -   [x] meerdere API calls (naast login/register)
+    -   [x] degelijke foutmeldingen indien API-call faalt
+    -   [x] gebruikt useState enkel voor lokale state
+    -   [x] gebruikt gepast state management voor globale state - indien van toepassing
+            <br />
 
-- **hooks**
+-   **hooks**
 
-  - [x] gebruikt de hooks op de juiste manier
-        <br />
+    -   [x] gebruikt de hooks op de juiste manier
+            <br />
 
-- **varia**
+-   **varia**
 
-  - [ ] een aantal niet-triviale e2e testen
-  - [x] minstens één extra technologie
-  - [x] maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)
-  - [x] duidelijke en volledige README.md
-  - [ ] volledig en tijdig ingediend dossier en voldoende commits
+    -   [x] een aantal niet-triviale e2e testen
+    -   [x] minstens één extra technologie
+    -   [x] maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)
+    -   [x] duidelijke en volledige README.md
+    -   [x] volledig en tijdig ingediend dossier en voldoende commits
 
 ### Web Services
 
-- **datalaag**
+-   **datalaag**
 
-  - [x] voldoende complex (meer dan één tabel, 2 een-op-veel of veel-op-veel relaties)
-  - [x] één module beheert de connectie + connectie wordt gesloten bij sluiten server
-  - [x] heeft migraties - indien van toepassing
-  - [x] heeft seeds
-        <br />
+    -   [x] voldoende complex (meer dan één tabel, 2 een-op-veel of veel-op-veel relaties)
+    -   [x] één module beheert de connectie + connectie wordt gesloten bij sluiten server
+    -   [x] heeft migraties - indien van toepassing
+    -   [x] heeft seeds
+            <br />
 
-- **repositorylaag**
+-   **repositorylaag**
 
-  - [x] definieert één repository per entiteit (niet voor tussentabellen) - indien van toepassing
-  - [x] mapt OO-rijke data naar relationele tabellen en vice versa - indien van toepassing
-        <br />
+    -   [x] definieert één repository per entiteit (niet voor tussentabellen) - indien van toepassing
+    -   [x] mapt OO-rijke data naar relationele tabellen en vice versa - indien van toepassing
+            <br />
 
-- **servicelaag met een zekere complexiteit**
+-   **servicelaag met een zekere complexiteit**
 
-  - [x] bevat alle domeinlogica
-  - [x] bevat geen SQL-queries of databank-gerelateerde code
-        <br />
+    -   [x] bevat alle domeinlogica
+    -   [x] bevat geen SQL-queries of databank-gerelateerde code
+            <br />
 
-- **REST-laag**
+-   **REST-laag**
 
-  - [x] meerdere routes met invoervalidatie
-  - [x] degelijke foutboodschappen
-  - [x] volgt de conventies van een RESTful API
-  - [x] bevat geen domeinlogica
-  - [x] geen API calls voor entiteiten die geen zin hebben zonder hun ouder (bvb tussentabellen)
-  - [x] degelijke authorisatie/authenticatie op alle routes
-        <br />
+    -   [x] meerdere routes met invoervalidatie
+    -   [x] degelijke foutboodschappen
+    -   [x] volgt de conventies van een RESTful API
+    -   [x] bevat geen domeinlogica
+    -   [x] geen API calls voor entiteiten die geen zin hebben zonder hun ouder (bvb tussentabellen)
+    -   [x] degelijke authorisatie/authenticatie op alle routes
+            <br />
 
-- **algemeen**
+-   **algemeen**
 
-  - [x] er is een minimum aan logging voorzien
-  - [x] een aantal niet-triviale integratietesten (min. 1 controller >=80% coverage)
-  - [x] minstens één extra technologie
-  - [x] maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)
-  - [x] duidelijke en volledige README.md
-  - [x] volledig en tijdig ingediend dossier en voldoende commits
+    -   [x] er is een minimum aan logging voorzien
+    -   [x] een aantal niet-triviale integratietesten (min. 1 controller >=80% coverage)
+    -   [x] minstens één extra technologie
+    -   [x] maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)
+    -   [x] duidelijke en volledige README.md
+    -   [x] volledig en tijdig ingediend dossier en voldoende commits
 
 ## Projectstructuur
 
 ### Front-end Web Development
 
-( nog in te vullen later 2de zit)
+-   `2324-frontendweb-JasperHmn`
+    -   `.vscode`
+        -   `settings.json`
+    -   `cypress`
+        -   `e2e`
+            -   `aboutus.cy.js`
+            -   `customerpage.cy.js`
+            -   `footer.cy.js`
+            -   `homepage.cy.js`
+            -   `locationpage.cy.js`
+            -   `login.cy.js`
+            -   `logout.cy.js`
+            -   `payments.cy.js`
+            -   `profilepage.cy.js`
+            -   `register.cy.js`
+            -   `rentalpage.cy.js`
+        -   `fixtures`
+            -   `example.json`
+        -   `support`
+            -   `commands.js`
+            -   `e2e.js`
 
 ### Web Services
 
-- `2324-webservices-JasperHmn`
-  - `__tests__`
-    - `global.setup.js`
-    - `global.teardown.js`
-    - `supertest.setup.js`
-    - `common`
-      - `auth.js`
-    - `coverage`
-    - `rest`
-      - `health.spec.js`
-      - `huurlocaties.spec.js`
-      - `motoren.spec.js`
-  - `.vscode`
-  - `config`
-  - `coverage`
-  - `node_modules`
-  - `public`
-    - `images`
-  - `src`
-    - `core`
-      - `auth.js`
-      - `installMiddleware.js`
-      - `jwt.js`
-      - `logging.js`
-      - `password.js`
-      - `roles.js`
-      - `serviceError.js`
-      - `validation.js`
-    - `data`
-      - `migrations`
-      - `seeds`
-      - `index.js`
-    - `repository`
-      - `betaling.js`
-      - `huurlocatie.js`
-      - `klant.js`
-      - `motor.js`
-    - `rest`
-      - `betaling.js`
-      - `health.js`
-      - `huurlocatie.js`
-      - `index.js`
-      - `klant.js`
-      - `motor.js`
-    - `service`
-      - `_handleDBError.js`
-      - `betaling.js`
-      - `health.js`
-      - `huurlocatie.js`
-      - `klant.js`
-      - `motor.js`
-    - `createServer.js`
-    - `index.js`
-    - `testjwt.js`
-    - `testpw.js`
-  - `.env`
-  - `.env.test`
-  - `.gitignore`
-  - `jest.config.js`
-  - `package.json`
-  - `README.md`
+-   `2324-webservices-JasperHmn`
+    -   `__tests__`
+        -   `global.setup.js`
+        -   `global.teardown.js`
+        -   `supertest.setup.js`
+        -   `common`
+            -   `auth.js`
+        -   `coverage`
+        -   `rest`
+            -   `health.spec.js`
+            -   `huurlocaties.spec.js`
+            -   `motoren.spec.js`
+    -   `.vscode`
+    -   `config`
+    -   `coverage`
+    -   `node_modules`
+    -   `public`
+        -   `images`
+    -   `src`
+        -   `core`
+            -   `auth.js`
+            -   `installMiddleware.js`
+            -   `jwt.js`
+            -   `logging.js`
+            -   `password.js`
+            -   `roles.js`
+            -   `serviceError.js`
+            -   `validation.js`
+        -   `data`
+            -   `migrations`
+            -   `seeds`
+            -   `index.js`
+        -   `repository`
+            -   `betaling.js`
+            -   `huurlocatie.js`
+            -   `klant.js`
+            -   `motor.js`
+        -   `rest`
+            -   `betaling.js`
+            -   `health.js`
+            -   `huurlocatie.js`
+            -   `index.js`
+            -   `klant.js`
+            -   `motor.js`
+        -   `service`
+            -   `_handleDBError.js`
+            -   `betaling.js`
+            -   `health.js`
+            -   `huurlocatie.js`
+            -   `klant.js`
+            -   `motor.js`
+        -   `createServer.js`
+        -   `index.js`
+        -   `testjwt.js`
+        -   `testpw.js`
+    -   `.env`
+    -   `.env.test`
+    -   `.gitignore`
+    -   `jest.config.js`
+    -   `package.json`
+    -   `README.md`
 
 ## Extra technologie
 
@@ -263,15 +290,15 @@ Deze test waarborgt de correcte werking van de API voor motorbeheer in verschill
 
 ### Screenshots
 
-![Alt text](testscreenshot.png)
-![Alt text](testcoverage.png)
+![Alt text](./public/images/screenshot/testscreenshot.png)
+![Alt text](./public/images/screenshot/testcoverage.png)
 
 ## Gekende bugs
 
 ### Front-end Web Development
 
-(nog in te vullen later 2de zit)
+Geen bugs binnen het project.
 
 ### Web Services
 
-Ik heb geen bugs opgemerkt binnen het project.
+Geen bugs binnen het project.
