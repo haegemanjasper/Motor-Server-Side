@@ -18,17 +18,10 @@ module.exports = function installMiddleware(app) {
     app.use(
         koaCors({
             origin: (ctx) => {
-                // Allow requests from localhost:5173 and other specified origins
-                const allowedOrigins = [
-                    "http://localhost:5173", // Your frontend development URL
-                    "https://frontendweb-motor.onrender.com", // Production URL
-                ];
-                const origin = ctx.request.header.origin;
-                if (allowedOrigins.includes(origin)) {
-                    return origin;
+                if (CORS_ORIGINS.indexOf(ctx.request.header.origin) !== -1) {
+                    return ctx.request.header.origin;
                 }
-                // Default to the first allowed origin if no match
-                return allowedOrigins[0];
+                return CORS_ORIGINS[0];
             },
             allowHeaders: ["Accept", "Content-Type", "Authorization"],
             maxAge: CORS_MAX_AGE,
