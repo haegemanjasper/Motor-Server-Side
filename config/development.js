@@ -20,7 +20,10 @@ module.exports = {
         disabled: false,
     },
     cors: {
-        origins: ["http://localhost:5173"],
+        origins: [
+            "http://localhost:5173",
+            "https://frontendweb-motor.onrender.com",
+        ],
         maxAge: 3 * 60 * 60,
     },
     database: {

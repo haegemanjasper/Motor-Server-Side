@@ -10,42 +10,43 @@ const LOG_LEVEL = config.get("log.level");
 const LOG_DISABLED = config.get("log.disabled");
 
 module.exports = async function createServer() {
-  // 👈 1
-  initializeLogger({
-    level: LOG_LEVEL,
-    disabled: LOG_DISABLED,
-    defaultMeta: {
-      NODE_ENV,
-    },
-  });
+    initializeLogger({
+        level: LOG_LEVEL,
+        disabled: LOG_DISABLED,
+        defaultMeta: {
+            NODE_ENV,
+        },
+    });
 
-  await initializeData();
+    await initializeData();
 
-  const app = new Koa();
+    const app = new Koa();
 
-  installMiddleware(app);
+    installMiddleware(app);
 
-  installRest(app);
+    installRest(app);
 
-  return {
-    getApp() {
-      return app;
-    },
+    return {
+        getApp() {
+            return app;
+        },
 
-    start() {
-      return new Promise((resolve) => {
-        const port = config.get("port");
-        app.listen(port, () => {
-          getLogger().info(`🚀 Server listening on http://localhost:${port}`);
-          resolve();
-        });
-      });
-    },
+        start() {
+            return new Promise((resolve) => {
+                const port = config.get("port");
+                app.listen(port, () => {
+                    getLogger().info(
+                        `🚀 Server listening on http://localhost:${port}`
+                    );
+                    resolve();
+                });
+            });
+        },
 
-    async stop() {
-      app.removeAllListeners();
-      await shutdownData();
-      getLogger().info("Goodbye! 👋");
-    },
-  };
+        async stop() {
+            app.removeAllListeners();
+            await shutdownData();
+            getLogger().info("Goodbye! 👋");
+        },
+    };
 };
