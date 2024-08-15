@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>dossier.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="voornaam-familienaam-studentennummer">Voornaam Familienaam (Studentennummer)</h1>
+<ul>
+<li>
+<p>Student: Jasper Haegeman</p>
+</li>
+<li>
+<p>Studentennummer: 202292134</p>
+</li>
+<li>
+<p>E-mailadres: <a href="mailto:jasper.haegeman@student.hogent.be">mailto:jasper.haegeman@student.hogent.be</a></p>
+</li>
+<li>
+<p><input type="checkbox" id="checkbox0" checked="true"><label for="checkbox0">Front-end Web Development</label></p>
+<ul>
+<li><a href="https://github.com/Web-IV/2324-frontendweb-JasperHmn.git">https://github.com/Web-IV/2324-frontendweb-JasperHmn.git</a></li>
+<li><a href="https://frontendweb-motor.onrender.com">https://frontendweb-motor.onrender.com</a></li>
+</ul>
+</li>
+<li>
+<p><input type="checkbox" id="checkbox1" checked="true"><label for="checkbox1">Web Services:</label></p>
+<ul>
+<li><a href="https://github.com/Web-IV/2324-webservices-JasperHmn.git">https://github.com/Web-IV/2324-webservices-JasperHmn.git</a></li>
+<li><a href="https://webservices-motor.onrender.com">https://webservices-motor.onrender.com</a></li>
+</ul>
+</li>
+</ul>
+<p><strong>Logingegevens</strong></p>
+<p><strong>Admin</strong></p>
+<ul>
+<li>Gebruikersnaam/e-mailadres: jasper.haegeman@student.hogent.be</li>
+<li>Wachtwoord: 12345678</li>
+</ul>
+<p><strong>Klant</strong></p>
+<ul>
+<li>Gebruikersnaam/e-mailadres: jef.ds@hotmail.com</li>
+<li>Wachtwoord: 12345678</li>
+</ul>
+<h2 id="projectbeschrijving">Projectbeschrijving</h2>
+<p>Dit is een motorverhuursite waarmee je eenvoudig motoren kunt huren. Als gast kun je alleen de motoren bekijken, maar na registratie en inloggen kun je als klant motoren reserveren voor een bepaald aantal dagen en de betaling regelen op een locatie naar keuze. Klanten kunnen ook hun betalingsgeschiedenis inzien. Beheerders hebben extra mogelijkheden, zoals het beheren van klantgegevens, locaties en motoren. Daarnaast kunnen zowel klanten als beheerders hun eigen gegevens aanpassen.</p>
+<p><img src="file:///c:/Users/32468/Desktop/HOGENT 2023-2024/SEM1/Web Services/2324-webservices-JasperHmn/public/images/screenshot/ERDmotor.png" alt="Alt text"></p>
+<h2 id="screenshots">Screenshots</h2>
+<p><img src="file:///c:/Users/32468/Desktop/HOGENT 2023-2024/SEM1/Web Services/2324-webservices-JasperHmn/public/images/screenshot/Screenshot 2024-08-14 121243.png" alt="Alt text">
+<img src="file:///c:/Users/32468/Desktop/HOGENT 2023-2024/SEM1/Web Services/2324-webservices-JasperHmn/public/images/screenshot/Screenshot 2024-08-14 121314.png" alt="Alt text">
+<img src="file:///c:/Users/32468/Desktop/HOGENT 2023-2024/SEM1/Web Services/2324-webservices-JasperHmn/public/images/screenshot/Screenshot 2024-08-14 121914.png" alt="Alt text">
+<img src="file:///c:/Users/32468/Desktop/HOGENT 2023-2024/SEM1/Web Services/2324-webservices-JasperHmn/public/images/screenshot/Screenshot 2024-08-14 122213.png" alt="Alt text">
+<img src="file:///c:/Users/32468/Desktop/HOGENT 2023-2024/SEM1/Web Services/2324-webservices-JasperHmn/public/images/screenshot/Screenshot 2024-08-14 122004.png" alt="Alt text">
+<img src="file:///c:/Users/32468/Desktop/HOGENT 2023-2024/SEM1/Web Services/2324-webservices-JasperHmn/public/images/screenshot/Screenshot 2024-08-14 122037.png" alt="Alt text"></p>
+<h2 id="api-calls">API calls</h2>
+<h3 id="klanten">Klanten</h3>
+<ul>
+<li><code>GET /api/klanten</code>: alle gebruikers ophalen</li>
+<li><code>GET /api/klanten/:id</code>: gebruiker met een bepaald id ophalen</li>
+<li><code>POST /api/klanten/register</code>: gebruiker registeren</li>
+<li><code>POST /api/klanten/login</code>: gebruiker inloggen</li>
+<li><code>PUT /api/klanten/:id</code>: gebruiker met een bepaald id wijzigen</li>
+<li><code>DELETE /api/klanten/:id</code>: gebruiker met een bepaald id verwijderen</li>
+</ul>
+<h3 id="huurlocaties">Huurlocaties</h3>
+<ul>
+<li><code>GET /api/huurlocaties</code>: alle huurlocaties ophalen</li>
+<li><code>GET /api/huurlocaties/:id</code>: huurlocatie met een bepaald id ophalen</li>
+<li><code>POST /api/huurlocaties</code>: huurlocatie toevoegen</li>
+<li><code>PUT /api/huurlocaties/:id</code>: huurlocatie met een bepaald id wijzigen</li>
+<li><code>DELETE /api/huurlocaties/:id</code>: huurlocatie met een bepaald id verwijderen</li>
+</ul>
+<h3 id="betalingen">Betalingen</h3>
+<ul>
+<li><code>GET /api/betalingen</code>: alle betalingen ophalen</li>
+<li><code>GET /api/betalingen/:id</code>: betaling met een bepaald id ophalen</li>
+<li><code>POST /api/betalingen</code>: betaling toevoegen</li>
+<li><code>PUT /api/betalingen/:id</code>: betaling met een bepaald id wijzigen</li>
+<li><code>DELETE /api/betalingen/:id</code>: betaling met een bepaald id verwijderen</li>
+</ul>
+<h3 id="motoren">Motoren</h3>
+<ul>
+<li><code>GET /api/motoren</code>: alle motoren ophalen</li>
+<li><code>GET /api/motoren/:id</code>: motor met een bepaald id ophalen</li>
+<li><code>POST /api/motoren</code>: motor toevoegen</li>
+<li><code>PUT /api/motoren/:id</code>: motor met een bepaald id wijzigen</li>
+<li><code>DELETE /api/motoren/:id</code>: motor met een bepaald id verwijderen</li>
+</ul>
+<h2 id="behaalde-minimumvereisten">Behaalde minimumvereisten</h2>
+<h3 id="front-end-web-development">Front-end Web Development</h3>
+<ul>
+<li>
+<p><strong>componenten</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox2" checked="true"><label for="checkbox2">heeft meerdere componenten - dom &amp; slim (naast login/register)</label></li>
+<li><input type="checkbox" id="checkbox3" checked="true"><label for="checkbox3">applicatie is voldoende complex</label></li>
+<li><input type="checkbox" id="checkbox4" checked="true"><label for="checkbox4">definieert constanten (variabelen, functies en componenten) buiten de component</label></li>
+<li><input type="checkbox" id="checkbox5" checked="true"><label for="checkbox5">minstens één form met meerdere velden met validatie (naast login/register)</label></li>
+<li><input type="checkbox" id="checkbox6" checked="true"><label for="checkbox6">login systeem</label>
+<br /></li>
+</ul>
+</li>
+<li>
+<p><strong>routing</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox7" checked="true"><label for="checkbox7">heeft minstens 2 pagina's (naast login/register)</label></li>
+<li><input type="checkbox" id="checkbox8" checked="true"><label for="checkbox8">routes worden afgeschermd met authenticatie en autorisatie</label>
+<br /></li>
+</ul>
+</li>
+<li>
+<p><strong>state-management</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox9" checked="true"><label for="checkbox9">meerdere API calls (naast login/register)</label></li>
+<li><input type="checkbox" id="checkbox10" checked="true"><label for="checkbox10">degelijke foutmeldingen indien API-call faalt</label></li>
+<li><input type="checkbox" id="checkbox11" checked="true"><label for="checkbox11">gebruikt useState enkel voor lokale state</label></li>
+<li><input type="checkbox" id="checkbox12" checked="true"><label for="checkbox12">gebruikt gepast state management voor globale state - indien van toepassing</label>
+<br /></li>
+</ul>
+</li>
+<li>
+<p><strong>hooks</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox13" checked="true"><label for="checkbox13">gebruikt de hooks op de juiste manier</label>
+<br /></li>
+</ul>
+</li>
+<li>
+<p><strong>varia</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox14" checked="true"><label for="checkbox14">een aantal niet-triviale e2e testen</label></li>
+<li><input type="checkbox" id="checkbox15" checked="true"><label for="checkbox15">minstens één extra technologie</label></li>
+<li><input type="checkbox" id="checkbox16" checked="true"><label for="checkbox16">maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)</label></li>
+<li><input type="checkbox" id="checkbox17" checked="true"><label for="checkbox17">duidelijke en volledige README.md</label></li>
+<li><input type="checkbox" id="checkbox18" checked="true"><label for="checkbox18">volledig en tijdig ingediend dossier en voldoende commits</label></li>
+</ul>
+</li>
+</ul>
+<h3 id="web-services">Web Services</h3>
+<ul>
+<li>
+<p><strong>datalaag</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox19" checked="true"><label for="checkbox19">voldoende complex (meer dan één tabel, 2 een-op-veel of veel-op-veel relaties)</label></li>
+<li><input type="checkbox" id="checkbox20" checked="true"><label for="checkbox20">één module beheert de connectie + connectie wordt gesloten bij sluiten server</label></li>
+<li><input type="checkbox" id="checkbox21" checked="true"><label for="checkbox21">heeft migraties - indien van toepassing</label></li>
+<li><input type="checkbox" id="checkbox22" checked="true"><label for="checkbox22">heeft seeds</label>
+<br /></li>
+</ul>
+</li>
+<li>
+<p><strong>repositorylaag</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox23" checked="true"><label for="checkbox23">definieert één repository per entiteit (niet voor tussentabellen) - indien van toepassing</label></li>
+<li><input type="checkbox" id="checkbox24" checked="true"><label for="checkbox24">mapt OO-rijke data naar relationele tabellen en vice versa - indien van toepassing</label>
+<br /></li>
+</ul>
+</li>
+<li>
+<p><strong>servicelaag met een zekere complexiteit</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox25" checked="true"><label for="checkbox25">bevat alle domeinlogica</label></li>
+<li><input type="checkbox" id="checkbox26" checked="true"><label for="checkbox26">bevat geen SQL-queries of databank-gerelateerde code</label>
+<br /></li>
+</ul>
+</li>
+<li>
+<p><strong>REST-laag</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox27" checked="true"><label for="checkbox27">meerdere routes met invoervalidatie</label></li>
+<li><input type="checkbox" id="checkbox28" checked="true"><label for="checkbox28">degelijke foutboodschappen</label></li>
+<li><input type="checkbox" id="checkbox29" checked="true"><label for="checkbox29">volgt de conventies van een RESTful API</label></li>
+<li><input type="checkbox" id="checkbox30" checked="true"><label for="checkbox30">bevat geen domeinlogica</label></li>
+<li><input type="checkbox" id="checkbox31" checked="true"><label for="checkbox31">geen API calls voor entiteiten die geen zin hebben zonder hun ouder (bvb tussentabellen)</label></li>
+<li><input type="checkbox" id="checkbox32" checked="true"><label for="checkbox32">degelijke authorisatie/authenticatie op alle routes</label>
+<br /></li>
+</ul>
+</li>
+<li>
+<p><strong>algemeen</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox33" checked="true"><label for="checkbox33">er is een minimum aan logging voorzien</label></li>
+<li><input type="checkbox" id="checkbox34" checked="true"><label for="checkbox34">een aantal niet-triviale integratietesten (min. 1 controller &gt;=80% coverage)</label></li>
+<li><input type="checkbox" id="checkbox35" checked="true"><label for="checkbox35">minstens één extra technologie</label></li>
+<li><input type="checkbox" id="checkbox36" checked="true"><label for="checkbox36">maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)</label></li>
+<li><input type="checkbox" id="checkbox37" checked="true"><label for="checkbox37">duidelijke en volledige README.md</label></li>
+<li><input type="checkbox" id="checkbox38" checked="true"><label for="checkbox38">volledig en tijdig ingediend dossier en voldoende commits</label></li>
+</ul>
+</li>
+</ul>
+<h2 id="projectstructuur">Projectstructuur</h2>
+<h3 id="front-end-web-development">Front-end Web Development</h3>
+<ul>
+<li><code>2324-frontendweb-JasperHmn</code>
+<ul>
+<li><code>.vscode</code>
+<ul>
+<li><code>settings.json</code></li>
+</ul>
+</li>
+<li><code>cypress</code>
+<ul>
+<li><code>e2e</code>
+<ul>
+<li><code>aboutus.cy.js</code></li>
+<li><code>customerpage.cy.js</code></li>
+<li><code>footer.cy.js</code></li>
+<li><code>homepage.cy.js</code></li>
+<li><code>locationpage.cy.js</code></li>
+<li><code>login.cy.js</code></li>
+<li><code>logout.cy.js</code></li>
+<li><code>payments.cy.js</code></li>
+<li><code>profilepage.cy.js</code></li>
+<li><code>register.cy.js</code></li>
+<li><code>rentalpage.cy.js</code></li>
+</ul>
+</li>
+<li><code>fixtures</code>
+<ul>
+<li><code>example.json</code></li>
+</ul>
+</li>
+<li><code>support</code>
+<ul>
+<li><code>commands.js</code></li>
+<li><code>e2e.js</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>node_modules</code></li>
+<li><code>public</code>
+<ul>
+<li><code>vite.svg</code></li>
+</ul>
+</li>
+<li><code>src</code>
+<ul>
+<li><code>api</code>
+<ul>
+<li><code>index.js</code></li>
+</ul>
+</li>
+<li><code>assets</code>
+<ul>
+<li><code>foto's</code></li>
+<li><code>imageMap.js</code></li>
+</ul>
+</li>
+<li><code>components</code>
+<ul>
+<li><code>banner</code>
+<ul>
+<li><code>customCarousel.jsx</code></li>
+</ul>
+</li>
+<li><code>checkout</code>
+<ul>
+<li><code>CheckoutContainer.jsx</code></li>
+<li><code>CheckoutValidateForm.jsx</code></li>
+<li><code>FormField.jsx</code></li>
+<li><code>PaymentForm.jsx</code></li>
+</ul>
+</li>
+<li><code>customer</code>
+<ul>
+<li><code>ConfirmationModal.jsx</code></li>
+<li><code>CustomersTable.jsx</code></li>
+</ul>
+</li>
+<li><code>footer</code>
+<ul>
+<li><code>footer.jsx</code></li>
+</ul>
+</li>
+<li><code>guestrentabike</code>
+<ul>
+<li><code>BikeSlide.jsx</code></li>
+<li><code>FlashBanner.jsx</code></li>
+<li><code>LoginRequiredModal.jsx</code></li>
+</ul>
+</li>
+<li><code>loadingAndErrors</code>
+<ul>
+<li><code>AsyncData.jsx</code></li>
+<li><code>Error.jsx</code></li>
+<li><code>Forbidden.jsx</code></li>
+<li><code>Loading.jsx</code></li>
+<li><code>NotFound.jsx</code></li>
+</ul>
+</li>
+<li><code>location</code>
+<ul>
+<li><code>CreateLocationModal.jsx</code></li>
+<li><code>DeleteLocationModal.jsx</code></li>
+<li><code>LocationTable.jsx</code></li>
+</ul>
+</li>
+<li><code>login</code>
+<ul>
+<li><code>LoginForm.jsx</code></li>
+<li><code>LoginHeader.jsx</code></li>
+</ul>
+</li>
+<li><code>motors</code>
+<ul>
+<li><code>CreateMotorForm.jsx</code></li>
+<li><code>Motor.jsx</code></li>
+<li><code>MotorList.jsx</code></li>
+<li><code>RatingStars.jsx</code></li>
+</ul>
+</li>
+<li><code>navigation</code>
+<ul>
+<li><code>AuthControls.jsx</code></li>
+<li><code>Logo.jsx</code></li>
+<li><code>navbar.jsx</code></li>
+<li><code>NavLinks.jsx</code></li>
+</ul>
+</li>
+<li><code>payments</code>
+<ul>
+<li><code>ConfirmationModal.jsx</code></li>
+<li><code>PaymentsTable.jsx</code></li>
+</ul>
+</li>
+<li><code>profile</code>
+<ul>
+<li><code>ProfileForm.jsx</code></li>
+<li><code>ProfileHeader.jsx</code></li>
+</ul>
+</li>
+<li><code>register</code>
+<ul>
+<li><code>formInput.jsx</code></li>
+<li><code>registerForm.jsx</code></li>
+<li><code>registerFormLayout.jsx</code></li>
+<li><code>registerValidateForm.jsx</code></li>
+</ul>
+</li>
+<li><code>shop</code>
+<ul>
+<li><code>cart-item.jsx</code></li>
+<li><code>cart-summary.jsx</code></li>
+<li><code>confirmationpage.jsx</code></li>
+<li><code>product.jsx</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>context</code>
+<ul>
+<li><code>auth-context.jsx</code></li>
+<li><code>shop-context.jsx</code></li>
+</ul>
+</li>
+<li><code>pages</code>
+<ul>
+<li><code>aboutus.jsx</code></li>
+<li><code>cart.jsx</code></li>
+<li><code>checkout.jsx</code></li>
+<li><code>customers.jsx</code></li>
+<li><code>home.jsx</code></li>
+<li><code>locations.jsx</code></li>
+<li><code>login.jsx</code></li>
+<li><code>payments.jsx</code></li>
+<li><code>profile.jsx</code></li>
+<li><code>register.jsx</code></li>
+<li><code>rentabike.jsx</code></li>
+<li><code>shop.jsx</code></li>
+</ul>
+</li>
+<li><code>main.jsx</code></li>
+<li><code>root.jsx</code></li>
+<li><code>theme.js</code></li>
+</ul>
+</li>
+<li><code>.env</code></li>
+<li><code>.gitignore</code></li>
+<li><code>cypress.config.js</code></li>
+<li><code>dossier.md</code></li>
+<li><code>index.html</code></li>
+<li><code>package.json</code></li>
+<li><code>postcss.config.js</code></li>
+<li><code>README.md</code></li>
+<li><code>vite.config.js</code></li>
+<li><code>yarn.lock</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="web-services">Web Services</h3>
+<ul>
+<li><code>2324-webservices-JasperHmn</code>
+<ul>
+<li><code>__tests__</code>
+<ul>
+<li><code>global.setup.js</code></li>
+<li><code>global.teardown.js</code></li>
+<li><code>supertest.setup.js</code></li>
+<li><code>common</code>
+<ul>
+<li><code>auth.js</code></li>
+</ul>
+</li>
+<li><code>coverage</code></li>
+<li><code>rest</code>
+<ul>
+<li><code>health.spec.js</code></li>
+<li><code>huurlocaties.spec.js</code></li>
+<li><code>motoren.spec.js</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>.vscode</code></li>
+<li><code>config</code></li>
+<li><code>coverage</code></li>
+<li><code>node_modules</code></li>
+<li><code>public</code>
+<ul>
+<li><code>images</code></li>
+</ul>
+</li>
+<li><code>src</code>
+<ul>
+<li><code>core</code>
+<ul>
+<li><code>auth.js</code></li>
+<li><code>installMiddleware.js</code></li>
+<li><code>jwt.js</code></li>
+<li><code>logging.js</code></li>
+<li><code>password.js</code></li>
+<li><code>roles.js</code></li>
+<li><code>serviceError.js</code></li>
+<li><code>validation.js</code></li>
+</ul>
+</li>
+<li><code>data</code>
+<ul>
+<li><code>migrations</code></li>
+<li><code>seeds</code></li>
+<li><code>index.js</code></li>
+</ul>
+</li>
+<li><code>repository</code>
+<ul>
+<li><code>betaling.js</code></li>
+<li><code>huurlocatie.js</code></li>
+<li><code>klant.js</code></li>
+<li><code>motor.js</code></li>
+</ul>
+</li>
+<li><code>rest</code>
+<ul>
+<li><code>betaling.js</code></li>
+<li><code>health.js</code></li>
+<li><code>huurlocatie.js</code></li>
+<li><code>index.js</code></li>
+<li><code>klant.js</code></li>
+<li><code>motor.js</code></li>
+</ul>
+</li>
+<li><code>service</code>
+<ul>
+<li><code>_handleDBError.js</code></li>
+<li><code>betaling.js</code></li>
+<li><code>health.js</code></li>
+<li><code>huurlocatie.js</code></li>
+<li><code>klant.js</code></li>
+<li><code>motor.js</code></li>
+</ul>
+</li>
+<li><code>createServer.js</code></li>
+<li><code>index.js</code></li>
+<li><code>testjwt.js</code></li>
+<li><code>testpw.js</code></li>
+</ul>
+</li>
+<li><code>.env</code></li>
+<li><code>.env.test</code></li>
+<li><code>.gitignore</code></li>
+<li><code>jest.config.js</code></li>
+<li><code>package.json</code></li>
+<li><code>README.md</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="extra-technologie">Extra technologie</h2>
+<h3 id="front-end-web-development">Front-end Web Development</h3>
+<p>Gebruik van Chakra UI. Het is een technologie die gebruikt maakt van een standaardlibrary om zo
+op een gemakelijke manier een mooie UI te maken. Het is een open-source design systeem dat bestaat uit een componentenbibliotheek en een aantal tools die helpen bij het bouwen van toegankelijke React-applicaties.</p>
+<p>https://www.npmjs.com/package/@chakra-ui/react</p>
+<p>https://chakra-ui.com/</p>
+<h3 id="web-services">Web Services</h3>
+<p>Gebruik van zxcvbn.
+Het is een wachtwoordsterkte-inschattingstool die beordeelt wachtwoorden op basis van hun sterkte en geeft feedback over hoe ze kunnen worden verbeterd.</p>
+<p>zxcvbn evalueert de sterkte van een wachtwoord op basis van verschillende criteria, waaronder lengte, complexiteit en het al dan niet gberuik van woordenboekwoorden.</p>
+<p><code>yarn add zxcvbn</code></p>
+<p>https://www.npmjs.com/package/zxcvbn</p>
+<h2 id="testresultaten">Testresultaten</h2>
+<h3 id="front-end-web-development">Front-end Web Development</h3>
+<h3 id="aboutuscyjs">aboutus.cy.js</h3>
+<p>De test controleert of de hoofdtitel en sectiekoppen correct worden weergegeven, of het aantal secties overeenkomt met de verwachtingen en kijkt ook of de achtergrondkleur overeenkomt.</p>
+<h3 id="customerpagecyjs">customerpage.cy.js</h3>
+<p>De test controleert na het inloggen en navigeren naar de klantenpagina of de tabel en juiste kolomheaders worden getoond.</p>
+<h3 id="footercyjs">footer.cy.js</h3>
+<p>De test controleert of de footer op de homepagina correct wordt weergegeven en verifieert of de tekst, achtergrondkleur en randstijlen voldoen aan de opgegeven specificaties.</p>
+<h3 id="homepagecyjs">homepage.cy.js</h3>
+<p>De test controleert voor alle drie de rollen (klant, admin en gast) of de CustomCarousel aanwezig is en of de juiste welkomstboodschap wordt weergegeven, afhankelijk van de rol van de gebruiker na inloggen.</p>
+<h3 id="locationpagecyjs">locationpage.cy.js</h3>
+<p>De test toont of een locatie succesvol kan worden aangemaakt en gecontroleerd. Na inloggen en navigeren naar de locatiepagina, wordt getest of de optie om een nieuwe locatie te creëren beschikbaar is en werkt. Vervolgens worden de details van een nieuwe locatie ingevoerd en opgeslagen. De test controleert of de nieuwe locatie correct wordt weergegeven in de tabel met de ingevoerde gegevens.</p>
+<h3 id="logincyjs">login.cy.js</h3>
+<p>De test controleert of inloggen als gebruiker succesvol is en of de gebruiker de juiste welkomstboodschap op de homepage ziet. Een andere test controleert of inloggen als admin succesvol is en of de admin de specifieke welkomstboodschap en informatie op de homepage ontvangt.</p>
+<h3 id="logoutcyjs">logout.cy.js</h3>
+<p>De test controleert of, na uitloggen, de gebruiker weer naar de inlogpagina wordt geleid en of de knop &quot;Log in&quot; zichtbaar is.</p>
+<h3 id="paymentscyjs">payments.cy.js</h3>
+<p>De test controleert of de betalingspagina correct wordt weergegeven na inloggen, of de tabel met betalingsinformatie de juiste kolomkoppen toont en of het bevestigingsvenster verschijnt wanneer de delete-knop wordt ingedrukt. Ook wordt getest of een betaling daadwerkelijk wordt verwijderd na het bevestigen van de actie.</p>
+<h3 id="profilepagecyjs">profilepage.cy.js</h3>
+<p>De test controleert of de profielpagina correct wordt weergegeven na inloggen en of de gebruiker profielinformatie kan bewerken. Dit omvat het verifiëren van de initiële profielgegevens, het invoeren van gewijzigde gegevens in bewerkingsmodus en het klikken op de knop om de bijgewerkte informatie op te slaan.</p>
+<h3 id="registercyjs">register.cy.js</h3>
+<p>De test controleert of een nieuwe gebruiker succesvol kan worden geregistreerd en of de gebruiker wordt doorgestuurd naar de inlogpagina na een succesvolle registratie. De test simuleert een registratieverzoek en verifieert de redirect naar de loginpagina.</p>
+<h3 id="rentalpagecyjs">rentalpage.cy.js</h3>
+<p>De test controleert of de RentABike-pagina correct laadt, of de slider met motorfietsen zichtbaar is en of elke dia een flash-banner bevat. Ook wordt getest of het klikken op de 'Rent Now'-knop een modal opent met de boodschap &quot;You need to be logged in to rent a bike&quot;.</p>
+<h3 id="web-services">Web Services</h3>
+<h4 id="huurlocaties">huurlocaties</h4>
+<p>Deze test kijkt of de software de lijst van beschikbare huurlocaties correct weergeeft.
+We controleren ook of de software goed omgaat met situaties waarin gebruikers verkeerde informatie invoeren.
+We passen dit ook toe voor het toevoegen, bijwerken en verwijderen van een huurlocatie.</p>
+<h4 id="health">health</h4>
+<p>Deze test evalueert de gezondheids- en versie-eindpunten van de server om ervoor te zorgen dat ze correct reageren en de verwachte informatie verstrekken. Daarnaast wordt gecontroleerd of de server zich goed gedraagt bij het benaderen van een onbekende URL.</p>
+<h4 id="motoren">motoren</h4>
+<p>Deze test waarborgt de correcte werking van de API voor motorbeheer in verschillende scenario's, inclusief toevoegen, bijwerken en verwijderen van motoren. Ze dienen als waarborg voor een goede functionaliteit en beveiliging van de applicatie.</p>
+<h3 id="screenshots">Screenshots</h3>
+<p><img src="file:///c:/Users/32468/Desktop/HOGENT 2023-2024/SEM1/Web Services/2324-webservices-JasperHmn/public/images/screenshot/testscreenshot.png" alt="Alt text">
+<img src="file:///c:/Users/32468/Desktop/HOGENT 2023-2024/SEM1/Web Services/2324-webservices-JasperHmn/public/images/screenshot/testcoverage.png" alt="Alt text"></p>
+<h2 id="gekende-bugs">Gekende bugs</h2>
+<h3 id="front-end-web-development">Front-end Web Development</h3>
+<p>Geen gekende bugs binnen Front-end Web Development.</p>
+<h3 id="web-services">Web Services</h3>
+<p>Geen gekende bugs binnen Web Services.</p>
+<h2 id="wat-is-er-verbeterdaangepast">Wat is er verbeterd/aangepast?</h2>
+<h3 id="front-end-web-development">Front-end Web Development</h3>
+<ul>
+<li>Ik heb de lay-out volledig vernieuwd en vanaf nul opnieuw opgebouwd. Ik heb gezorgd voor een gestructureerde opbouw en gebruik gemaakt van diverse componenten om de pagina’s te verkorten, overzichtelijker te maken en gemakkelijker aan te passen.</li>
+</ul>
+<h3 id="web-services">Web Services</h3>
+<ul>
+<li>Ik heb enkele kleine aanpassingen aangebracht in de restlaag bij huurlocaties, zodat ik ze kan ophalen op naam via het id en de seed-data voor motoren aangepast en verminderd.</li>
+</ul>
+
+</body>
+</html>

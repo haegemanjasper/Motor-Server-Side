@@ -25,7 +25,7 @@
 
 ## Projectbeschrijving
 
-Dit is een motorverhuursite waarmee je eenvoudig motoren kunt huren. Als gast kun je alleen de motoren bekijken, maar na registratie en inloggen kun je als klant motoren reserveren voor een bepaald aantal dagen en de betaling regelen op een locatie naar keuze. Klanten kunnen ook hun betalingsgeschiedenis inzien. Beheerders hebben extra mogelijkheden, zoals het beheren van klantgegevens, locaties, en motoren. Daarnaast kunnen zowel klanten als beheerders hun eigen gegevens aanpassen.
+Dit is een motorverhuursite waarmee je eenvoudig motoren kunt huren. Als gast kun je alleen de motoren bekijken, maar na registratie en inloggen kun je als klant motoren reserveren voor een bepaald aantal dagen en de betaling regelen op een locatie naar keuze. Klanten kunnen ook hun betalingsgeschiedenis inzien. Beheerders hebben extra mogelijkheden, zoals het beheren van klantgegevens, locaties en motoren. Daarnaast kunnen zowel klanten als beheerders hun eigen gegevens aanpassen.
 
 ![Alt text](./public/images/screenshot/ERDmotor.png)
 
@@ -179,6 +179,100 @@ Dit is een motorverhuursite waarmee je eenvoudig motoren kunt huren. Als gast ku
         -   `support`
             -   `commands.js`
             -   `e2e.js`
+    -   `node_modules`
+    -   `public`
+        -   `vite.svg`
+    -   `src`
+        -   `api`
+            -   `index.js`
+        -   `assets`
+            -   `foto's`
+            -   `imageMap.js`
+        -   `components`
+            -   `banner`
+                -   `customCarousel.jsx`
+            -   `checkout`
+                -   `CheckoutContainer.jsx`
+                -   `CheckoutValidateForm.jsx`
+                -   `FormField.jsx`
+                -   `PaymentForm.jsx`
+            -   `customer`
+                -   `ConfirmationModal.jsx`
+                -   `CustomersTable.jsx`
+            -   `footer`
+                -   `footer.jsx`
+            -   `guestrentabike`
+                -   `BikeSlide.jsx`
+                -   `FlashBanner.jsx`
+                -   `LoginRequiredModal.jsx`
+            -   `loadingAndErrors`
+                -   `AsyncData.jsx`
+                -   `Error.jsx`
+                -   `Forbidden.jsx`
+                -   `Loading.jsx`
+                -   `NotFound.jsx`
+            -   `location`
+                -   `CreateLocationModal.jsx`
+                -   `DeleteLocationModal.jsx`
+                -   `LocationTable.jsx`
+            -   `login`
+                -   `LoginForm.jsx`
+                -   `LoginHeader.jsx`
+            -   `motors`
+                -   `CreateMotorForm.jsx`
+                -   `Motor.jsx`
+                -   `MotorList.jsx`
+                -   `RatingStars.jsx`
+            -   `navigation`
+                -   `AuthControls.jsx`
+                -   `Logo.jsx`
+                -   `navbar.jsx`
+                -   `NavLinks.jsx`
+            -   `payments`
+                -   `ConfirmationModal.jsx`
+                -   `PaymentsTable.jsx`
+            -   `profile`
+                -   `ProfileForm.jsx`
+                -   `ProfileHeader.jsx`
+            -   `register`
+                -   `formInput.jsx`
+                -   `registerForm.jsx`
+                -   `registerFormLayout.jsx`
+                -   `registerValidateForm.jsx`
+            -   `shop`
+                -   `cart-item.jsx`
+                -   `cart-summary.jsx`
+                -   `confirmationpage.jsx`
+                -   `product.jsx`
+        -   `context`
+            -   `auth-context.jsx`
+            -   `shop-context.jsx`
+        -   `pages`
+            -   `aboutus.jsx`
+            -   `cart.jsx`
+            -   `checkout.jsx`
+            -   `customers.jsx`
+            -   `home.jsx`
+            -   `locations.jsx`
+            -   `login.jsx`
+            -   `payments.jsx`
+            -   `profile.jsx`
+            -   `register.jsx`
+            -   `rentabike.jsx`
+            -   `shop.jsx`
+        -   `main.jsx`
+        -   `root.jsx`
+        -   `theme.js`
+    -   `.env`
+    -   `.gitignore`
+    -   `cypress.config.js`
+    -   `dossier.md`
+    -   `index.html`
+    -   `package.json`
+    -   `postcss.config.js`
+    -   `README.md`
+    -   `vite.config.js`
+    -   `yarn.lock`
 
 ### Web Services
 
@@ -270,7 +364,49 @@ https://www.npmjs.com/package/zxcvbn
 
 ### Front-end Web Development
 
-(nog in te vullen 2de zit)
+### aboutus.cy.js
+
+De test controleert of de hoofdtitel en sectiekoppen correct worden weergegeven, of het aantal secties overeenkomt met de verwachtingen en kijkt ook of de achtergrondkleur overeenkomt.
+
+### customerpage.cy.js
+
+De test controleert na het inloggen en navigeren naar de klantenpagina of de tabel en juiste kolomheaders worden getoond.
+
+### footer.cy.js
+
+De test controleert of de footer op de homepagina correct wordt weergegeven en verifieert of de tekst, achtergrondkleur en randstijlen voldoen aan de opgegeven specificaties.
+
+### homepage.cy.js
+
+De test controleert voor alle drie de rollen (klant, admin en gast) of de CustomCarousel aanwezig is en of de juiste welkomstboodschap wordt weergegeven, afhankelijk van de rol van de gebruiker na inloggen.
+
+### locationpage.cy.js
+
+De test toont of een locatie succesvol kan worden aangemaakt en gecontroleerd. Na inloggen en navigeren naar de locatiepagina, wordt getest of de optie om een nieuwe locatie te creëren beschikbaar is en werkt. Vervolgens worden de details van een nieuwe locatie ingevoerd en opgeslagen. De test controleert of de nieuwe locatie correct wordt weergegeven in de tabel met de ingevoerde gegevens.
+
+### login.cy.js
+
+De test controleert of inloggen als gebruiker succesvol is en of de gebruiker de juiste welkomstboodschap op de homepage ziet. Een andere test controleert of inloggen als admin succesvol is en of de admin de specifieke welkomstboodschap en informatie op de homepage ontvangt.
+
+### logout.cy.js
+
+De test controleert of, na uitloggen, de gebruiker weer naar de inlogpagina wordt geleid en of de knop "Log in" zichtbaar is.
+
+### payments.cy.js
+
+De test controleert of de betalingspagina correct wordt weergegeven na inloggen, of de tabel met betalingsinformatie de juiste kolomkoppen toont en of het bevestigingsvenster verschijnt wanneer de delete-knop wordt ingedrukt. Ook wordt getest of een betaling daadwerkelijk wordt verwijderd na het bevestigen van de actie.
+
+### profilepage.cy.js
+
+De test controleert of de profielpagina correct wordt weergegeven na inloggen en of de gebruiker profielinformatie kan bewerken. Dit omvat het verifiëren van de initiële profielgegevens, het invoeren van gewijzigde gegevens in bewerkingsmodus en het klikken op de knop om de bijgewerkte informatie op te slaan.
+
+### register.cy.js
+
+De test controleert of een nieuwe gebruiker succesvol kan worden geregistreerd en of de gebruiker wordt doorgestuurd naar de inlogpagina na een succesvolle registratie. De test simuleert een registratieverzoek en verifieert de redirect naar de loginpagina.
+
+### rentalpage.cy.js
+
+De test controleert of de RentABike-pagina correct laadt, of de slider met motorfietsen zichtbaar is en of elke dia een flash-banner bevat. Ook wordt getest of het klikken op de 'Rent Now'-knop een modal opent met de boodschap "You need to be logged in to rent a bike".
 
 ### Web Services
 
@@ -297,8 +433,18 @@ Deze test waarborgt de correcte werking van de API voor motorbeheer in verschill
 
 ### Front-end Web Development
 
-Geen bugs binnen het project.
+Geen gekende bugs binnen Front-end Web Development.
 
 ### Web Services
 
-Geen bugs binnen het project.
+Geen gekende bugs binnen Web Services.
+
+## Wat is er verbeterd/aangepast?
+
+### Front-end Web Development
+
+-   Ik heb de lay-out volledig vernieuwd en vanaf nul opnieuw opgebouwd. Ik heb gezorgd voor een gestructureerde opbouw en gebruik gemaakt van diverse componenten om de pagina’s te verkorten, overzichtelijker te maken en gemakkelijker aan te passen.
+
+### Web Services
+
+-   Ik heb enkele kleine aanpassingen aangebracht in de restlaag bij huurlocaties, zodat ik ze kan ophalen op naam via het id en de seed-data voor motoren aangepast en verminderd.
